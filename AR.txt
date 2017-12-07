@@ -1,0 +1,26 @@
+mana : campo dati di ogni oggetto. Rappresenta la quantità di mana richiesta per crearlo. Operazioni di potenziamento, distruzione ecc saranno mana * n n>0.
+
+probabilità : ogni oggetto ha un livello. 1/livello * quantità di mana. Limite sulla quantità di mana per evitare probabilità 1. 
+
+delete : fare un delete virtuale che elimini il mondo
+
+Regola generale: ogni metodo restituisce una probabilità farà side-effect se voluto dall'utente. Comportamenti non personalizzati con determinati tipi.
+
+float oggetto.combinazione(oggetto) : mantiene l'oggetto di invocazione, distrugge l'oggetto passato come parametro.
+                                all'oggetto di invocazione verranno modificati i campi dati in base a quelli del parametro. Per ogni classe sono previste regole diverse
+
+float oggetto.estrazione(oggetto) : oggetto di invocazione distrutto. Viene generato (forse) l'oggetto parametro. Controllo se è suo sottotipo. Ritorno probabilità di successo.
+                                 Il vantaggio di fare ciò sta nel fatto che l'oggetto che puoi ottenere avrà sicuramente meno malus e/o più bonus rispetto al padre.
+                                esiste il rischio di perdere l'oggetto di invocazione e di non ottenere nulla. non può essere invocato su classi "foglia". (da sopra a sotto)
+
+
+oggetto.rimozioneMalus() : l'oggetto di invocazione deve avere almeno un campo dati negativo. Tutti i campi dato negativi vanno a 0. Si rischia di perdere l'oggetto o di subire decrementi di altre statistiche.  
+
+oggetto.potenzia(int) :  i campi dati positivi vengono incrementati del parametro intero. Quelli negativi possono peggiorare. Ritorna il mana necessario per l'operazione.
+
+oggetto.costruisci(int mana) : con il mana parametro, restituisce la probabilità di creazione
+
+oggetto.ricicla() : restituisce il mana che si genera dalla distruzione di questo oggetto. Il mana restituito dipende dal mana necessario per la creazione e dai campi dato dell'oggetto.
+
+oggetto.ottenutoDa(oggetto) : duale di estrazione ma su siblings. Inizializzo l'oggetto di invocazione in qualche modo con i campi dato dell'oggetto parametro, il quale verrà distrutto.
+erba x;
