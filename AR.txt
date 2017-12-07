@@ -1,3 +1,5 @@
+AR
+
 mana : campo dati di ogni oggetto. Rappresenta la quantità di mana richiesta per crearlo. Operazioni di potenziamento, distruzione ecc saranno mana * n n>0.
 
 probabilità : ogni oggetto ha un livello. 1/livello * quantità di mana. Limite sulla quantità di mana per evitare probabilità 1. 
@@ -24,3 +26,47 @@ oggetto.ricicla() : restituisce il mana che si genera dalla distruzione di quest
 
 oggetto.ottenutoDa(oggetto) : duale di estrazione ma su siblings. Inizializzo l'oggetto di invocazione in qualche modo con i campi dato dell'oggetto parametro, il quale verrà distrutto.
 erba x;
+
+CLASSI E ATTRIBUTI
+
+OGGETTO
+Attributi:
+- mana
+- livello
+- spirito
+- rarita
+Metodi:
++ estrazione //non da erba. Da valutare l'inserimento di una "classe" in modo da rendere il metodo disponibile solo per due figli
++ rimozioneMalus : double
++ combinazione : double
++ potenzia : double
++ costruisci : double
++ ricicla : double
++ ottenutoDa : double
+
+
+	ERBA
+	Attributi
+	- HP
+		
+		FUNGO
+		Attributi
+		- rarita_max
+	
+	
+	PIETRA
+	Attributi
+	- durezza
+		
+		CRISTALLI
+		Attributi
+		- magia
+	
+	
+	AMULETI
+	Attributi
+	- attacco
+	- difesa
+	
+		OSSA
+		- rarita_max
