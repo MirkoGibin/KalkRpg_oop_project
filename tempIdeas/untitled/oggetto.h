@@ -19,10 +19,9 @@ public:
                 livello(l),
                 attacco(a),
                 probabilita(p) {}
+    virtual ~oggetto() {}
 
     //methods
-    virtual oggetto*estrazione() =0;
-
     virtual unsigned short getLivello() {
         return livello;
     }
@@ -34,6 +33,8 @@ public:
         return probabilita;
     }
     virtual oggetto*getFather() =0;
+
+    virtual oggetto*estrazione() =0;
 
 };
 
