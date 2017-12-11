@@ -6,22 +6,22 @@
 class cristallo : public pietra {
 private:
     //parameters to describe the item
-    unsigned short magia;
+    unsigned short magia_;
 
 public:
     //default constructor
-    cristallo(unsigned short l =0, unsigned short a =0, double p=0,
-              unsigned short d =0,
-              unsigned short m =0) :
-        pietra(l, a, p, d), magia(m) {}
+    cristallo(unsigned short livello =0, unsigned short attacco =0, double probabilita =0,
+              unsigned short durezza =0,
+              unsigned short magia =0) :
+        pietra(livello, attacco, probabilita, durezza), magia_(magia) {}
 
     //other constructor
-    cristallo(pietra*, unsigned short m) :
-        pietra(*getFather()), magia(m) {}
+    cristallo(pietra*, unsigned short magia) :
+        pietra(*getFather()), magia_(magia) {}
 
     //methods
     virtual unsigned short getMagia() {
-        return magia;
+        return magia_;
     }
     pietra*getFather() {
         return new pietra(getLivello(),

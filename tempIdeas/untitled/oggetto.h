@@ -5,36 +5,36 @@
 class oggetto {
 private:
     //parameters to describe the item
-    unsigned short livello;
-    unsigned short attacco;
+    unsigned short livello_;
+    unsigned short attacco_;
 
     //utilities
-    double probabilita;
+    double probabilita_;
 
 public:
     //default constructor
-    oggetto(unsigned short l =0,
-            unsigned short a =0,
-            double p =0) :
-                livello(l),
-                attacco(a),
-                probabilita(p) {}
+    oggetto(unsigned short livello =0,
+            unsigned short attacco =0,
+            double probabilita =0) :
+                livello_(livello),
+                attacco_(attacco),
+                probabilita_(probabilita) {}
     virtual ~oggetto() {}
 
     //methods
     virtual unsigned short getLivello() {
-        return livello;
+        return livello_;
     }
 
     virtual unsigned short getAttacco() {
-        return attacco;
+        return attacco_;
     }
     virtual double getProbabilita() {
-        return probabilita;
+        return probabilita_;
     }
-    virtual oggetto*getFather() =0;
+   // virtual oggetto* getFather() =0; Se tu metti puro virtuale qui e non le implementi in pietra, pietra rimarrà virtuale pura. Per questo quando vai a fare new pietra ti da errore.
 
-    virtual oggetto*estrazione() =0;
+    //virtual oggetto* estrazione() =0;
 
 };
 

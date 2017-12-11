@@ -5,22 +5,22 @@
 class pietra : public oggetto {
 private:
     //parameters to describe the item
-    unsigned short durezza;
+    unsigned short durezza_;
 
 public:
     //default construtor
-    pietra(unsigned short l =0,
-           unsigned short a =0,
-           double p =0,
+    pietra(unsigned short livello =0,
+           unsigned short attacco =0,
+           double probabilita =0,
            unsigned short d =0) :
-        oggetto(l, a, p), durezza(d) {}
+        oggetto(livello, attacco, probabilita), durezza_(d) {}
 
     //other constructor
-    pietra(oggetto* o, unsigned short d):
-            oggetto(    o->getLivello(),
-                        o->getAttacco(),
-                        o->getProbabilita()),
-            durezza(d) {}
+    pietra(oggetto* object, unsigned short d):
+            oggetto(    object->getLivello(),
+                        object->getAttacco(),
+                        object->getProbabilita()),
+            durezza_(d) {}
 
     //methods
     //copyConstructor
@@ -32,7 +32,7 @@ public:
     }*/
 
     virtual unsigned short getDurezza() {
-        return durezza;
+        return durezza_;
     }
 };
 

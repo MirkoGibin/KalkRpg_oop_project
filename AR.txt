@@ -24,8 +24,8 @@ oggetto.costruisci(int mana) : con il mana parametro, restituisce la probabilità
 
 oggetto.ricicla() : restituisce il mana che si genera dalla distruzione di questo oggetto. Il mana restituito dipende dal mana necessario per la creazione e dai campi dato dell'oggetto.
 
-oggetto.ottenutoDa(oggetto) : duale di estrazione ma su siblings. Inizializzo l'oggetto di invocazione in qualche modo con i campi dato dell'oggetto parametro, il quale verrà distrutto.
-erba x;
+oggetto.trasforma(oggetto) : duale di estrazione ma su siblings. Inizializzo l'oggetto di invocazione in qualche modo con i campi dato dell'oggetto parametro, il quale verrà distrutto.
+
 
 CLASSI E ATTRIBUTI
 
