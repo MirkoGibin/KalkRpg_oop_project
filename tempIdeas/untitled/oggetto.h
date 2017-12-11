@@ -13,11 +13,15 @@ private:
 
 public:
     //default constructor
-    oggetto(unsigned short l =0, unsigned short a =0, double p =0) :
-        livello(l), attacco(a), probabilita(p) {}
+    oggetto(unsigned short l =0,
+            unsigned short a =0,
+            double p =0) :
+                livello(l),
+                attacco(a),
+                probabilita(p) {}
 
     //methods
-    virtual void estrai() =0;
+    virtual oggetto*estrazione() =0;
 
     virtual unsigned short getLivello() {
         return livello;
@@ -26,9 +30,10 @@ public:
     virtual unsigned short getAttacco() {
         return attacco;
     }
-    virtual unsigned short getProbabilita() {
+    virtual double getProbabilita() {
         return probabilita;
     }
+    virtual oggetto*getFather() =0;
 
 };
 
