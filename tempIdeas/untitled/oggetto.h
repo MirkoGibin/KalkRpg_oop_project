@@ -1,36 +1,60 @@
 #ifndef OGGETTO_H
 #define OGGETTO_H
+#include<map>
+#include<utility>
 
+using std::map; using std::string;
 
 class oggetto {
 private:
     //parameters to describe the item
+    map<string, double> parametri_;
+
+
+    /*
     unsigned short livello_;
     unsigned short attacco_;
 
     //utilities
     double probabilita_;
+    */
 
 public:
     //default constructor
-    oggetto(unsigned short livello =0,
-            unsigned short attacco =0,
+    /*oggetto(short livello =0,
+            short attacco =0,
             double probabilita =0) :
                 livello_(livello),
                 attacco_(attacco),
                 probabilita_(probabilita) {}
+    */
+    //costruttore di default
+    oggetto(const short livello =0,
+            const short attacco =0,
+            const double probabilita) {
+        parametri_.emplace(std::make_pair("livello", livello));
+        parametri_.emplace(std::make_pair("attacco", attacco));
+        parametri_.emplace(std::make_pair("probabilita", probabilita));
+        // map<string, double>::value_type livello_("livello", livello);
+        // map<string, double>::value_type attacco_("attacco", attacco);
+        // map<string, double>::value_type probabilita_("probabilita", probabilita);
+        // parametri_.insert(livello_);
+        // parametri_.insert(attacco_);
+        // parametri_.insert(probabilita_);
+    }
+
     virtual ~oggetto() {}
 
     //methods
     virtual unsigned short getLivello() {
-        return livello_;
+        return parametri_["livello"];
     }
 
     virtual unsigned short getAttacco() {
-        return attacco_;
+        return parametri_["attacco"];
     }
     virtual double getProbabilita() {
-        return probabilita_;
+        return parametri_["probabilita"];
     }
    // virtual oggetto* getFather() =0; Se tu metti puro virtuale qui e non le implementi in pietra, pietra rimarrà virtuale pura. Per questo quando vai a fare new pietra ti da errore.
 
