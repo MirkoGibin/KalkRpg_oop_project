@@ -1,40 +1,49 @@
 #ifndef OGGETTO_H
 #define OGGETTO_H
-
+#include<map>
+#include<string>
+using std::string;
+using std::map;
 
 class oggetto {
 private:
-    //parameters to describe the item
-    unsigned short livello_;
-    unsigned short attacco_;
-
-    //utilities
-    double probabilita_;
+    //statistiche di un oggetto: mana, livello, spirito, rarita
+    map<string, short int> stats;
 
 public:
-    //default constructor
-    oggetto(unsigned short livello =0,
-            unsigned short attacco =0,
-            double probabilita =0) :
-                livello_(livello),
-                attacco_(attacco),
-                probabilita_(probabilita) {}
-    virtual ~oggetto() {}
+    //costruttore
 
-    //methods
-    virtual unsigned short getLivello() {
-        return livello_;
-    }
+    //metodi virtuali getter
 
-    virtual unsigned short getAttacco() {
-        return attacco_;
-    }
-    virtual double getProbabilita() {
-        return probabilita_;
-    }
-   // virtual oggetto* getFather() =0; Se tu metti puro virtuale qui e non le implementi in pietra, pietra rimarrà virtuale pura. Per questo quando vai a fare new pietra ti da errore.
+    virtual short int getMana();
+    virtual short int getLivello();
+    virtual short int getSpirito();
+    virtual short int getRarita();
+    virtual short int getLivello();
 
-    //virtual oggetto* estrazione() =0;
+    //metodi virtuali puri
+
+    virtual float combina(Oggetto& object) {
+     /*
+        sommo il contenuto degli elementi di this.stats => SUM;
+        per ogni this.stats[i] calcolo il complementare della percentuale di partecipazione a SUM => perc[i]
+        sommo tutte le perc[i] => SUM_PERC
+        perc[i] / SUM_PERC => distr[i]
+        sommo il contenuto di object.stats NEW_SUM;
+        this.stats[i] += NEW_SUM * distr[i]
+
+
+
+        distruggo object;
+
+     */
+    }
+    virtual float estrai(Oggetto&);
+    virtual float rimuoviMalus();
+    virtual float potenzia();
+    virtual float costruisci();
+    virtual float ricicla();
+    virtual float trasforma();
 
 };
 
