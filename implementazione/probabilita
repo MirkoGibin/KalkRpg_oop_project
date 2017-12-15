@@ -1,0 +1,21 @@
+oggetto.Probabilita()
+
+I parametri usati sono mana, livello, rarita, numero parametri
+
+1 - più alto è il livello, più la probabilità sale
+2 - più è raro, più la probabilità sale
+
+(9 * lv + 15 * rarita) / 200
+
+http://www.cplusplus.com/reference/random/uniform_real_distribution/
+
+#include <random>
+
+std::default_underscore_engine generator;
+std::uniform_real_distribution<double> distribution(0.0,1.0)
+
+double number = distribution(generator);
+
+if(number < oggetto.Probabilita()) let's fucking do things ;
+else fuck yourself;
+

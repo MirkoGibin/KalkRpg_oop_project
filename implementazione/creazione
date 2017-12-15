@@ -1,0 +1,9 @@
+oggetto.Creazione(mana, rarita)
+
+Quando andrò a creare un oggetto avrò bisogno di mana.
+
+Il mana, come detto in combinazione, sarà formato da
+
+sommaStats * livello .
+
+Più alto è la rarità, maggiore sarà il mana richiesto.
