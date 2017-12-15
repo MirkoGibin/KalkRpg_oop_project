@@ -1,26 +1,29 @@
 #ifndef PIETRA_H
 #define PIETRA_H
-//#include"oggetto.h"
+#include"oggetto.h"
 
 class pietra : public oggetto {
 private:
     //parameters to describe the item
-    unsigned short durezza_;
+    //unsigned short durezza_;
 
 public:
     //default construtor
     pietra(unsigned short livello =0,
            unsigned short attacco =0,
            double probabilita =0,
-           unsigned short d =0) :
-        oggetto(livello, attacco, probabilita), durezza_(d) {}
+           unsigned short durezza =0) : oggetto(livello, attacco, probabilita) {
+        insertInPrivateMap("durezza", durezza);
+    }
 
     //other constructor
-    pietra(oggetto* object, unsigned short d):
+
+    /*pietra(oggetto* object, unsigned short d):
             oggetto(    object->getLivello(),
                         object->getAttacco(),
                         object->getProbabilita()),
             durezza_(d) {}
+    */
 
     //methods
     //copyConstructor
@@ -32,8 +35,9 @@ public:
     }*/
 
     virtual unsigned short getDurezza() {
-        return durezza_;
+        return getDataFromKey("durezza");
     }
 };
 
 #endif // PIETRA_H
+
