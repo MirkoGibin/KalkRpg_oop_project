@@ -1,0 +1,9 @@
+    protected
+vantaggi :  sottoclassi hanno accesso direttamente alla mappa.
+svantaggi : se cambio qualcosa in padre devo cambiare tutto sotto
+
+    private:
+vantaggi: cambio in padre, e basta
+svantaggi: ho bisogno di un ametodo che richiama il metodo che mi fa accedere alla MIA mappa.
+
+

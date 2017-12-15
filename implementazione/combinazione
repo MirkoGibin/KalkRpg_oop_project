@@ -1,0 +1,11 @@
+REGOLE
+Non vengono toccati mana, livello, rarità.
+
+1 - il livello non cambia mai.
+2 - ogni livello ha una soglia massima di somma statistiche che non può essere superato
+3 - se un oggetto raggiunge la soglia max, non può essere migliorato.
+4 - stats uguali si aumentano tra di loro
+5 - le statistiche non presenti nell'invocato vengono sommate e distribuite in egual maniera nelle statistiche dell'invocato, ad esclusione dello spirito.
+6 - normalizzazione alla soglia massima del livello dell'invocato.
+7 - i metodi getter dovranno visualizzare stats * lv per far vedere quanto grossi sono
+
