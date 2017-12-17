@@ -1,68 +1,83 @@
 #ifndef OGGETTO_H
 #define OGGETTO_H
 #include<map>
-#include<utility>
+#include<vector>
+
+using std::vector;
 
 using std::map; using std::string;
 
 class oggetto {
 protected:
     //parameters to describe the item
-    map<string, double> parametri;
+    map<string, unsigned short int> stats;
 
+    /* parameters inside stats are:
+     * mana
+     * livello
+     * spirito
+     * rarita
+     */
 
-    /*
-    unsigned short livello_;
-    unsigned short attacco_;
-
-    //utilities
-    double probabilita_;
-    */
-
-
-    //default constructor
 public:
     //costruttore di default
-    oggetto(const short livello =0,
-            const short attacco =0,
-            const double probabilita =0) {
-        parametri.emplace(std::make_pair("livello", livello));
-        parametri.emplace(std::make_pair("attacco", attacco));
-        parametri.emplace(std::make_pair("probabilita", probabilita));
+    oggetto(const unsigned short int mana =0,
+            const unsigned short int livello =0,
+            const unsigned short int spirito =0,
+            const unsigned short int rarita =0) {
+        stats.emplace("mana", mana);
+        stats.emplace("livello", livello);
+        stats.emplace("spirito", spirito);
+        stats.emplace("rarita", rarita);
     }
 
-    /*void prova() {
-        parametri.emplace("magia", 123);
-    }*/
-        // map<string, double>::value_type livello_("livello", livello);
-        // map<string, double>::value_type attacco_("attacco", attacco);
-        // map<string, double>::value_type probabilita_("probabilita", probabilita);
-        // parametri_.insert(livello_);
-        // parametri_.insert(attacco_);
-        // parametri_.insert(probabilita_);
-
+    //distruttore virtuale
     virtual ~oggetto() {}
 
-    //methods
-    virtual unsigned short getLivello() {
-        return parametri["livello"];
+    //metodi di servizio
+    virtual unsigned short int getMana() const {
+        return stats.at("mana");
     }
 
-    virtual unsigned short getAttacco() {
-        return parametri["attacco"];
-    }
-    virtual double getProbabilita() {
-        return parametri["probabilita"];
+    virtual unsigned short int calculateMana() const {
+        return getSumFromMapStats()*getDataFromKey("livello);
     }
 
-    virtual void insertInMap(string str, double db) {
-        parametri.emplace(std::make_pair(str, db));
+    virtual unsigned short getLivello() const {
+       return stats.at("livello");
+    }
+    virtual unsigned short getSpirito() const {
+        return stats.at("spirito");
     }
 
-    virtual double getDataFromKey(string str) {
-        return parametri[str];
+    virtual unsigned short getRarita() const {
+        return stats.at("rarita");
     }
 
+    virtual void insertInMap(string str, const short db) {
+        stats.emplace(str, db);
+    }
+
+    virtual double getDataFromKey(string str) const {
+        return stats.at(str);
+    }
+
+    virtual vector<string> getKeyList()  const {
+        vector<string> keyList;
+        for(map<string, unsigned short int>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
+            keyList.push_back(it->first);
+        return keyList;
+    }
+
+    virtual short int getSumFromMapStats() const {
+        short int sum;
+        for(map<string, unsigned short int>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
+            if(it->first != "livello")
+                sum+=it->second;
+        return sum;
+    }
+
+    //operazioni
 
     // virtual oggetto* getFather() =0; Se tu metti puro virtuale qui e non le implementi in pietra, pietra rimarrà virtuale pura. Per questo quando vai a fare new pietra ti da errore.
 

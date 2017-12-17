@@ -8,7 +8,8 @@ CONFIG -= qt
 SOURCES += main.cpp \
     oggetto.cpp \
     pietra.cpp \
-    cristallo.cpp
+    cristallo.cpp \
+    operazionimath.cpp
 
 HEADERS += \
     oggetto.h \
