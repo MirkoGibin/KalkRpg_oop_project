@@ -3,18 +3,19 @@
 #include "pietra.h"
 #include<typeinfo>
 
-class cristallo : public pietra {
+class Cristallo : public Pietra {
 private:
     //parameters to describe the item
     //unsigned short magia_;
 
 public:
     //default constructor
-    cristallo(unsigned short livello =0,
-              unsigned short attacco =0,
-              double probabilita =0,
-              unsigned short durezza =0,
-              unsigned short magia =0) : pietra(livello, attacco, probabilita, durezza) {
+    Cristallo(float livello =0,
+              float spirito =0,
+              float rarita =0,
+              float attacco =0,
+              float durezza =0,
+              float magia =0) : Pietra(livello, spirito, rarita, attacco, durezza) {
         insertInMap("magia", magia);
     }
 

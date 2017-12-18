@@ -2,19 +2,20 @@
 #define PIETRA_H
 #include"oggetto.h"
 
-class pietra : public Oggetto {
+class Pietra : public Oggetto {
 private:
     //parameters to describe the item
     //unsigned short durezza_;
 
 public:
     //default construtor
-    pietra(unsigned short livello =0,
-           unsigned short attacco =0,
-           double probabilita =0,
-           unsigned short durezza =0) : Oggetto(livello, attacco, probabilita) {
+    Pietra(float livello =0,
+           float spirito =0,
+           float rarita =0,
+           float attacco =0,
+           float durezza =0) : Oggetto(livello, spirito, rarita) {
+        insertInMap("attacco", attacco);
         insertInMap("durezza", durezza);
-
     }
 
     //other constructor
