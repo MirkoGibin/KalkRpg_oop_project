@@ -67,7 +67,7 @@ public:
     }
 
     virtual float getSumFromMapStats() const {
-        float sum;
+        float sum = 0;
         for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
             sum+=it->second;
         return sum;
@@ -79,17 +79,16 @@ public:
         map<string, float> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
         map<string, float> percentParMap = object->stats; //copiata la mappa dell'oggetto di invocazione
 
-        cout<<"Cazzo";
         for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it) {
             percentInvMap[it->first] = it->second * getLivello() / manaInv; // percentuale di partecipazione della statistica sul mana
-        }/*
+        }
         // POST = updateObj contiene le percentuali di partecipazione delle varie statistiche sul mana totale
 
         for(map<string, float>::const_iterator it= object->stats.begin(); it!=object->stats.end(); ++it) {
             percentParMap[it->first] = it->second * object->getLivello() / manaPar; // percentuale di partecipazione della statistica sul mana
         }
 
-        vector<string> aMenob, bMenoa, aeb; //
+        vector<string> aMenob, bMenoa, aeb;
 
 
         for(map<string, float>::const_iterator it=percentInvMap.begin(); it!=percentInvMap.end(); ++it) {
@@ -124,11 +123,11 @@ public:
 
         //ora bisogna normalizzare stats a seconda del livello.
         normalizeStats();
-        */
+
     }
 
     virtual void normalizeStats() {
-        if(getLivello()*150 > calculateMana()) {
+        if(getLivello()*150 <= calculateMana()) {
             float percentualeRiduzione=getLivello()*150/calculateMana();
 
             for(map<string,float>::const_iterator it=stats.begin(); it!=stats.end(); ++it) {
