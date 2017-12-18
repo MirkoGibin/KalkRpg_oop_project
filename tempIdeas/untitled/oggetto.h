@@ -142,6 +142,11 @@ public:
 
     //virtual oggetto* estrazione() =0;
 
+    virtual float ricicla() {
+        return getSumFromMapStats()*getLivello()*getRarita();
+    }
+
+
 };
 
 #endif // OGGETTO_H

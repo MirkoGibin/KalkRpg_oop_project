@@ -1,11 +1,12 @@
-oggettoCheVoglioCreare.Creazione(mana, rarita, )
+﻿oggettoCheVoglioCreare.crea(mana, livello, rarita, string:parametro)
 
-Quando andrò a creare un oggetto avrò bisogno di mana.
+DA IMPLEMENTARE IN OGNI CLASSE
 
-Il mana, come detto in combinazione, sarà formato da
+// CONTROLLI:
+	- string deve essere un elemento della mappa
+	- i parametri inseriti devono essere coerenti
 
-sommaStats * livello .
-
-Più alto è la rarità, maggiore sarà il mana richiesto.
-
-Se 
+- controllo su mana necessaria:	mama=livello*sommaStats*rarita -> 
+				sommaStats=mana/(livello*rarita)
+- se il parametro e' inizializzato dall'utente, a questo verra' assegnato sommaStats/2
+- il rimanente sommaStats verra' equalmente assegnato agli altri campi

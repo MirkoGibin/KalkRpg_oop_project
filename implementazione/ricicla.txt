@@ -2,4 +2,6 @@ oggetto.ricicla()
 
 distrugge l'oggetto e restituisce quanto mana si riceverebbe.
 
+mana restituito: sommaStats*livello*rarita
+
 Da considerare la somma statistiche, il livello e la rarita.
