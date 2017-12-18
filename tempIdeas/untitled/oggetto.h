@@ -146,6 +146,35 @@ public:
         return getSumFromMapStats()*getLivello()*getRarita();
     }
 
+virtual void crea(float mana, int livello = 1, int rarita = 1, string statistica) { //PRE = statistica è vuoto o è un valore valido
+        setLivello(livello);
+        setRarita(rarita);
+
+        vector<string> parametri = getKeyList() ;
+        float sumStats=mana/(livello*rarita);
+
+        if(std::find(parametri.begin(), parametri.end(), statistica)) {
+            stats[statistica] = sumStats / 2;
+            sumStats=sumStats/2;
+            vector<string> copia_parametri;
+            for(vector<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
+                if(*it!= statistica)
+                    copia_parametri.push_back(*it);
+
+            parametri=copia_parametri;
+        }
+
+        if(parametri.size()==0) { //oggetto con un solo parametro in stats (spirito)
+            stats[statistica]+=sumStats;
+        } else {
+            sumStats=sumStats/parametri.size();
+
+            for(vector<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
+                insertInMap(*it, sumStats);
+        }
+    }
+
+
 
 };
 
