@@ -15,10 +15,8 @@ private:
 
     map<string, float> stats;
 
-    /* parameters inside stats are:
-     * livello
+    /* parameters inside stats in Oggetto are:
      * spirito
-     * rarita
      */
 
 public:
@@ -26,9 +24,7 @@ public:
     Oggetto(const float livello =0,
             const float spirito =0,
             const float rarita =0) : livello_(livello), rarita_(rarita) {
-        stats.emplace("livello", livello);
         stats.emplace("spirito", spirito);
-        stats.emplace("rarita", rarita);
     }
 
     //distruttore virtuale
@@ -41,14 +37,14 @@ public:
     }
 
     virtual float getLivello() const {
-       return stats.at("livello");
+       return livello_;
     }
     virtual float getSpirito() const {
         return stats.at("spirito");
     }
 
     virtual float getRarita() const {
-        return stats.at("rarita");
+        return rarita_;
     }
 
     virtual void insertInMap(string str, const short db) {
@@ -74,7 +70,7 @@ public:
         return sum;
     }
 
-    virtual void combina(Oggetto* object) {
+    /*virtual void combina(Oggetto* object) {
         float manaInv = calculateMana();
         float manaPar =  object->calculateMana();
 
@@ -92,21 +88,24 @@ public:
 
 
 
-    }
+    }*/
 
     //operazioni
-    /* parametersDistribution prende due mappe a e b. Le entry di b che non sono presenti in a vengono sommate in un buffer. Il buffer viene poi restituito
-        diviso per il numero di campi che hanno contribuito*/
+
+    /* parametersDistribution prende due mappe a e b.
+     * Le entry di b che non sono presenti in a vengono sommate in un buffer.
+     * Il buffer viene poi restituito diviso per il numero
+     * di campi che hanno contribuito
+     */
     static float parametersDistribution(map<string, float> a, map<string, float> b) {
         float buffer = 0;
         int contatore =0;
 
-        for(map<string, float>::const_iterator it = stats.begin(); it!=stats.end(); ++it)
-            if(b->first != "livello" && b->first != "rarita" )
-                if(!a.find(it->first)) {
-                    contatore++;
-                    buffer += it->second*b.at("livello");
-                }
+        for(map<string, float>::const_iterator it = b.begin(); it!=b.end(); ++it)
+            if(!(a.count(it->first))) {
+                contatore++;
+                buffer += it->second*b.at("livello");
+        }
         return buffer / contatore;
     }
 
