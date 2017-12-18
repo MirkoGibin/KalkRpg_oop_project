@@ -8,8 +8,11 @@ using std::vector;
 using std::map; using std::string;
 
 class Oggetto {
-protected:
+private:
     //parameters to describe the item
+    int livello_;
+    int rarita_;
+
     map<string, float> stats;
 
     /* parameters inside stats are:
@@ -22,7 +25,7 @@ public:
     //costruttore di default
     Oggetto(const float livello =0,
             const float spirito =0,
-            const float rarita =0) {
+            const float rarita =0) : livello_(livello), rarita_(rarita) {
         stats.emplace("livello", livello);
         stats.emplace("spirito", spirito);
         stats.emplace("rarita", rarita);
@@ -79,9 +82,7 @@ public:
 
         for(map<string, float>::const_iterator itInv = stats.begin(); itInv!=stats.end(); ++itInv) {
 
-            if(itInv->first != "livello" && itInv->first != "rarita" )
-
-                for(map<string, float>::const_iterator itPar = object->stats.begin(); itPar!=object->stats.end(); ++itPar)
+            for(map<string, float>::const_iterator itPar = object->stats.begin(); itPar!=object->stats.end(); ++itPar)
 
                     if(itInv->first == itPar->first)
                         itInv->second = (itInv->second * getDataFromKey("livello") + itPar->second * object->getDataFromKey("livello")) / getDataFromKey("livello");
@@ -94,18 +95,19 @@ public:
     }
 
     //operazioni
-
+    /* parametersDistribution prende due mappe a e b. Le entry di b che non sono presenti in a vengono sommate in un buffer. Il buffer viene poi restituito
+        diviso per il numero di campi che hanno contribuito*/
     static float parametersDistribution(map<string, float> a, map<string, float> b) {
-        int buffer = 0;
-        float contatore =0;
+        float buffer = 0;
+        int contatore =0;
 
         for(map<string, float>::const_iterator it = stats.begin(); it!=stats.end(); ++it)
             if(b->first != "livello" && b->first != "rarita" )
                 if(!a.find(it->first)) {
                     contatore++;
-                    buffer+=it->second*b.at("livello");
+                    buffer += it->second*b.at("livello");
                 }
-        return buffer/contatore;
+        return buffer / contatore;
     }
 
     // virtual oggetto* getFather() =0; Se tu metti puro virtuale qui e non le implementi in pietra, pietra rimarrà virtuale pura. Per questo quando vai a fare new pietra ti da errore.
