@@ -11,6 +11,7 @@ int main() {
     Cristallo* cri=new Cristallo(5, 10, 0, 40, 2, 90);
     pie->combina(dynamic_cast<Oggetto*>(cri));
 
-cout<<"cazzo|";
+    cout<<pie->getDurezza()<<" "<<pie->getSpirito()<<" ";
+
 
 }

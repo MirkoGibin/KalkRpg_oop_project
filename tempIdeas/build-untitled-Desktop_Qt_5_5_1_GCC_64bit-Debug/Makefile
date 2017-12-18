@@ -525,7 +525,9 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../untitled/main.cpp 
+main.o: ../untitled/main.cpp ../untitled/oggetto.h \
+		../untitled/pietra.h \
+		../untitled/cristallo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../untitled/main.cpp
 
 oggetto.o: ../untitled/oggetto.cpp ../untitled/oggetto.h
