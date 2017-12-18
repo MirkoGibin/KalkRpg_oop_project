@@ -2,7 +2,7 @@
 #define PIETRA_H
 #include"oggetto.h"
 
-class pietra : public oggetto {
+class pietra : public Oggetto {
 private:
     //parameters to describe the item
     //unsigned short durezza_;
@@ -12,7 +12,7 @@ public:
     pietra(unsigned short livello =0,
            unsigned short attacco =0,
            double probabilita =0,
-           unsigned short durezza =0) : oggetto(livello, attacco, probabilita) {
+           unsigned short durezza =0) : Oggetto(livello, attacco, probabilita) {
         insertInMap("durezza", durezza);
 
     }

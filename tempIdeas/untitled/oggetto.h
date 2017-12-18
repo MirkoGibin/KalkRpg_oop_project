@@ -7,13 +7,12 @@ using std::vector;
 
 using std::map; using std::string;
 
-class oggetto {
+class Oggetto {
 protected:
     //parameters to describe the item
-    map<string, unsigned short int> stats;
+    map<string, float> stats;
 
     /* parameters inside stats are:
-     * mana
      * livello
      * spirito
      * rarita
@@ -21,36 +20,31 @@ protected:
 
 public:
     //costruttore di default
-    oggetto(const unsigned short int mana =0,
-            const unsigned short int livello =0,
-            const unsigned short int spirito =0,
-            const unsigned short int rarita =0) {
-        stats.emplace("mana", mana);
+    Oggetto(const float livello =0,
+            const float spirito =0,
+            const float rarita =0) {
         stats.emplace("livello", livello);
         stats.emplace("spirito", spirito);
         stats.emplace("rarita", rarita);
     }
 
     //distruttore virtuale
-    virtual ~oggetto() {}
+    virtual ~Oggetto() {}
 
     //metodi di servizio
-    virtual unsigned short int getMana() const {
-        return stats.at("mana");
+
+    virtual float calculateMana() const {
+        return getSumFromMapStats()*getDataFromKey("livello");
     }
 
-    virtual unsigned short int calculateMana() const {
-        return getSumFromMapStats()*getDataFromKey("livello);
-    }
-
-    virtual unsigned short getLivello() const {
+    virtual float getLivello() const {
        return stats.at("livello");
     }
-    virtual unsigned short getSpirito() const {
+    virtual float getSpirito() const {
         return stats.at("spirito");
     }
 
-    virtual unsigned short getRarita() const {
+    virtual float getRarita() const {
         return stats.at("rarita");
     }
 
@@ -64,20 +58,55 @@ public:
 
     virtual vector<string> getKeyList()  const {
         vector<string> keyList;
-        for(map<string, unsigned short int>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
+        for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
             keyList.push_back(it->first);
         return keyList;
     }
 
     virtual short int getSumFromMapStats() const {
         short int sum;
-        for(map<string, unsigned short int>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
-            if(it->first != "livello")
+        for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
+            if(it->first != "livello" && it->first != "rarita" )
                 sum+=it->second;
         return sum;
     }
 
+    virtual void combina(Oggetto* object) {
+        float manaInv = calculateMana();
+        float manaPar =  object->calculateMana();
+
+        int buffer = 0;
+
+        for(map<string, float>::const_iterator itInv = stats.begin(); itInv!=stats.end(); ++itInv) {
+
+            if(itInv->first != "livello" && itInv->first != "rarita" )
+
+                for(map<string, float>::const_iterator itPar = object->stats.begin(); itPar!=object->stats.end(); ++itPar)
+
+                    if(itInv->first == itPar->first)
+                        itInv->second = (itInv->second * getDataFromKey("livello") + itPar->second * object->getDataFromKey("livello")) / getDataFromKey("livello");
+                    else
+                        buffer += itPar->second * object->getDataFromKey("livello");
+        }
+
+
+
+    }
+
     //operazioni
+
+    static float parametersDistribution(map<string, float> a, map<string, float> b) {
+        int buffer = 0;
+        float contatore =0;
+
+        for(map<string, float>::const_iterator it = stats.begin(); it!=stats.end(); ++it)
+            if(b->first != "livello" && b->first != "rarita" )
+                if(!a.find(it->first)) {
+                    contatore++;
+                    buffer+=it->second*b.at("livello");
+                }
+        return buffer/contatore;
+    }
 
     // virtual oggetto* getFather() =0; Se tu metti puro virtuale qui e non le implementi in pietra, pietra rimarrà virtuale pura. Per questo quando vai a fare new pietra ti da errore.
 
