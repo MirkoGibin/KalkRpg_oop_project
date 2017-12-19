@@ -4,39 +4,28 @@
 
 class Pietra : public Oggetto {
 private:
-    //parameters to describe the item
-    //unsigned short durezza_;
+
+    /* parameters inside stats in Oggetto are:
+     * spirito
+     * attacco
+     * durezza
+     */
 
 public:
     //default construtor
     Pietra(float livello =0,
-           float spirito =0,
            float rarita =0,
+           float spirito =0,
            float attacco =0,
-           float durezza =0) : Oggetto(livello, spirito, rarita) {
+           float durezza =0) : Oggetto(livello, rarita, spirito) {
         setStat("attacco", attacco);
         setStat("durezza", durezza);
     }
 
-    //other constructor
-
-    /*pietra(oggetto* object, unsigned short d):
-            oggetto(    object->getLivello(),
-                        object->getAttacco(),
-                        object->getProbabilita()),
-            durezza_(d) {}
-    */
-
-    //methods
-    //copyConstructor
-    /*pietra(const pietra& p) {
-        this->livello=p.getLivello();
-        this->attacco=p.getAttacco();
-        this->probabilita=p.getProbabilita();
-        this->durezza=p.getDurezza();
-    }*/
-
-    virtual unsigned short getDurezza() {
+    virtual float getAttacco() const {
+        return getValoreStat("attacco");
+    }
+    virtual float getDurezza() const {
         return getValoreStat("durezza");
     }
 };

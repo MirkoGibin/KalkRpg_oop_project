@@ -1,7 +1,9 @@
 oggetto.ricicla()
 
-distrugge l'oggetto e restituisce quanto mana si riceverebbe.
+- distrugge l'oggetto e restituisce quanto mana si riceverebbe.
+- mana restituito: sommaStats*livello*rarita
+- se sto riciclando un figlio di un padre concreto, si restituisce parte di mana e un oggetto padre.
 
-mana restituito: sommaStats*livello*rarita
 
-Da considerare la somma statistiche, il livello e la rarita.
+
+

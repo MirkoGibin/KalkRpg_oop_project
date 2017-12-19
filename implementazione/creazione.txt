@@ -10,3 +10,4 @@ DA IMPLEMENTARE IN OGNI CLASSE
 				sommaStats=mana/(livello*rarita)
 - se il parametro e' inizializzato dall'utente, a questo verra' assegnato sommaStats/2
 - il rimanente sommaStats verra' equalmente assegnato agli altri campi
+- necessaria distinzione tra setStat e modifyStat: l'uno assegna un nuovo campo dati nella mappa, l'altro modifica un valore nella mappa, se presente. Risolto (pesante) problema di segmentation fault grazie a questo.
