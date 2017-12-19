@@ -36,8 +36,8 @@ public:
 
     //metodi di servizio
 
-    virtual float calculateMana() const {
-        return getSumFromMapStats()*getLivello();
+    virtual float calcolaMana() const {
+        return getSommaStats()*getLivello();
     }
 
     virtual float getLivello() const {
@@ -51,22 +51,22 @@ public:
         return rarita_;
     }
 
-    virtual void insertInMap(string str, const float db) {
+    virtual void setStat(string str, const float db) {
         stats.emplace(str, db);
     }
 
-    virtual float getDataFromKey(string str) const {
+    virtual float getValoreStat(string str) const {
         return stats.at(str);
     }
 
-    virtual vector<string> getKeyList()  const {
+    virtual vector<string> getListaStats()  const {
         vector<string> keyList;
         for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
             keyList.push_back(it->first);
         return keyList;
     }
 
-    virtual float getSumFromMapStats() const {
+    virtual float getSommaStats() const {
         float sum = 0;
         for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
             sum+=it->second;
@@ -74,8 +74,8 @@ public:
     }
 
     virtual void combina(Oggetto* object) {
-        float manaInv = calculateMana();
-        float manaPar =  object->calculateMana();
+        float manaInv = calcolaMana();
+        float manaPar =  object->calcolaMana();
         map<string, float> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
         map<string, float> percentParMap = object->stats; //copiata la mappa dell'oggetto di invocazione
 
@@ -122,13 +122,13 @@ public:
         }
 
         //ora bisogna normalizzare stats a seconda del livello.
-        normalizeStats();
+        normalizza();
 
     }
 
-    virtual void normalizeStats() {
-        if(getLivello()*150 <= calculateMana()) {
-            float percentualeRiduzione=getLivello()*150/calculateMana();
+    virtual void normalizza() {
+        if(getLivello()*150 <= calcolaMana()) {
+            float percentualeRiduzione=getLivello()*150/calcolaMana();
 
             for(map<string,float>::const_iterator it=stats.begin(); it!=stats.end(); ++it) {
                 stats[it->first]=it->second*percentualeRiduzione;
@@ -143,14 +143,14 @@ public:
     //virtual oggetto* estrazione() =0;
 
     virtual float ricicla() {
-        return getSumFromMapStats()*getLivello()*getRarita();
+        return getSommaStats()*getLivello()*getRarita();
     }
 
 virtual void crea(float mana, int livello = 1, int rarita = 1, string statistica) { //PRE = statistica è vuoto o è un valore valido
         setLivello(livello);
         setRarita(rarita);
 
-        vector<string> parametri = getKeyList() ;
+        vector<string> parametri = getListaStats() ;
         float sumStats=mana/(livello*rarita);
 
         if(std::find(parametri.begin(), parametri.end(), statistica)) {
@@ -170,7 +170,7 @@ virtual void crea(float mana, int livello = 1, int rarita = 1, string statistica
             sumStats=sumStats/parametri.size();
 
             for(vector<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
-                insertInMap(*it, sumStats);
+                setStat(*it, sumStats);
         }
     }
 

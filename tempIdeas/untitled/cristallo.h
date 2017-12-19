@@ -16,7 +16,7 @@ public:
               float attacco =0,
               float durezza =0,
               float magia =0) : Pietra(livello, spirito, rarita, attacco, durezza) {
-        insertInMap("magia", magia);
+        setStat("magia", magia);
     }
 
     //other constructor
@@ -26,7 +26,7 @@ public:
 
     //methods
     virtual double getMagia() {
-        return getDataFromKey("magia");
+        return getValoreStat("magia");
     }
 
     /*pietra*getFather() {

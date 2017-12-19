@@ -14,8 +14,8 @@ public:
            float rarita =0,
            float attacco =0,
            float durezza =0) : Oggetto(livello, spirito, rarita) {
-        insertInMap("attacco", attacco);
-        insertInMap("durezza", durezza);
+        setStat("attacco", attacco);
+        setStat("durezza", durezza);
     }
 
     //other constructor
@@ -37,7 +37,7 @@ public:
     }*/
 
     virtual unsigned short getDurezza() {
-        return getDataFromKey("durezza");
+        return getValoreStat("durezza");
     }
 };
 
