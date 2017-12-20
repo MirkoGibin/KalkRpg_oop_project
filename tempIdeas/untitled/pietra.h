@@ -18,8 +18,8 @@ public:
            float spirito =0,
            float attacco =0,
            float durezza =0) : Oggetto(livello, rarita, spirito) {
-        setStat("attacco", attacco);
-        setStat("durezza", durezza);
+        insertStat("attacco", attacco);
+        insertStat("durezza", durezza);
     }
 
     virtual float getAttacco() const {

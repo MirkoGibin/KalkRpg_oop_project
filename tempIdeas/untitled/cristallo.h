@@ -21,12 +21,16 @@ public:
               const float attacco =0,
               const float durezza =0,
               const float magia =0) : Pietra(livello, rarita, spirito, attacco, durezza) {
-        setStat("magia", magia);
+        insertStat("magia", magia);
     }
 
     //methods
     virtual double getMagia() const {
         return getValoreStat("magia");
+    }
+
+    virtual float ricicla() {
+
     }
 };
 

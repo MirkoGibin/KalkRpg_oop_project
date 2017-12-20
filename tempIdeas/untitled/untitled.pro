@@ -9,9 +9,12 @@ SOURCES += main.cpp \
     oggetto.cpp \
     pietra.cpp \
     cristallo.cpp \
-    operazionimath.cpp
+    mathop.cpp
 
 HEADERS += \
     oggetto.h \
     pietra.h \
-    cristallo.h
+    cristallo.h \
+    mathOp.h
+
+DISTFILES +=

@@ -1,8 +1,10 @@
 oggetto.ricicla()
 
-- distrugge l'oggetto e restituisce quanto mana si riceverebbe.
-- mana restituito: sommaStats*livello*rarita
-- se sto riciclando un figlio di un padre concreto, si restituisce parte di mana e un oggetto padre.
+-	distrugge l'oggetto e restituisce quanto mana si riceverebbe.
+-	mana restituito: sommaStats*livello*rarita
+-	se sto riciclando un figlio di un padre concreto, si restituisce parte di mana e un oggetto padre.
+	Tutti i parametri particolari vengono riciclati in mana. Invece, i parametri in comune col padre vengono ridotti del 20% e quello che viene fuori nel mana, non livello e rarità.
+
 
 
 

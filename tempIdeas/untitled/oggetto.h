@@ -1,12 +1,12 @@
 #ifndef OGGETTO_H
 #define OGGETTO_H
+#include<mathOp.h>
 #include<map>
 #include<list>
 #include<iostream>
 #include<algorithm>
 
 using std::list;
-
 using std::map; using std::string; using std::cout; using std::endl;
 
 class Oggetto {
@@ -30,10 +30,8 @@ public:
         stats.emplace("spirito", spirito);
     }
 
-    /*
     //distruttore virtuale
     virtual ~Oggetto() {}
-    */
 
 
 //---------METODI DI SET
@@ -43,7 +41,7 @@ public:
     virtual void setRarita(int rarita) {
         rarita_=rarita;
     }
-    virtual void setStat(string str, float db) {
+    virtual void insertStat(string str, float db) {
         stats.emplace(str, db);
     }
 
@@ -90,66 +88,61 @@ public:
         return getSommaStats()*getLivello();
     }
 
+
+
 //------------OPERAZIONI
     virtual void combina(Oggetto* object) {
-        float manaInv = calcolaMana();
-        float manaPar =  object->calcolaMana();
         map<string, float> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
         map<string, float> percentParMap = object->stats; //copiata la mappa dell'oggetto di invocazione
 
-        for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it) {
-            percentInvMap[it->first] = it->second * getLivello() / manaInv; // percentuale di partecipazione della statistica sul mana
-        }
-        // POST = updateObj contiene le percentuali di partecipazione delle varie statistiche sul mana totale
 
-        for(map<string, float>::const_iterator it= object->stats.begin(); it!=object->stats.end(); ++it) {
-            percentParMap[it->first] = it->second * object->getLivello() / manaPar; // percentuale di partecipazione della statistica sul mana
-        }
+        float toMultiplyInv=getLivello()/calcolaMana();
+        float toMultiplyPar=object->getLivello()/object->calcolaMana();
 
-        list<string> aMenob, bMenoa, aeb;
+        mathOp::doMultiplyOnMap(percentInvMap, toMultiplyInv);
+        mathOp::doMultiplyOnMap(percentParMap, toMultiplyPar);
 
-        for(map<string, float>::const_iterator it=percentInvMap.begin(); it!=percentInvMap.end(); ++it) {
-            if(!percentParMap.count(it->first))
-                aMenob.push_back(it->first);
-            else
-                aeb.push_back(it->first);
-        }
+        list<string>*InvMenoPar=mathOp::chiaviAmenoB(percentInvMap, percentParMap);
+        list<string>*ParMenoInv=mathOp::chiaviAmenoB(percentParMap, percentInvMap);
+        list<string>*InvePar=mathOp::chiaviAeB(percentInvMap, percentParMap);
 
-        for(map<string, float>::const_iterator it=percentParMap.begin(); it!=percentParMap.end(); ++it) {
-            if(!percentInvMap.count(it->first))
-                bMenoa.push_back(it->first);
-        }
-
-        for(list<string>::const_iterator it = aeb.begin(); it!=aeb.end(); ++it) {
+        for(list<string>::const_iterator it = InvePar->begin(); it!=InvePar->end(); ++it) {
             percentInvMap[*it]=(percentInvMap.at(*it) + percentParMap.at(*it))/2;
         }
 
         float daDistribuire; //somma da distribuire sulle stats di a non presenti in b
-        for(list<string>::const_iterator it=bMenoa.begin(); it!=bMenoa.end(); ++it) {
+        for(list<string>::const_iterator it=ParMenoInv->begin(); it!=ParMenoInv->end(); ++it) {
             daDistribuire+=percentParMap.at(*it);
         }
 
-        daDistribuire=daDistribuire/aMenob.size();
-        for(list<string>::const_iterator it=aMenob.begin(); it!=aMenob.end(); ++it) {
+        daDistribuire=daDistribuire/InvMenoPar->size();
+        for(list<string>::const_iterator it=InvMenoPar->begin(); it!=InvMenoPar->end(); ++it) {
             percentInvMap[*it] =(percentInvMap.at(*it) + daDistribuire)/2;
         }
 
         for(map<string,float>::const_iterator it=percentInvMap.begin(); it!=percentInvMap.end(); ++it) {
-            stats[it->first] = stats.at(it->first)*getLivello() + it->second*manaPar;
-
-            modifyStat(it->first, getValoreStat(it->first)*getLivello() + it->second*manaPar);
+            stats[it->first] = stats.at(it->first)*getLivello() + it->second*object->calcolaMana();
         }
         //ora bisogna normalizzare stats a seconda del livello.
         normalizza();
+        delete InvePar;
+        delete InvMenoPar;
+        delete ParMenoInv;
 
+        //elimino l'oggetto passato come parametro
+        delete object;
     }
 
     virtual void normalizza() {
         if(getLivello()*150 <= calcolaMana()) {
             float percentualeRiduzione=getLivello()*150/calcolaMana();
+            mathOp::doMultiplyOnMap(stats, percentualeRiduzione);
 
+            /*
             for(map<string,float>::const_iterator it=stats.begin(); it!=stats.end(); ++it)
                 stats[it->first]=it->second*percentualeRiduzione;
+            */
+
         }
     }
 
@@ -164,7 +157,7 @@ public:
         this->setLivello(livello);
         this->setRarita(rarita);
 
-        list<string>* parametri = getListaStats() ;
+        list<string>* parametri = getListaStats(); //DA DEALLOCARE
         float sumStats=mana/(livello*rarita);
 
         if(std::find(parametri->begin(), parametri->end(), statistica) != parametri->end()) { //RICHIEDE <ALGORITHM>
@@ -182,6 +175,7 @@ public:
             for(list<string>::const_iterator it=parametri->begin(); it!=parametri->end(); ++it)
                 modifyStat(*it, sumStats);
         }
+        delete parametri;
     }
 
 
