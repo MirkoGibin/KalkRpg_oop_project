@@ -1,0 +1,23 @@
+oggetto base : oggetto sul quale l'estrazione viene effettuata
+oggetto target : oggetto nato dall'estrazione.
+
+Ciò che mi piacerebbe sarebbe base.estrai(), e che questo metodo ritornasse il target.
+Il problema di ciò è che nell'oggetto base avrei bisogno di info sull'oggetto target, e ciò genera dipendenze circolari.
+Ho provato a guardare a varie alternative per mantenere questa visione ma penso sia meglio abbandonarla.
+
+* SOLUZIONE 1
+
+target.estraiDa(base). In questo modo mi evito le dipendenze circolari, ma devo creare un target fittizio che verrà inizializzato con valori di default
+
+* SOLUZIONE 2 
+
+static estraiDa(base). In questo modo posso creare l'oggetto targer e inizializzarlo subito con l'oggetto ritornato dalla funzione statica.
+
+PROBLEMA:
+
+pietra, erba, osso non possono essere estratte da nessuna parte. Quindi non ha senso che il metodo sia implementato per loro. Ma essendo oggetti concreti il metodo non può rimanere virtuale puro, quindi non sarebbe corretto metterlo virtuale già in oggetto, ma solo da classi che hanno un padre concreto. 
+
+Una possibile soluzione potrebbe essere eliminare la distinzione tra estrazione e trasformazione: tutto può essere ottenuto da tutto, gestendo magari la cosa in modo diverso tra (erba, unguento), (osso, amuleto), (pietra, cristallo).
+Ma così perdiamo un'operazione.
+
+
