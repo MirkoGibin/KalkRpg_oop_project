@@ -6,7 +6,7 @@
 using namespace std;
 
 int main() {
-    Pietra* pie=new Pietra(1, 0, 20, 15, 50);
+  /*  Pietra* pie=new Pietra(1, 0, 20, 15, 50);
     Cristallo* cri=new Cristallo(5, 0, 10, 40, 2, 90);
     pie->combina(dynamic_cast<Oggetto*>(cri));
     cout << "PROVE PER COMBINA\n";
@@ -19,6 +19,6 @@ int main() {
     cout << "Rarita: " << ptr->getRarita() << endl;
     cout << "Spirito: " << ptr->getSpirito() <<endl;
     cout << "Attacco: " << ptr->getAttacco() << endl;
-    cout << "Durezza: " << ptr->getDurezza() << endl;
+    cout << "Durezza: " << ptr->getDurezza() << endl;*/
 
 }

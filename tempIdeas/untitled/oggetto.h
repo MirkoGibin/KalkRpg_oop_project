@@ -178,7 +178,7 @@ public:
         delete parametri;
     }
 
-
+    virtual Oggetto& estrai() =0;
 
 };
 
