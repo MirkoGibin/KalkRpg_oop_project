@@ -1,7 +1,7 @@
 #ifndef PIETRA_H
 #define PIETRA_H
 #include"oggetto.h"
-#include "cristallo.h"
+//#include "cristallo.h"
 
 class Pietra : public Oggetto {
 private:
