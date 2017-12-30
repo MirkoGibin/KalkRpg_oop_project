@@ -1,0 +1,27 @@
+base : oggetto iniziale
+target : oggetto che si vuole ottenere.
+
+Per evitare problemi con la dipendenza circolare sarà anche qui 
+
+- target.ottieniDa(base) 
+- static trasforma(base) e quindi oggetto target = trasforma(base)
+
+Qui si potrebbe agire come una simil-combinazione (e il problema sarebbe quello di avere due metodi uguali quindi?)
+- a stats uguali vanno i punti delle altre stats
+- per stats diverse sommo e distribuisco
+
+Potremmo eventualmente richiedere come parametro aggiuntivo del mana:
+
+trasforma(base, mana) => in questo caso del mana viene aggiunto e si hanno quindi più punti da distribuire.
+                         Si potrebbe di conseguenza inserire un controllo sul mana: se voglio ottenere un oggetto
+                         di alto livello/rarità da un oggetto di livello basso avrò bisogno di più mana.
+                         Se non fosse possibile ottenere l'oggetto target per troppo divario o mancanza di mana
+                         sufficiente, eccezione con errore.
+
+si potrebbe dare la possibilità di selezionare un parametro che riceverà un tot di stats, ad esempio la metà, come per la creazione (ma a sto punto in mezzo non c'è anche questa? Inizio a temere. Ma forse all'interno di questo metodo si possono usare altri metodi interni combinati tra loro, non sarebbe una brutta idea, penso).
+
+trasforma(base, mana, parametro) => in questo caso stats uguali alimentano stats uguali, e il rimanente va per il tot%
+                                    al parametro indicato. Il parametro non esiste per l'oggetto target che vuoi? 
+                                    eccezione. Ma per vedere se il parametro esiste o meno è necessario che ci sia
+                                    l'oggetto di invocazione -> metodo NON statico.
+
