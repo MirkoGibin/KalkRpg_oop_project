@@ -1,0 +1,5 @@
+oggetto.potenzia(mana, parametro)
+
+Si prende l'oggetto che si vuole potenziare, si indica quando mana dedicargli, e EVENTUALMENTE il parametro da far crescere.
+
+Lo vedo bene implementato già in Oggetto, e ci vedo bene anche qualche overriding magari nelle classi foglia, che essendo più potenti possono richiedere qualche sforzo o controllo in più. Devo rivedermi come avevamo considerato la correlazione tra mana, livello, rarità e stats.
