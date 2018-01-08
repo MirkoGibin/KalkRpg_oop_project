@@ -25,3 +25,8 @@ trasforma(base, mana, parametro) => in questo caso stats uguali alimentano stats
                                     eccezione. Ma per vedere se il parametro esiste o meno è necessario che ci sia
                                     l'oggetto di invocazione -> metodo NON statico.
 
+SOLUZIONE FINALE
+Erba ottieniDa(osso)
+Erba ottieniDa(pietra)
+
+osso e pietra hanno parametri di origine diversi che potrebbero avere la necessità di essere trattati in modo diverso. Si è deciso di evitare l'uso di switch perchè in caso di estensione della gerarchia ciò forza la creazione di nuovi metodi invece che la modifica al codice di un metodo, già testato e funzionante. Con uno switch si sarebbe dovuto aggiungere un parametro stringa e cambiare il comportamento del metodo in base alla stringa ricevuta. Quindi in caso di aggiunta di una nuova classe bisognerebbe prevedere una nuova stringa e un nuovo case dello switch e personalmente come cosa mi fa schifo.
