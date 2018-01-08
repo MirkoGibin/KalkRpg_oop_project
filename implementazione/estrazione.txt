@@ -20,4 +20,10 @@ pietra, erba, osso non possono essere estratte da nessuna parte. Quindi non ha s
 Una possibile soluzione potrebbe essere eliminare la distinzione tra estrazione e trasformazione: tutto può essere ottenuto da tutto, gestendo magari la cosa in modo diverso tra (erba, unguento), (osso, amuleto), (pietra, cristallo).
 Ma così perdiamo un'operazione.
 
+SOLUZIONE FINALE
+
+virtual void estraiDa(Osso)
+
+il metodo è virtuale perchè abbiamo deciso che da un padre posso ottenere un figlio di qualsiasi profondità. Ovviamente il metodo, se non verrà overraidato, funzionerà comunque ma non modificherà i parametri caratterizzanti del target. 
+
 
