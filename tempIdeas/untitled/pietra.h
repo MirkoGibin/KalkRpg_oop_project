@@ -1,6 +1,7 @@
 #ifndef PIETRA_H
 #define PIETRA_H
 #include"oggetto.h"
+//#include "cristallo.h"
 
 class Pietra : public Oggetto {
 private:
@@ -27,6 +28,10 @@ public:
     }
     virtual float getDurezza() const {
         return getValoreStat("durezza");
+    }
+
+    virtual Oggetto& estrai() {
+        return new Cristallo();
     }
 };
 
