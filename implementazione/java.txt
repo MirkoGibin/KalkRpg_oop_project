@@ -1,0 +1,3 @@
+Tutti i metodi comuni a tutte le classi vanno in un interfaccia. In questo caso oggetto potrebbe essere un interfaccia.
+
+In un altra interfaccia metterei tutti i metodi comuni ai figli (solo ai figli, non ai genitori), così da evitare problemi di implementazioni errate.
