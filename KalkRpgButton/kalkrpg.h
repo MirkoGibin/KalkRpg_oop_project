@@ -24,7 +24,7 @@ private slots:
     void estraiClicked();
     void potenziaClicked();
     void trasformaClicked();
-    void distribuzioneClicked();
+    void distribuisciClicked();
     void aumentaProbabilitaClicked();
     void curaOggettoClicked();
 
