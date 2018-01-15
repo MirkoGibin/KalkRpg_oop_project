@@ -45,7 +45,7 @@ public:
     }
 
     void ottieniDa(Pietra* pietra) {
-        if(typeid(pietra) == typeid(*pietra)) { //tipo dinamico deve essere uguale a tipo statico
+        if(typeid(pietra) == typeid(pietra)) { //tipo dinamico deve essere uguale a tipo statico
             float pSpir=pietra->getSpirito();
             float pDur=pietra->getDurezza();
 
