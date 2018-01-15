@@ -1,8 +1,8 @@
-#TEMPLATE = app
-CONFIG += console c++11
-CONFIG += c11
-#CONFIG -= app_bundle
-#CONFIG -= qt
+#-------------------------------------------------
+#
+# Project created by QtCreator 2018-01-09T15:41:03
+#
+#-------------------------------------------------
 
 QT       += core gui
 
@@ -23,25 +23,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-SOURCES += main.cpp \
+SOURCES += \
     kalkrpg.cpp \
     button.cpp \
-    oggetto.cpp \
-    pietra.cpp \
-    cristallo.cpp \
-    mathop.cpp \
-    erba.cpp \
-    unguento.cpp
+    main.cpp
 
 HEADERS += \
-    oggetto.h \
-    pietra.h \
-    cristallo.h \
-    mathOp.h \
-    erba.h \
     kalkrpg.h \
-    button.h \
-    unguento.h
+    button.h
+
+FORMS += \
+        mainwindow.ui
 
 RESOURCES += \
     icons.qrc
