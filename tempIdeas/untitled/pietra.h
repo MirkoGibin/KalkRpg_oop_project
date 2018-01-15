@@ -1,13 +1,13 @@
 #ifndef PIETRA_H
 #define PIETRA_H
 #include"oggetto.h"
-//#include "cristallo.h"
 
 class Pietra : public Oggetto {
 private:
 
     /* parameters inside stats in Oggetto are:
      * spirito
+     * attacco
      * durezza
      */
 
@@ -17,16 +17,21 @@ public:
            int rarita =0,
            float spirito =0,
            float durezza =0) : Oggetto(livello, rarita, spirito) {
-        insertStat("attacco", attacco);
         insertStat("durezza", durezza);
     }
 
-    virtual float getDurezza() const {
+    float getAttacco() const {
+        return getValoreStat("attacco");
+    }
+    float getDurezza() const {
         return getValoreStat("durezza");
     }
 
-    virtual Oggetto& estrai() {
-        return new Cristallo();
+// ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2
+    float ricicla() {
+        float mana=getLivello()*getRarita()*(getSommaStats()-getSpirito()+getDurezza());
+        delete *this;
+        return mana;
     }
 };
 
