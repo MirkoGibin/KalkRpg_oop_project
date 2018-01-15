@@ -1,9 +1,12 @@
 #ifndef KALKRPG_H
 #define KALKRPG_H
+#include <QGridLayout>
 #include "button.h"
 
 class KalkRpg : public QWidget {
     Q_OBJECT
+private:
+    QGridLayout* mainLayout;
 
 public:
     KalkRpg(QWidget *parent = 0);
