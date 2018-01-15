@@ -3,6 +3,11 @@
 #include "pietra.h"
 #include<typeinfo>
 
+class Erba;
+class Unguento;
+class Osso;
+class Amuleto;
+
 class Cristallo : public Pietra {
 private:
 
@@ -18,9 +23,8 @@ public:
     Cristallo(const int livello =0,
               const int rarita =0,
               const float spirito =0,
-              const float attacco =0,
               const float durezza =0,
-              const float magia =0) : Pietra(livello, rarita, spirito, attacco, durezza) {
+              const float magia =0) : Pietra(livello, rarita, spirito, durezza) {
         Oggetto::insertStat("magia", magia);
     }
 

@@ -2,8 +2,11 @@
 #define AMULETO_H
 
 #include"osso.h"
-#include"cristallo.h"
-#include"unguento.h"
+
+class Erba;
+class Unguento;
+class Pietra;
+class Cristallo;
 
 class Amuleto : public Osso {
 private:

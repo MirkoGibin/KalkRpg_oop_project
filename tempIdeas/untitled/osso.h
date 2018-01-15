@@ -4,8 +4,11 @@
 #include<typeinfo>
 
 #include"oggetto.h"
-#include"pietra.h"
-#include"erba.h"
+
+class Erba;
+class Unguento;
+class Pietra;
+class Cristallo;
 
 class Osso : public Oggetto {
 private:
@@ -37,7 +40,7 @@ public:
 //ricicla fa la moltiplicazione della sommaStats in cui attacco e difesa sono raddoppiati, moltiplicato per livello e rarita
     float ricicla() {
         float mana=(getSommaStats() + getAttacco() + getDifesa()) * getLivello() * getRarita();
-        delete *this;
+        delete this;
         return mana;
     }
 
@@ -60,11 +63,11 @@ public:
     }
 
     void ottieniDa(Erba* erba) {
-        if(typeid(erba) == typeid(*erba)) {
+    /*    if(typeid(erba) == typeid(*erba)) {
 
         } else {
             //lancia eccezione contro parametri illegali
-        }
+        }*/
 
     }
 

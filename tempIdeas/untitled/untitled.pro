@@ -1,5 +1,5 @@
 #TEMPLATE = app
-CONFIG += console c++11
+CONFIG += c++11
 CONFIG += c11
 #CONFIG -= app_bundle
 #CONFIG -= qt
@@ -31,7 +31,9 @@ SOURCES += main.cpp \
     cristallo.cpp \
     mathop.cpp \
     erba.cpp \
-    unguento.cpp
+    unguento.cpp \
+    osso.cpp \
+    amuleto.cpp
 
 HEADERS += \
     oggetto.h \
@@ -41,7 +43,9 @@ HEADERS += \
     erba.h \
     kalkrpg.h \
     button.h \
-    unguento.h
+    unguento.h \
+    osso.h \
+    amuleto.h
 
 RESOURCES += \
     icons.qrc
