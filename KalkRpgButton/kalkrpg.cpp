@@ -29,7 +29,7 @@ KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
     //creazione del layout
     QGridLayout *objectLayout = new QGridLayout;
     QGridLayout *operationLayout = new QGridLayout;
-    QGridLayout *mainLayout = new QGridLayout;
+    mainLayout = new QGridLayout;
 
     objectLayout->setSizeConstraint(QLayout::SetFixedSize);
     operationLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -51,8 +51,8 @@ KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
     operationLayout->addWidget(aumentaProbabilitaButton, 2, 1);
     operationLayout->addWidget(curaOggettoButton, 2, 2);
 
-    mainLayout->addLayout(operationLayout, 0, 1);
     mainLayout->addLayout(objectLayout, 0, 0);
+    mainLayout->addLayout(operationLayout, 0, 2);
 
 
     setLayout(mainLayout);
@@ -66,7 +66,7 @@ Button* KalkRpg::createButton(const QIcon &icona, const QString &testo, const ch
 }
 
 void KalkRpg::erbaClicked() {
-    return;
+
 }
 void KalkRpg::unguentoClicked(){
     return;
