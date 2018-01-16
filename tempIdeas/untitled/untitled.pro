@@ -33,7 +33,10 @@ SOURCES += main.cpp \
     erba.cpp \
     unguento.cpp \
     osso.cpp \
-    amuleto.cpp
+    amuleto.cpp \
+    controller.cpp \
+    model.cpp \
+    displayandslider.cpp
 
 HEADERS += \
     oggetto.h \
@@ -45,7 +48,10 @@ HEADERS += \
     button.h \
     unguento.h \
     osso.h \
-    amuleto.h
+    amuleto.h \
+    controller.h \
+    model.h \
+    displayandslider.h
 
 RESOURCES += \
     icons.qrc

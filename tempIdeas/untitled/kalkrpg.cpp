@@ -3,8 +3,9 @@
 #include<map>
 using std::map;
 
-KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
+KalkRpg::KalkRpg(QWidget *parent, Controller* controller_) : QWidget(parent), controller(controller_), waitingForOperand(true) {
     //creazione pulsanti oggetti
+
     Button* erbaButton = createButton(QIcon(":/icons/erba.png"), tr("Erba"), SLOT(erbaClicked()));
     Button* unguentoButton = createButton(QIcon(":/icons/unguento.png"), tr("Unguento"), SLOT(unguentoClicked()));
     Button* pietraButton = createButton(QIcon(":/icons/pietra.png"), tr("Pietra"), SLOT(pietraClicked()));
@@ -29,7 +30,7 @@ KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
     //creazione del layout
     QGridLayout *objectLayout = new QGridLayout;
     QGridLayout *operationLayout = new QGridLayout;
-    QGridLayout *mainLayout = new QGridLayout;
+    mainLayout = new QGridLayout;
 
     objectLayout->setSizeConstraint(QLayout::SetFixedSize);
     operationLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -66,6 +67,14 @@ Button* KalkRpg::createButton(const QIcon &icona, const QString &testo, const ch
 }
 
 void KalkRpg::erbaClicked() {
+    if(waitingForOperand) {
+        //cosa deve fare:
+        //-costruire un erba
+        //-retrieve stat list
+        //-set stats
+        //-confirm
+        mainLayout->addLayout(controller->buildObjSliderLCD(new QGridLayout), 1, 0);
+    }
     return;
 }
 void KalkRpg::unguentoClicked(){

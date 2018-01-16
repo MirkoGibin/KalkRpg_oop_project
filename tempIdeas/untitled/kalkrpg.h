@@ -1,12 +1,21 @@
 #ifndef KALKRPG_H
 #define KALKRPG_H
+#include<QGridLayout>
 #include "button.h"
+#include"controller.h"
 
 class KalkRpg : public QWidget {
     Q_OBJECT
+private:
+    Button* createButton(const QIcon &icona, const QString &testo, const char* member);
+    void abortOperation();
+    bool esegui();
+    QGridLayout *mainLayout;
+    Controller* controller;
+    bool waitingForOperand;
 
 public:
-    KalkRpg(QWidget *parent = 0);
+    KalkRpg(QWidget *parent = 0, Controller* controller =0);
 
 private slots:
     //eventi relativi agli oggetti
@@ -33,12 +42,6 @@ private slots:
     void indietroClicked();
     void esciClicked();
     void clearDisplayClicked();*/
-
-private:
-    Button* createButton(const QIcon &icona, const QString &testo, const char* member);
-    void abortOperation();
-    bool esegui();
-
 
 };
 
