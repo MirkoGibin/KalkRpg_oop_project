@@ -1,26 +1,28 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'kalkrpg.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../KalkRpgButton/kalkrpg.h"
+#include "../../untitled/kalkrpg.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'kalkrpg.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.1. It"
+#error "This file was generated using the moc from 5.9.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_KalkRpg_t {
     QByteArrayData data[17];
-    char stringdata0[249];
+    char stringdata0[244];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -45,7 +47,7 @@ QT_MOC_LITERAL(12, 151, 15), // "potenziaClicked"
 QT_MOC_LITERAL(13, 167, 16), // "trasformaClicked"
 QT_MOC_LITERAL(14, 184, 19), // "distribuisciClicked"
 QT_MOC_LITERAL(15, 204, 25), // "aumentaProbabilitaClicked"
-QT_MOC_LITERAL(16, 230, 18) // "curaOggettoClicked"
+QT_MOC_LITERAL(16, 230, 13) // "riparaClicked"
 
     },
     "KalkRpg\0erbaClicked\0\0unguentoClicked\0"
@@ -54,7 +56,7 @@ QT_MOC_LITERAL(16, 230, 18) // "curaOggettoClicked"
     "riciclaClicked\0combinaClicked\0"
     "estraiClicked\0potenziaClicked\0"
     "trasformaClicked\0distribuisciClicked\0"
-    "aumentaProbabilitaClicked\0curaOggettoClicked"
+    "aumentaProbabilitaClicked\0riparaClicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -128,7 +130,7 @@ void KalkRpg::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 11: _t->trasformaClicked(); break;
         case 12: _t->distribuisciClicked(); break;
         case 13: _t->aumentaProbabilitaClicked(); break;
-        case 14: _t->curaOggettoClicked(); break;
+        case 14: _t->riparaClicked(); break;
         default: ;
         }
     }
@@ -137,7 +139,7 @@ void KalkRpg::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
 
 const QMetaObject KalkRpg::staticMetaObject = {
     { &QWidget::staticMetaObject, qt_meta_stringdata_KalkRpg.data,
-      qt_meta_data_KalkRpg,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+      qt_meta_data_KalkRpg,  qt_static_metacall, nullptr, nullptr}
 };
 
 
@@ -148,7 +150,7 @@ const QMetaObject *KalkRpg::metaObject() const
 
 void *KalkRpg::qt_metacast(const char *_clname)
 {
-    if (!_clname) return Q_NULLPTR;
+    if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_KalkRpg.stringdata0))
         return static_cast<void*>(const_cast< KalkRpg*>(this));
     return QWidget::qt_metacast(_clname);
@@ -170,4 +172,5 @@ int KalkRpg::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     }
     return _id;
 }
+QT_WARNING_POP
 QT_END_MOC_NAMESPACE
