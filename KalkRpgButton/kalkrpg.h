@@ -31,6 +31,9 @@ private slots:
     void aumentaProbabilitaClicked();
     void curaOggettoClicked();
 
+    //eventi di display
+    void aggiungiMerda();
+
     //eventi relativi alla gestione
     /*void confermaClicked();
     void indietroClicked();

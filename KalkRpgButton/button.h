@@ -11,7 +11,6 @@ class Button : public QToolButton {
 
 public:
     explicit Button(const QIcon &icona, const QString &testo, QWidget *parent = 0);
-
     QSize sizeHint() const override;
 };
 

@@ -1,6 +1,7 @@
 #include<QGridLayout>
 #include "kalkrpg.h"
 #include<map>
+#include<QTextEdit>
 using std::map;
 
 KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
@@ -29,7 +30,11 @@ KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
     //creazione del layout
     QGridLayout *objectLayout = new QGridLayout;
     QGridLayout *operationLayout = new QGridLayout;
-    mainLayout = new QGridLayout;
+    QGridLayout *mainLayout = new QGridLayout;
+    QTextEdit* display = new QTextEdit();
+
+    display->setReadOnly(true);
+
 
     objectLayout->setSizeConstraint(QLayout::SetFixedSize);
     operationLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -51,8 +56,11 @@ KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
     operationLayout->addWidget(aumentaProbabilitaButton, 2, 1);
     operationLayout->addWidget(curaOggettoButton, 2, 2);
 
+    connect(erbaButton,SIGNAL(clicked()),this,SLOT(aggiungiMerda()));
+
     mainLayout->addLayout(objectLayout, 0, 0);
     mainLayout->addLayout(operationLayout, 0, 2);
+    mainLayout->addWidget(display, 0, 1);
 
 
     setLayout(mainLayout);
@@ -65,6 +73,10 @@ Button* KalkRpg::createButton(const QIcon &icona, const QString &testo, const ch
     return button;
 }
 
+void KalkRpg::aggiungiMerda() {
+    QTextEdit* prova = new QTextEdit();
+    mainLayout->addWidget(prova);
+}
 void KalkRpg::erbaClicked() {
 
 }
