@@ -303,6 +303,20 @@ release/moc_kalkrpg.cpp: C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QGridLayout \
 		../untitled/osso.h \
 		../untitled/erba.h \
 		../untitled/unguento.h \
+		../untitled/displayandslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLCDNumber \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlcdnumber.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qframe.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QSlider \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qabstractslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QVBoxLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLineEdit \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlineedit.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextcursor.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextformat.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextoption.h \
 		../untitled/kalkrpg.h \
 		release/moc_predefs.h \
 		C:/Qt/5.9.1/mingw53_32/bin/moc.exe
@@ -529,6 +543,25 @@ release/moc_controller.cpp: C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QWidget \
 		../untitled/osso.h \
 		../untitled/erba.h \
 		../untitled/unguento.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QGridLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qgridlayout.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlayout.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlayoutitem.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qboxlayout.h \
+		../untitled/displayandslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLCDNumber \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlcdnumber.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qframe.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QSlider \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qabstractslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QVBoxLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLineEdit \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlineedit.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextcursor.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextformat.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextoption.h \
 		../untitled/controller.h \
 		release/moc_predefs.h \
 		C:/Qt/5.9.1/mingw53_32/bin/moc.exe
@@ -699,7 +732,7 @@ release/moc_displayandslider.cpp: C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QWidg
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QSlider \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qslider.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qabstractslider.h \
-		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QHBoxLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QVBoxLayout \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qboxlayout.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlayout.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlayoutitem.h \
@@ -710,6 +743,7 @@ release/moc_displayandslider.cpp: C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QWidg
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextformat.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextoption.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QGridLayout \
 		../untitled/displayandslider.h \
 		release/moc_predefs.h \
 		C:/Qt/5.9.1/mingw53_32/bin/moc.exe
@@ -860,7 +894,21 @@ release/main.o: ../untitled/main.cpp C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QA
 		../untitled/cristallo.h \
 		../untitled/osso.h \
 		../untitled/erba.h \
-		../untitled/unguento.h
+		../untitled/unguento.h \
+		../untitled/displayandslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLCDNumber \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlcdnumber.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qframe.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QSlider \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qabstractslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QVBoxLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLineEdit \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlineedit.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextcursor.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextformat.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextoption.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\untitled\main.cpp
 
 release/kalkrpg.o: ../untitled/kalkrpg.cpp C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QGridLayout \
@@ -993,7 +1041,7 @@ release/kalkrpg.o: ../untitled/kalkrpg.cpp C:/Qt/5.9.1/mingw53_32/include/QtWidg
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QSlider \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qslider.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qabstractslider.h \
-		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QHBoxLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QVBoxLayout \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLineEdit \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlineedit.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextcursor.h \
@@ -1261,7 +1309,26 @@ release/controller.o: ../untitled/controller.cpp ../untitled/controller.h \
 		../untitled/cristallo.h \
 		../untitled/osso.h \
 		../untitled/erba.h \
-		../untitled/unguento.h
+		../untitled/unguento.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QGridLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qgridlayout.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlayout.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlayoutitem.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qboxlayout.h \
+		../untitled/displayandslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLCDNumber \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlcdnumber.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qframe.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QSlider \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qabstractslider.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QVBoxLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QLineEdit \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlineedit.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextcursor.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextformat.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextoption.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\controller.o ..\untitled\controller.cpp
 
 release/model.o: ../untitled/model.cpp ../untitled/model.h \
@@ -1428,7 +1495,7 @@ release/displayandslider.o: ../untitled/displayandslider.cpp ../untitled/display
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QSlider \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qslider.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qabstractslider.h \
-		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QHBoxLayout \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QVBoxLayout \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qboxlayout.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlayout.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qlayoutitem.h \
@@ -1438,7 +1505,8 @@ release/displayandslider.o: ../untitled/displayandslider.cpp ../untitled/display
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextcursor.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextformat.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h \
-		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextoption.h
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/qtextoption.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QGridLayout
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\displayandslider.o ..\untitled\displayandslider.cpp
 
 release/qrc_icons.o: release/qrc_icons.cpp 

@@ -15,7 +15,7 @@ private:
 
 public:
     DisplayAndSlider(QWidget*parent =0,const QString& descrizione_ =0) :
-        QWidget(parent), descrizione(descrizione_), slider(new QSlider(Qt::Horizontal)) {
+        QWidget(parent), slider(new QSlider(Qt::Horizontal)), descrizione(descrizione_) {
         QLCDNumber *lcd=new QLCDNumber(3);
         lcd->setSegmentStyle(QLCDNumber::Filled);
         slider->setRange(0,99); slider->setValue(0);
