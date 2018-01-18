@@ -1,13 +1,13 @@
 #ifndef KALKRPG_H
 #define KALKRPG_H
 #include <QGridLayout>
+#include <QMap>
 #include "button.h"
 
 class KalkRpg : public QWidget {
     Q_OBJECT
 private:
     QGridLayout* mainLayout;
-
 
 public:
     KalkRpg(QWidget *parent = 0);
@@ -42,7 +42,7 @@ private slots:
     void clearDisplayClicked();*/
 
 private:
-    Button* createButton(const QIcon &icona, const QString &testo, const char* member);
+    Button* createButton(const char *path, const QString &testo, const char* member);
     void abortOperation();
     bool esegui();
 

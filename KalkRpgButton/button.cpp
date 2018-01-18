@@ -1,9 +1,10 @@
 #include "button.h"
 
-Button::Button(const QIcon &icona, const QString &testo, QWidget *parent) : QToolButton(parent) {
+Button::Button(const char *path, const QString &testo, QWidget *parent) : QToolButton(parent) {
+    path_ = path;
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    setIcon(icona);
+    setIcon(QIcon(path));
     setText(testo);
     setObjectName(testo);
 }
@@ -13,6 +14,10 @@ QSize Button::sizeHint() const {
     size.rheight() += 20;
     size.rwidth() = qMax(size.width(), size.height());
     return size;
+}
+
+const char* Button::getPath() const {
+    return path_;
 }
 
 

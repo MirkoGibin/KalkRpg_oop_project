@@ -7,11 +7,14 @@
 #include <QObject>
 
 class Button : public QToolButton {
+private:
+    const char* path_;
     Q_OBJECT
 
 public:
-    explicit Button(const QIcon &icona, const QString &testo, QWidget *parent = 0);
+    explicit Button(const char *path, const QString &testo, QWidget *parent = 0);
     QSize sizeHint() const override;
+    const char* getPath() const;
 };
 
 #endif // BUTTON_H
