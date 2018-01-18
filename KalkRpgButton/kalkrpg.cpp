@@ -3,6 +3,7 @@
 #include<QTextEdit>
 #include <QTextDocumentFragment>
 #include<QTextCursor>
+#include<QTextTable>
 
 
 
@@ -80,8 +81,14 @@ void KalkRpg::aggiungiMerda() {
     Button* button = findChild<Button*>(nome);
     QTextEdit* display = findChild<QTextEdit*>();
     QTextCursor cursor = display->textCursor();
-    cursor.insertImage(QImage(button->getPath()));
-    cursor.insertText("\n"+nome+"\n");
+   // cursor.insertImage(QImage(button->getPath()));
+   // cursor.insertText("\t stat: 120 \t stat: 430 \t stat: 200");
+    QTextTable* table = cursor.insertTable(1,3);
+    table->cellAt(0, 0).firstCursorPosition().insertImage(QImage(button->getPath()));
+    for(int j=1; j<3; j++) {
+        table->cellAt(0, j).firstCursorPosition().insertText("120");
+    }
+
 }
 
 void KalkRpg::erbaClicked() {
@@ -130,6 +137,10 @@ void KalkRpg::aumentaProbabilitaClicked(){
 }
 void KalkRpg::curaOggettoClicked(){
     return;
+}
+
+KalkRpg::~KalkRpg() {
+   // delete mainLayout;
 }
 
 

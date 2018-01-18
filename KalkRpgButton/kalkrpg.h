@@ -8,9 +8,13 @@ class KalkRpg : public QWidget {
     Q_OBJECT
 private:
     QGridLayout* mainLayout;
+    Button* createButton(const char *path, const QString &testo, const char* member);
+    void abortOperation();
+    bool esegui();
 
 public:
     KalkRpg(QWidget *parent = 0);
+    ~KalkRpg();
 
 private slots:
     //eventi relativi agli oggetti
@@ -40,13 +44,6 @@ private slots:
     void indietroClicked();
     void esciClicked();
     void clearDisplayClicked();*/
-
-private:
-    Button* createButton(const char *path, const QString &testo, const char* member);
-    void abortOperation();
-    bool esegui();
-
-
 };
 
 #endif // KALKRPG_H

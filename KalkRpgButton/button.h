@@ -15,6 +15,7 @@ public:
     explicit Button(const char *path, const QString &testo, QWidget *parent = 0);
     QSize sizeHint() const override;
     const char* getPath() const;
+    ~Button();
 };
 
 #endif // BUTTON_H

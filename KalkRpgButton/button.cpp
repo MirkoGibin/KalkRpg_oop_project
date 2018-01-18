@@ -20,4 +20,8 @@ const char* Button::getPath() const {
     return path_;
 }
 
+Button::~Button() {
+    //delete[] path_;
+}
+
 
