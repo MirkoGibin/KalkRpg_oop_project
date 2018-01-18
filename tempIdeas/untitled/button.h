@@ -8,9 +8,14 @@
 
 class Button : public QToolButton {
     Q_OBJECT
+
+private:
+    const QString testo;
+    const QIcon icona;
 public:
-    explicit Button(const QIcon &icona, const QString &testo_ =0, QWidget *parent = 0) : QToolButton(parent), testo(testo_) {
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    explicit Button(const QIcon &icona_, const QString &testo_ =0, QWidget *parent = 0) : QToolButton(parent), testo(testo_), icona(icona_) {
+        setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
         setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         setIcon(icona);
         setText(testo);
@@ -22,8 +27,18 @@ public:
         size.rwidth() = qMax(size.width(), size.height());
         return size;
     }
-private:
-    const QString testo;
+    QString getTesto() const {return testo;}
+    QIcon getIcona() const {return icona;}
+public slots:
+    void setEnabled() {
+        this->QToolButton::setEnabled(true);
+    }
+    void setDisabled() {
+        this->QToolButton::setDisabled(true);
+    }
+signals:
+
+
 };
 
 #endif // BUTTON_H

@@ -4,11 +4,8 @@
 #include<string>
 #include<vector>
 #include"oggetto.h"
-#include"pietra.h"
-#include"cristallo.h"
-#include"osso.h"
 #include"erba.h"
-#include"unguento.h"
+
 
 using std::vector; using std::string;
 class Model : public QObject {
@@ -21,16 +18,21 @@ public slots:
     void createErba() {
         memoria.push_back(new Erba());
     }
-    list<string>* retrieveListaStats() {
+    list<string>* getListaStatFromLastObj() {
         return (memoria.back())->getListaStats();
     }
-
-
-
-signals:
-    void statNeeded(int, string);
-
-
+    unsigned int getNumObjInMemory() const {
+        return memoria.size();
+    }
+    bool setStatByName(QString name, unsigned int value) const {
+        if(name=="livello")
+            memoria.back()->setLivello(value);
+        else if(name=="rarita")
+                memoria.back()->setRarita(value);
+        else
+        memoria.back()->modifyStat(name.toStdString(), value);
+        return true;
+    }
 
 };
 
