@@ -8,6 +8,7 @@ class KalkRpg : public QWidget {
 private:
     QGridLayout* mainLayout;
 
+
 public:
     KalkRpg(QWidget *parent = 0);
 

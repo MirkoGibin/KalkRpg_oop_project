@@ -2,9 +2,14 @@
 #include "kalkrpg.h"
 #include<map>
 #include<QTextEdit>
+#include <QTextDocumentFragment>
+#include<QTextCursor>
 using std::map;
 
 KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
+
+    setWindowTitle("KalkRPG");
+
     //creazione pulsanti oggetti
     Button* erbaButton = createButton(QIcon(":/icons/erba.png"), tr("Erba"), SLOT(erbaClicked()));
     Button* unguentoButton = createButton(QIcon(":/icons/unguento.png"), tr("Unguento"), SLOT(unguentoClicked()));
@@ -24,15 +29,14 @@ KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
     Button* aumentaProbabilitaButton = createButton(QIcon(":/icons/aumentaProbabilita.png"), tr("Aumenta Probabilita"), SLOT(aumentaProbabilitaClicked()));;
     Button* curaOggettoButton = createButton(QIcon(":/icons/curaOggetto.png"), tr("Cura Oggetto"), SLOT(curaOggettoClicked()));;
 
-    //creazione display
-    //display->setMaxLength(15);
-
     //creazione del layout
+    mainLayout = new QGridLayout(); //è campo privato
+
     QGridLayout *objectLayout = new QGridLayout;
     QGridLayout *operationLayout = new QGridLayout;
-    QGridLayout *mainLayout = new QGridLayout;
-    QTextEdit* display = new QTextEdit();
 
+    //display calcolatrice
+    QTextEdit* display = new QTextEdit();
     display->setReadOnly(true);
 
 
@@ -56,29 +60,39 @@ KalkRpg::KalkRpg(QWidget *parent) : QWidget(parent) {
     operationLayout->addWidget(aumentaProbabilitaButton, 2, 1);
     operationLayout->addWidget(curaOggettoButton, 2, 2);
 
-    connect(erbaButton,SIGNAL(clicked()),this,SLOT(aggiungiMerda()));
-
     mainLayout->addLayout(objectLayout, 0, 0);
     mainLayout->addLayout(operationLayout, 0, 2);
     mainLayout->addWidget(display, 0, 1);
 
+    setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
-    setLayout(mainLayout);
-    setWindowTitle("KalkRPG");
+    connect(erbaButton,SIGNAL(clicked()),this,SLOT(aggiungiMerda()));
+
+
 }
 
 Button* KalkRpg::createButton(const QIcon &icona, const QString &testo, const char *member) {
     Button *button = new Button(icona, testo);
     connect(button, SIGNAL(clicked()), this, member);
+    connect(button,SIGNAL(clicked()),this,SLOT(aggiungiMerda()));
     return button;
 }
 
 void KalkRpg::aggiungiMerda() {
-    QTextEdit* prova = new QTextEdit();
-    mainLayout->addWidget(prova);
-}
-void KalkRpg::erbaClicked() {
+    QString x = sender()->objectName();
+    Button* button = findChild<Button*>(x);
+    QTextEdit* tempDisp = findChild<QTextEdit*>();
+    QIcon icon = button->icon();
+    //QTextCursor cursor = tempDisp->textCursor();
+    //cursor.insertImage();
 
+   // tempDisp->insertHtml("<img width=\"50\" src=\":/icons/erba.png\"/>");
+  //  tempDisp->insertPlainText(icon.name());
+
+}
+
+void KalkRpg::erbaClicked() {
+    return;
 }
 void KalkRpg::unguentoClicked(){
     return;

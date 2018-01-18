@@ -5,6 +5,7 @@ Button::Button(const QIcon &icona, const QString &testo, QWidget *parent) : QToo
     setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     setIcon(icona);
     setText(testo);
+    setObjectName(testo);
 }
 
 QSize Button::sizeHint() const {
