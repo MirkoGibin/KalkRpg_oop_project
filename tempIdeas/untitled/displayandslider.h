@@ -24,8 +24,10 @@ public:
         QVBoxLayout* displayandslider=new QVBoxLayout;
         slider->setValue(0);
 
-        if(descrizione=="livello" || descrizione=="rarita")
+        if(descrizione=="livello" || descrizione=="rarita") {
+            slider->setValue(1);
             slider->setRange(1,10);
+        }
         else slider->setRange(0,199);
 
         connect(slider, SIGNAL(valueChanged(int)), lcd, SLOT(display(int)));

@@ -183,7 +183,7 @@ private slots:
         QLCDNumber*risultato=new QLCDNumber(3);
         risultato->display(mana);
         expansionAndSetGrid->addWidget(risultato);
-        return;
+        //return;
     }
     void combinaClicked() {
         return;
