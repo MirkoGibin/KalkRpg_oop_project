@@ -21,10 +21,7 @@ public:
         DisplayAndSlider(QWidget*parent =0,const QString& descrizione_ =0) :
         QWidget(parent), slider(new QSlider(Qt::Horizontal)), descrizione(descrizione_) {
 
-        //QLCDNumber *lcd=new QLCDNumber(3);
         valore = new QLineEdit();
-
-        //lcd->setSegmentStyle(QLCDNumber::Filled);
 
         QLabel* descr = new QLabel(descrizione);
         descr->setAlignment(Qt::AlignCenter);

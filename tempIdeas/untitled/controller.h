@@ -27,9 +27,9 @@ public:
 public slots:
     void showSelectedObject(QGridLayout* griglia, Button* pressedButton) {
 
-        Button*button=new Button(pressedButton->getPath(), pressedButton->getTesto(), griglia->parentWidget());
+       /* Button*button=new Button(pressedButton->getPath(), pressedButton->getTesto(), griglia->parentWidget());
 
-        griglia->addWidget(button,0,0);
+        griglia->addWidget(button,0,0);*/
 
         list<string>* listaStats=modello->getListaStatFromLastObj();
 

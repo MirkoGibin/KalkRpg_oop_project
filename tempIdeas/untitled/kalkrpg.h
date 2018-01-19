@@ -4,6 +4,8 @@
 #include<QPushButton>
 #include<QTextEdit>
 #include<QTextTable>
+#include<QLabel>
+#include<QPixmap>
 #include"controller.h"
 #include "button.h"
 
@@ -13,7 +15,7 @@ private:
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(path, testo);
         connect(button, SIGNAL(clicked()), this, member);
-        connect(button,SIGNAL(clicked()),this,SLOT(display()));
+        connect(button,SIGNAL(clicked()),this,SLOT(showOndisplay()));
         connect(button, SIGNAL(clicked(bool)), this,SLOT(objectClicked()));
         connect(this, SIGNAL(objToClick(bool)),button, SLOT(setEnabled(bool)));
         return button;
@@ -101,16 +103,23 @@ private slots:
         pressedButton=qobject_cast<Button*>(sender());
 
         child=new QWidget(this);
-
         expansionAndSetGrid=new QGridLayout(child);
+
+        QLabel *image = new QLabel();
+        image->setAlignment(Qt::AlignCenter);
+        QPixmap *pix = new QPixmap(pressedButton->getPath());
+        pix->
+        image->setPixmap(*pix);
 
         mainLayout->addWidget(child, 1, 0, 1, 3 );
 
         controller->showSelectedObject(expansionAndSetGrid, pressedButton);
 
+        expansionAndSetGrid->addWidget(image, 0, 0, 1, expansionAndSetGrid->columnCount());
         confirm=new QPushButton(tr("Conferma"),child);
+        confirm->setFixedSize(200,50);
 
-        expansionAndSetGrid->addWidget(confirm);
+        expansionAndSetGrid->addWidget(confirm, expansionAndSetGrid->rowCount(), 0, 1, expansionAndSetGrid->columnCount(), Qt::AlignCenter);
 
         connect(confirm, SIGNAL(clicked()), this, SLOT(confirmClicked()));
 
@@ -119,7 +128,9 @@ private slots:
         //delete expansionAndSetGrid;
         //mainLayout->removeItem(expansionAndSetGrid->itemAtPosition(1,1));
         //mainLayout->removeItem(expansionAndSetGrid);
+        //qui bisognerebbe invocare il showToDisplay
         controller->setStatsOnObj();
+
         expansionAndSetGrid->parentWidget()->hide();
         this->adjustSize();
         //delete expansionAndSetGrid;
@@ -214,7 +225,7 @@ private slots:
     }
 
 
-    void display() {
+    void showOndisplay() {
         QString nome = sender()->objectName();
         Button* button = findChild<Button*>(nome);
         QTextEdit* display = findChild<QTextEdit*>();
