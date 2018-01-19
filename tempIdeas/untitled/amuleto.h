@@ -18,12 +18,12 @@ private:
      */
 
 public:
-    Amuleto(int livello,
-            int rarita,
-            float spirito,
-            float attacco,
-            float difesa,
-            float fortuna) : Osso(livello,rarita,spirito,attacco,difesa) {
+    Amuleto(int livello =0,
+            int rarita =0,
+            float spirito =0,
+            float attacco =0,
+            float difesa =0,
+            float fortuna =0) : Osso(livello,rarita,spirito,attacco,difesa) {
         insertStat("fortuna", fortuna);
     }
     float getFortuna() const {
@@ -31,23 +31,7 @@ public:
     }
 
     float ricicla() {
-
-    }
-
-    void ottieniDa(Cristallo* cristallo) {
-
-    }
-
-    void ottieniDa(Unguento* unguento) {
-
-    }
-
-    void EstraiDa(Osso* osso) {
-        if(dynamic_cast<Osso*>(osso)) {
-
-        } else {
-            //lancia eccezione per parametro illegale
-        }
+        return 0;
     }
 };
 

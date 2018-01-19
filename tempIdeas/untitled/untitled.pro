@@ -27,28 +27,28 @@ SOURCES += main.cpp \
     kalkrpg.cpp \
     button.cpp \
     oggetto.cpp \
-    #pietra.cpp \
-    #cristallo.cpp \
+    pietra.cpp \
+    cristallo.cpp \
     #mathop.cpp \
     erba.cpp \
-    #unguento.cpp \
-    #osso.cpp \
-    #amuleto.cpp \
+    unguento.cpp \
+    osso.cpp \
+    amuleto.cpp \
     controller.cpp \
     model.cpp \
     displayandslider.cpp
 
 HEADERS += \
     oggetto.h \
-    #pietra.h \
-    #cristallo.h \
+    pietra.h \
+    cristallo.h \
     #mathOp.h \
     erba.h \
     kalkrpg.h \
     button.h \
-    #unguento.h \
-    #osso.h \
-    #amuleto.h \
+    unguento.h \
+    osso.h \
+    amuleto.h \
     controller.h \
     model.h \
     displayandslider.h

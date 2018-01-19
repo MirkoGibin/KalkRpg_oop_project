@@ -23,15 +23,8 @@ public:
     void flushControllerMemory() {
         tempDataToSet.clear();
     }
-
+//------------------------------------------------------------------------
 public slots:
-    bool newErba() {
-        int before=modello->getNumObjInMemory();
-        modello->createErba();
-        int after=modello->getNumObjInMemory();
-        return before++==after;
-    }
-
     void showSelectedObject(QGridLayout* griglia, Button* pressedButton) {
 
         Button*button=new Button(pressedButton->getIcona(), pressedButton->getTesto(), griglia->parentWidget());
@@ -66,6 +59,47 @@ public slots:
             modello->setStatByName(it.key(), it.value()->value());
         }
     }
+    int ricicla() {
+        return modello->ricycleLast();
+    }
+//----------------------------------------------------------------------------
+    bool newErba() {
+        int before=modello->getNumObjInMemory();
+        modello->createErba();
+        int after=modello->getNumObjInMemory();
+        return before++==after;
+    }
+    bool newUnguento() {
+        int before=modello->getNumObjInMemory();
+        modello->createUnguento();
+        int after=modello->getNumObjInMemory();
+        return before++==after;
+    }
+    bool newPietra() {
+        int before=modello->getNumObjInMemory();
+        modello->createPietra();
+        int after=modello->getNumObjInMemory();
+        return before++==after;
+    }
+    bool newCristallo() {
+        int before=modello->getNumObjInMemory();
+        modello->createCristallo();
+        int after=modello->getNumObjInMemory();
+        return before++==after;
+    }
+    bool newOsso() {
+        int before=modello->getNumObjInMemory();
+        modello->createOsso();
+        int after=modello->getNumObjInMemory();
+        return before++==after;
+    }
+    bool newAmuleto() {
+        int before=modello->getNumObjInMemory();
+        modello->createAmuleto();
+        int after=modello->getNumObjInMemory();
+        return before++==after;
+    }
+
 };
 
 #endif // CONTROLLER_H

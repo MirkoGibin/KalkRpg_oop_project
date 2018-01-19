@@ -45,6 +45,7 @@ public:
     QSlider* getSlider() const {
         return slider;
     }
+
 public slots:
     int value() const {
         return slider->value();
