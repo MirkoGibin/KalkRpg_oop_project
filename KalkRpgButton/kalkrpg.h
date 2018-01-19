@@ -3,6 +3,8 @@
 #include <QGridLayout>
 #include <QMap>
 #include "button.h"
+#include<QTextEdit>
+#include<QTextTable>
 
 class KalkRpg : public QWidget {
     Q_OBJECT
@@ -108,6 +110,7 @@ private slots:
         Button* button = findChild<Button*>(nome);
         QTextEdit* display = findChild<QTextEdit*>();
         QTextCursor cursor = display->textCursor();
+        cursor.setPosition(0);
         QTextTable* table = cursor.insertTable(1,3);
         table->cellAt(0, 0).firstCursorPosition().insertImage(QImage(button->getPath()));
         for(int j=1; j<3; j++) {
