@@ -30,6 +30,7 @@ public slots:
         Button*button=new Button(pressedButton->getPath(), pressedButton->getTesto(), griglia->parentWidget());
 
         griglia->addWidget(button,0,0);
+
         list<string>* listaStats=modello->getListaStatFromLastObj();
 
         auto it=listaStats->begin();
@@ -41,7 +42,7 @@ public slots:
         griglia->addWidget(displayandslider,2,counter++);
         tempDataToSet.insert("livello", displayandslider->getSlider());
 
-        displayandslider=new DisplayAndSlider(griglia->parentWidget(), "rarita");
+        displayandslider=new DisplayAndSlider(griglia->parentWidget(), "rarità");
         griglia->addWidget(displayandslider,2,counter++);
         tempDataToSet.insert("rarita", displayandslider->getSlider());
 

@@ -29,7 +29,7 @@ public slots:
     bool setStatByName(QString name, unsigned int value) const {
         if(name=="livello")
             memoria.back()->setLivello(value);
-        else if(name=="rarita")
+        else if(name=="rarità")
                 memoria.back()->setRarita(value);
         else
         memoria.back()->modifyStat(name.toStdString(), value);

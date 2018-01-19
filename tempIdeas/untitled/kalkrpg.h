@@ -105,7 +105,7 @@ private slots:
 
         expansionAndSetGrid=new QGridLayout(child);
 
-        mainLayout->addWidget(child);
+        mainLayout->addWidget(child, 1, 0, 1, 3 );
 
         controller->showSelectedObject(expansionAndSetGrid, pressedButton);
 
