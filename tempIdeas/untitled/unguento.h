@@ -17,7 +17,7 @@ public:
              float puntiVita =0) : Erba(livello, rarita, spirito, puntiVita) {}
 
     //estraiDa permette di creare un Unguento da una sua superclasse.
-    virtual void estraiDa(Oggetto* oggetto) {
+/*    virtual void estraiDa(Oggetto* oggetto) {
         if(dynamic_cast<Erba*>(oggetto)) {
 
         }
@@ -28,12 +28,12 @@ public:
 
     //ottieniDa permette di creare un Unguento a partire da un cristallo TS(cristallo) == TD(cristallo)
     virtual void ottieniDa(Cristallo* cristallo) {
-        /*if(typeid(cristallo) == typeid(*cristallo)) {
+        if(typeid(cristallo) == typeid(*cristallo)) {
 
         }
         else {
             //lancia eccezione
-        }*/
+        }
     }
     //ottieniDa permette di creare un Unguento a partire da un amuleto TS(amuleto) == TD(amuleto)
     virtual void ottieniDa(Amuleto* amuleto) {
@@ -42,8 +42,8 @@ public:
         }
         else {
             //lancia eccezione
-        }*/
-    }
+        }
+    }*/
 };
 
 #endif // UNGUENTO_H

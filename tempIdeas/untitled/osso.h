@@ -44,7 +44,7 @@ public:
         return mana;
     }
 
-    void ottieniDa(Pietra* pietra) {
+/*    void ottieniDa(Pietra* pietra) {
         if(typeid(pietra) == typeid(pietra)) { //tipo dinamico deve essere uguale a tipo statico
             float pSpir=pietra->getSpirito();
             float pDur=pietra->getDurezza();
@@ -67,13 +67,13 @@ public:
 
         } else {
             //lancia eccezione contro parametri illegali
-        }*/
+        }
 
     }
 
     void estraiDa(Oggetto*obj) {
         //lancia eccezione, non si puo' invocare questo metodo a questo livello
-    }
+    }*/
 
 
 

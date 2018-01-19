@@ -1,24 +1,41 @@
-#ifndef KALKRPG_H
+    #ifndef KALKRPG_H
 #define KALKRPG_H
 #include <QGridLayout>
-#include <QMap>
+#include<QPushButton>
 #include "button.h"
 #include<QTextEdit>
 #include<QTextTable>
+#include"controller.h"
 
 class KalkRpg : public QWidget {
     Q_OBJECT
+private:
 private:
     QGridLayout* mainLayout;
     Button* createButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(path, testo);
         connect(button, SIGNAL(clicked()), this, member);
-        //if()
         connect(button,SIGNAL(clicked()),this,SLOT(aggiungiMerda()));
+        connect(button, SIGNAL(clicked(bool)), this,SLOT(objectClicked()));
+        connect(this, SIGNAL(objToClick(bool)),button, SLOT(setEnabled(bool)));
         return button;
     }
-    void abortOperation();
-    bool esegui();
+    Button* createOpButton(const QIcon &icona, const QString &testo, const char* member) {
+        Button *button = new Button(icona, testo);
+        connect(button, SIGNAL(clicked()), this, member);
+        connect(button, SIGNAL(clicked(bool)), this,SLOT(operationClicked()));
+        connect(this, SIGNAL(opToClick(bool)),button, SLOT(setEnabled(bool)));
+        return button;
+    }
+
+    QWidget*parent;
+    QWidget*child;
+
+    QGridLayout *mainLayout;
+    Controller* controller;
+
+    QGridLayout* expansionAndSetGrid;
+    QPushButton*confirm;
 
 public:
     KalkRpg(QWidget *parent = 0) : QWidget(parent) {
@@ -85,25 +102,125 @@ public:
     ~KalkRpg();
 
 private slots:
+    void showToSet(Button* pressedButton) {
+        pressedButton=qobject_cast<Button*>(sender());
+
+        child=new QWidget(this);
+
+        expansionAndSetGrid=new QGridLayout(child);
+
+        mainLayout->addWidget(child);
+
+        controller->showSelectedObject(expansionAndSetGrid, pressedButton);
+
+        confirm=new QPushButton(tr("Conferma"),child);
+
+        expansionAndSetGrid->addWidget(confirm);
+
+        connect(confirm, SIGNAL(clicked()), this, SLOT(confirmClicked()));
+
+    }
+    void confirmClicked() {
+        //delete expansionAndSetGrid;
+        //mainLayout->removeItem(expansionAndSetGrid->itemAtPosition(1,1));
+        //mainLayout->removeItem(expansionAndSetGrid);
+        controller->setStatsOnObj();
+        expansionAndSetGrid->parentWidget()->hide();
+        this->adjustSize();
+        //delete expansionAndSetGrid;
+        //delete child;
+        expansionAndSetGrid->deleteLater();
+        child->deleteLater();
+        confirm->deleteLater();
+        controller->flushControllerMemory();
+        emit opToClick(true);
+    }
+
+    void objectClicked() {
+        emit objToClick(false);
+    }
+    void operationClicked() {
+        emit opToClick(false);
+        emit objToClick(true);
+    }
+
     //eventi relativi agli oggetti
-    void erbaClicked();
-    void unguentoClicked();
-    void pietraClicked();
-    void cristalloClicked();
-    void ossoClicked();
-    void amuletoClicked();
+    void erbaClicked() {
+        emit opToClick(false);
+        controller->newErba();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void unguentoClicked(){
+        emit opToClick(false);
+        controller->newUnguento();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void pietraClicked(){
+        emit opToClick(false);
+        controller->newPietra();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void cristalloClicked() {
+        emit opToClick(false);
+        controller->newCristallo();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void ossoClicked() {
+        emit opToClick(false);
+        controller->newOsso();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void amuletoClicked() {
+        emit opToClick(false);
+        controller->newAmuleto();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
 
     //eventi relativi alle operazioni
-    void creaClicked();
-    void riciclaClicked();
-    void combinaClicked();
-    void estraiClicked();
-    void potenziaClicked();
-    void trasformaClicked();
-    void distribuisciClicked();
-    void aumentaProbabilitaClicked();
-    void curaOggettoClicked();
+    void creaClicked() {return;}
 
+
+    void riciclaClicked() {
+        child=new QWidget(this);
+        expansionAndSetGrid=new QGridLayout(child);
+        mainLayout->addWidget(child);
+        int mana=controller->ricicla();
+        QLCDNumber*risultato=new QLCDNumber(3);
+        risultato->display(mana);
+        expansionAndSetGrid->addWidget(risultato);
+        //return;
+    }
+    void combinaClicked() {
+        return;
+    }
+    void estraiClicked() {
+        return;
+    }
+    void potenziaClicked() {
+        return;
+    }
+    void trasformaClicked(){
+        return;
+    }
+    void distribuisciClicked(){
+        return;
+    }
+    void aumentaProbabilitaClicked(){
+        return;
+    }
+    void riparaClicked(){
+        return;
+    }
+
+signals:
+    void opToClick(bool);
+    void objToClick(bool);
     //eventi di display
     void aggiungiMerda() {
         QString nome = sender()->objectName();

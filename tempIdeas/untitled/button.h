@@ -11,6 +11,9 @@ private:
     const char* path_;
     Q_OBJECT
 
+private:
+    const QString testo;
+    const QIcon icona;
 public:
     explicit Button(const char *path, const QString &testo, QWidget *parent = 0) : QToolButton(parent) {
         path_ = path;
@@ -32,6 +35,17 @@ public:
     ~Button() {
         //delete[] path_;
     }
+    QString getTesto() const {return testo;}
+    QIcon getIcona() const {return icona;}
+public slots:
+    void setEnabled() {
+        this->QToolButton::setEnabled(true);
+    void setDisabled() {
+    }
+        this->QToolButton::setDisabled(true);
+    }
+
+signals:
 };
 
 #endif // BUTTON_H

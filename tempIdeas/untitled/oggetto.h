@@ -1,13 +1,12 @@
 #ifndef OGGETTO_H
 #define OGGETTO_H
-#include<mathOp.h>
 #include<map>
 #include<list>
-#include<iostream>
 #include<algorithm>
 
 using std::list;
-using std::map; using std::string; using std::cout; using std::endl;
+using std::map;
+using std::string;
 
 class Oggetto {
 private:
@@ -21,18 +20,13 @@ private:
     /* parameters inside stats in Oggetto are:
      * spirito
      */
-    virtual void normalizza() {
+/*    virtual void normalizza() {
         if(getLivello()*150 <= calcolaMana()) {
             float percentualeRiduzione=getLivello()*150/calcolaMana();
             mathOp::doMultiplyOnMap(stats, percentualeRiduzione);
 
-            /*
-            for(map<string,float>::const_iterator it=stats.begin(); it!=stats.end(); ++it)
-                stats[it->first]=it->second*percentualeRiduzione;
-            */
-
         }
-    }
+    }*/
 
 public:
     //costruttore di default
@@ -101,7 +95,7 @@ public:
     }
 
 
-
+/*
 //------------OPERAZIONI
     virtual void combina(Oggetto* object) {
         map<string, float> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
@@ -148,11 +142,11 @@ public:
 
 
     //operazioni
-
+*/
     virtual float ricicla() {
         return getSommaStats()*getLivello()*getRarita();
     }
-
+/*
     virtual void crea(float mana, int livello, int rarita, string statistica) { //PRE = statistica è vuoto o è un valore valido
 
         this->setLivello(livello);
@@ -178,7 +172,7 @@ public:
         }
         delete parametri;
     }
-
+*/
 };
 
 #endif // OGGETTO_H
