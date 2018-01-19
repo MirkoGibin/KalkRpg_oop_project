@@ -22,14 +22,11 @@ public:
            int rarita =0,
            float spirito =0,
            float durezza =0) : Oggetto(livello, rarita, spirito) {
-        insertStat("durezza", durezza);
+        insertStat("Durezza", durezza);
     }
 
-    float getAttacco() const {
-        return getValoreStat("attacco");
-    }
-    float getDurezza() const {
-        return getValoreStat("durezza");
+     float getDurezza() const {
+        return getValoreStat("Durezza");
     }
 
 // ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2

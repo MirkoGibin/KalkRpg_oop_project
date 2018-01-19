@@ -13,7 +13,7 @@ private:
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(path, testo);
         connect(button, SIGNAL(clicked()), this, member);
-        connect(button,SIGNAL(clicked()),this,SLOT(aggiungiMerda()));
+        connect(button,SIGNAL(clicked()),this,SLOT(display()));
         connect(button, SIGNAL(clicked(bool)), this,SLOT(objectClicked()));
         connect(this, SIGNAL(objToClick(bool)),button, SLOT(setEnabled(bool)));
         return button;
@@ -68,7 +68,6 @@ public:
         //display calcolatrice
         QTextEdit* display = new QTextEdit();
         display->setReadOnly(true);
-
 
         objectLayout->setSizeConstraint(QLayout::SetFixedSize);
         operationLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -215,7 +214,7 @@ private slots:
     }
 
 
-    void aggiungiMerda() {
+    void display() {
         QString nome = sender()->objectName();
         Button* button = findChild<Button*>(nome);
         QTextEdit* display = findChild<QTextEdit*>();

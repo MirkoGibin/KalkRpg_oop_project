@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_KalkRpg_t {
     QByteArrayData data[26];
-    char stringdata0[357];
+    char stringdata0[351];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -54,7 +54,7 @@ QT_MOC_LITERAL(21, 266, 16), // "trasformaClicked"
 QT_MOC_LITERAL(22, 283, 19), // "distribuisciClicked"
 QT_MOC_LITERAL(23, 303, 25), // "aumentaProbabilitaClicked"
 QT_MOC_LITERAL(24, 329, 13), // "riparaClicked"
-QT_MOC_LITERAL(25, 343, 13) // "aggiungiMerda"
+QT_MOC_LITERAL(25, 343, 7) // "display"
 
     },
     "KalkRpg\0opToClick\0\0objToClick\0showToSet\0"
@@ -66,7 +66,7 @@ QT_MOC_LITERAL(25, 343, 13) // "aggiungiMerda"
     "combinaClicked\0estraiClicked\0"
     "potenziaClicked\0trasformaClicked\0"
     "distribuisciClicked\0aumentaProbabilitaClicked\0"
-    "riparaClicked\0aggiungiMerda"
+    "riparaClicked\0display"
 };
 #undef QT_MOC_LITERAL
 
@@ -165,7 +165,7 @@ void KalkRpg::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 18: _t->distribuisciClicked(); break;
         case 19: _t->aumentaProbabilitaClicked(); break;
         case 20: _t->riparaClicked(); break;
-        case 21: _t->aggiungiMerda(); break;
+        case 21: _t->display(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {

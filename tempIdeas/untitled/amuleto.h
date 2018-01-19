@@ -24,10 +24,10 @@ public:
             float attacco =0,
             float difesa =0,
             float fortuna =0) : Osso(livello,rarita,spirito,attacco,difesa) {
-        insertStat("fortuna", fortuna);
+        insertStat("Fortuna", fortuna);
     }
     float getFortuna() const {
-        return getValoreStat("fortuna");
+        return getValoreStat("Fortuna");
     }
 
     float ricicla() {

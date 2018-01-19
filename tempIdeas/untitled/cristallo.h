@@ -25,12 +25,12 @@ public:
               const float spirito =0,
               const float durezza =0,
               const float magia =0) : Pietra(livello, rarita, spirito, durezza) {
-        Oggetto::insertStat("magia", magia);
+        Oggetto::insertStat("Magia", magia);
     }
 
     //methods
     virtual double getMagia() const {
-        return getValoreStat("magia");
+        return getValoreStat("Magia");
     }
 };
 

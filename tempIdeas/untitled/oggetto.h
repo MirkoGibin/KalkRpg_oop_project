@@ -33,7 +33,7 @@ public:
     Oggetto(int livello =0,
             int rarita =0,
             float spirito =0) : livello_(livello), rarita_(rarita) {
-        stats.emplace("spirito", spirito);
+        stats.emplace("Spirito", spirito);
     }
 
     //distruttore virtuale
@@ -73,7 +73,7 @@ public:
     }
 
     virtual float getSpirito() const {
-        return getValoreStat("spirito");
+        return getValoreStat("Spirito");
     }
 
     virtual list<string>* getListaStats()  const {

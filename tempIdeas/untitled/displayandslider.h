@@ -8,6 +8,7 @@
 #include<QGridLayout>
 #include<QLineEdit>
 #include<QIntValidator>
+#include<QLabel>
 
 class DisplayAndSlider : public QWidget {
 Q_OBJECT
@@ -25,12 +26,13 @@ public:
 
         //lcd->setSegmentStyle(QLCDNumber::Filled);
 
-        QLineEdit* descr=new QLineEdit(descrizione);
-        descr->setReadOnly(true);
+        QLabel* descr = new QLabel(descrizione);
+        descr->setAlignment(Qt::AlignCenter);
+
         QVBoxLayout* displayandslider=new QVBoxLayout;
         slider->setValue(0);
 
-        if(descrizione=="livello" || descrizione=="rarità") {
+        if(descrizione=="Livello" || descrizione=="Rarità") {
             slider->setValue(1);
             slider->setRange(1,10);
             valore->setValidator(new QIntValidator(1,10));

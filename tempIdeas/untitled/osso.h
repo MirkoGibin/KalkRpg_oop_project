@@ -25,16 +25,16 @@ public:
          float spirito =0,
          float attacco =0,
          float difesa =0) : Oggetto(livello, rarita, spirito) {
-        insertStat("attacco",attacco);
-        insertStat("difesa", difesa);
+        insertStat("Attacco",attacco);
+        insertStat("Difesa", difesa);
     }
 
     float getAttacco() const {
-        return getValoreStat("attacco");
+        return getValoreStat("Attacco");
     }
 
     float getDifesa() const {
-        return getValoreStat("difesa");
+        return getValoreStat("Difesa");
     }
 
 //ricicla fa la moltiplicazione della sommaStats in cui attacco e difesa sono raddoppiati, moltiplicato per livello e rarita

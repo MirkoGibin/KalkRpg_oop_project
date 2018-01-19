@@ -14,7 +14,7 @@ public:
     Unguento(int livello =0,
              int rarita =0,
              float spirito =0,
-             float puntiVita =0) : Erba(livello, rarita, spirito, puntiVita) {}
+             float vitalita =0) : Erba(livello, rarita, spirito, vitalita) {}
 
     //estraiDa permette di creare un Unguento da una sua superclasse.
 /*    virtual void estraiDa(Oggetto* oggetto) {

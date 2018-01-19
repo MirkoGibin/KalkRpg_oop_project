@@ -6,22 +6,22 @@
 class Erba : public Oggetto{
     /* le stats dentro Erba sono:
      * spirito
-     * puntiVita
+     * Vitalità
      */
 public:
     Erba(int livello =0,
          int rarita =0,
          float spirito =0,
-         float puntiVita =0) : Oggetto(livello, rarita, spirito) {
-            insertStat("puntiVita", puntiVita);
+         float vitalita =0) : Oggetto(livello, rarita, spirito) {
+            insertStat("Vitalità", vitalita);
     }
 
-    float getPuntiVita() const {
-        return getValoreStat("puntiVita");
+    float getVitalita() const {
+        return getValoreStat("Vitalità");
     }
 
     virtual float ricicla() {
-        float mana = getSommaStats() - getSpirito()/2 + 2 * getPuntiVita() + getRarita() * getRarita();
+        float mana = getSommaStats() - getSpirito()/2 + 2 * getVitalita() + getRarita() * getRarita();
         delete this;
         return mana;
     }

@@ -38,13 +38,13 @@ public slots:
         int counter=0;
         DisplayAndSlider* displayandslider;
 
-        displayandslider=new DisplayAndSlider(griglia->parentWidget(), "livello");
+        displayandslider=new DisplayAndSlider(griglia->parentWidget(), "Livello");
         griglia->addWidget(displayandslider,2,counter++);
-        tempDataToSet.insert("livello", displayandslider->getSlider());
+        tempDataToSet.insert("Livello", displayandslider->getSlider());
 
-        displayandslider=new DisplayAndSlider(griglia->parentWidget(), "rarità");
+        displayandslider=new DisplayAndSlider(griglia->parentWidget(), "Rarità");
         griglia->addWidget(displayandslider,2,counter++);
-        tempDataToSet.insert("rarita", displayandslider->getSlider());
+        tempDataToSet.insert("Rarità", displayandslider->getSlider());
 
         for(; it!=listaStats->end();++it) {
             QString name=QString::fromStdString(*it);

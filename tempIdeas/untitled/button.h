@@ -16,13 +16,12 @@ private:
 public:
     explicit Button(const char *path, const QString &testo, QWidget *parent = 0) : QToolButton(parent), path_(path), testo_(testo) {
 
-
         setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
         setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         setIcon(QIcon(path));
         setText(testo);
         setObjectName(testo);
-    }
+    } 
     QSize sizeHint() const override {
         QSize size = QToolButton::sizeHint();
         size.rheight() += 20;
@@ -35,7 +34,9 @@ public:
     ~Button() {
         //delete[] path_;
     }
-    QString getTesto() const {return testo_;}
+    QString getTesto() const {
+        return testo_;
+    }
 public slots:
     void setEnabled() {
         this->QToolButton::setEnabled(true);
