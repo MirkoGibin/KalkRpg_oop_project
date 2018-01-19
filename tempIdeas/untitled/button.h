@@ -7,17 +7,17 @@
 #include <QObject>
 
 class Button : public QToolButton {
-private:
-    const char* path_;
     Q_OBJECT
 
 private:
-    const QString testo;
-    const QIcon icona;
+    const char* path_;
+    const QString testo_;
+
 public:
-    explicit Button(const char *path, const QString &testo, QWidget *parent = 0) : QToolButton(parent) {
-        path_ = path;
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    explicit Button(const char *path, const QString &testo, QWidget *parent = 0) : QToolButton(parent), path_(path), testo_(testo) {
+
+
+        setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
         setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         setIcon(QIcon(path));
         setText(testo);
@@ -35,13 +35,12 @@ public:
     ~Button() {
         //delete[] path_;
     }
-    QString getTesto() const {return testo;}
-    QIcon getIcona() const {return icona;}
+    QString getTesto() const {return testo_;}
 public slots:
     void setEnabled() {
         this->QToolButton::setEnabled(true);
-    void setDisabled() {
     }
+    void setDisabled() {
         this->QToolButton::setDisabled(true);
     }
 

@@ -2,17 +2,15 @@
 #define KALKRPG_H
 #include <QGridLayout>
 #include<QPushButton>
-#include "button.h"
 #include<QTextEdit>
 #include<QTextTable>
 #include"controller.h"
+#include "button.h"
 
 class KalkRpg : public QWidget {
     Q_OBJECT
 private:
-private:
-    QGridLayout* mainLayout;
-    Button* createButton(const char *path, const QString &testo, const char* member) {
+    Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(path, testo);
         connect(button, SIGNAL(clicked()), this, member);
         connect(button,SIGNAL(clicked()),this,SLOT(aggiungiMerda()));
@@ -20,8 +18,8 @@ private:
         connect(this, SIGNAL(objToClick(bool)),button, SLOT(setEnabled(bool)));
         return button;
     }
-    Button* createOpButton(const QIcon &icona, const QString &testo, const char* member) {
-        Button *button = new Button(icona, testo);
+    Button* createOpButton(const char *path, const QString &testo, const char* member) {
+        Button *button = new Button(path, testo);
         connect(button, SIGNAL(clicked()), this, member);
         connect(button, SIGNAL(clicked(bool)), this,SLOT(operationClicked()));
         connect(this, SIGNAL(opToClick(bool)),button, SLOT(setEnabled(bool)));
@@ -38,28 +36,28 @@ private:
     QPushButton*confirm;
 
 public:
-    KalkRpg(QWidget *parent = 0) : QWidget(parent) {
+    KalkRpg(QWidget *parent = 0, Controller* controller_ =0) : QWidget(parent), controller(controller_) {
 
         setWindowTitle("KalkRPG");
 
         //creazione pulsanti oggetti
-        Button* erbaButton = createButton(":/icons/erba.png", tr("Erba"), SLOT(erbaClicked()));
-        Button* unguentoButton = createButton(":/icons/unguento.png", tr("Unguento"), SLOT(unguentoClicked()));
-        Button* pietraButton = createButton(":/icons/pietra.png", tr("Pietra"), SLOT(pietraClicked()));
-        Button* cristalloButton = createButton(":/icons/cristallo.png", tr("Cristallo"), SLOT(cristalloClicked()));
-        Button* ossoButton = createButton(":/icons/osso.png", tr("Osso"), SLOT(ossoClicked()));
-        Button* amuletoButton = createButton(":/icons/amuleto.png", tr("Amuleto"), SLOT(amuletoClicked()));
+        Button* erbaButton = createObjButton(":/icons/erba.png", tr("Erba"), SLOT(erbaClicked()));
+        Button* unguentoButton = createObjButton(":/icons/unguento.png", tr("Unguento"), SLOT(unguentoClicked()));
+        Button* pietraButton = createObjButton(":/icons/pietra.png", tr("Pietra"), SLOT(pietraClicked()));
+        Button* cristalloButton = createObjButton(":/icons/cristallo.png", tr("Cristallo"), SLOT(cristalloClicked()));
+        Button* ossoButton = createObjButton(":/icons/osso.png", tr("Osso"), SLOT(ossoClicked()));
+        Button* amuletoButton = createObjButton(":/icons/amuleto.png", tr("Amuleto"), SLOT(amuletoClicked()));
 
         //creazione pulsanti operazioni
-        Button* creaButton = createButton(":/icons/crea.png", tr("Crea"), SLOT(creaClicked()));
-        Button* riciclaButton = createButton(":/icons/ricicla.png", tr("Ricicla"), SLOT(riciclaClicked()));
-        Button* combinaButton = createButton(":/icons/combina.png", tr("Combina"), SLOT(combinaClicked()));
-        Button* estraiButton = createButton(":/icons/estrai.png", tr("Estrai"), SLOT(estraiClicked()));
-        Button* potenziaButton = createButton(":/icons/potenzia.png", tr("Potenzia"), SLOT(potenziaClicked()));
-        Button* trasformaButton = createButton(":/icons/trasforma.png", tr("Trasforma"), SLOT(trasformaClicked()));
-        Button* distribuisciButton = createButton(":/icons/distribuisci.png", tr("Distribuisci"), SLOT(distribuisciClicked()));;
-        Button* aumentaProbabilitaButton = createButton(":/icons/aumentaProbabilita.png", tr("Aumenta Probabilita"), SLOT(aumentaProbabilitaClicked()));;
-        Button* curaOggettoButton = createButton(":/icons/ripara.png", tr("Cura Oggetto"), SLOT(curaOggettoClicked()));;
+        Button* creaButton = createOpButton(":/icons/crea.png", tr("Crea"), SLOT(creaClicked()));
+        Button* riciclaButton = createOpButton(":/icons/ricicla.png", tr("Ricicla"), SLOT(riciclaClicked()));
+        Button* combinaButton = createOpButton(":/icons/combina.png", tr("Combina"), SLOT(combinaClicked()));
+        Button* estraiButton = createOpButton(":/icons/estrai.png", tr("Estrai"), SLOT(estraiClicked()));
+        Button* potenziaButton = createOpButton(":/icons/potenzia.png", tr("Potenzia"), SLOT(potenziaClicked()));
+        Button* trasformaButton = createOpButton(":/icons/trasforma.png", tr("Trasforma"), SLOT(trasformaClicked()));
+        Button* distribuisciButton = createOpButton(":/icons/distribuisci.png", tr("Distribuisci"), SLOT(distribuisciClicked()));;
+        Button* aumentaProbabilitaButton = createOpButton(":/icons/aumentaProbabilita.png", tr("Aumenta Probabilita"), SLOT(aumentaProbabilitaClicked()));;
+        Button* riparaButton = createOpButton(":/icons/ripara.png", tr("Ripara"), SLOT(riparaClicked()));;
 
         //creazione del layout
         mainLayout = new QGridLayout(); //è campo privato
@@ -90,7 +88,7 @@ public:
         operationLayout->addWidget(trasformaButton, 1, 2);
         operationLayout->addWidget(distribuisciButton, 2, 0);
         operationLayout->addWidget(aumentaProbabilitaButton, 2, 1);
-        operationLayout->addWidget(curaOggettoButton, 2, 2);
+        operationLayout->addWidget(riparaButton, 2, 2);
 
         mainLayout->addLayout(objectLayout, 0, 0);
         mainLayout->addLayout(operationLayout, 0, 2);
@@ -99,8 +97,6 @@ public:
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
     }
-    ~KalkRpg();
-
 private slots:
     void showToSet(Button* pressedButton) {
         pressedButton=qobject_cast<Button*>(sender());
@@ -218,10 +214,7 @@ private slots:
         return;
     }
 
-signals:
-    void opToClick(bool);
-    void objToClick(bool);
-    //eventi di display
+
     void aggiungiMerda() {
         QString nome = sender()->objectName();
         Button* button = findChild<Button*>(nome);
@@ -235,6 +228,12 @@ signals:
         }
 
     }
+
+signals:
+    void opToClick(bool);
+    void objToClick(bool);
+    //eventi di display
+
 
     //eventi relativi alla gestione
     /*void confermaClicked();

@@ -16,7 +16,7 @@ private:
     QMap<QString, QSlider*> tempDataToSet;
 
 public:
-    Controller(Model*model_ =0) : modello(model_) {}
+    Controller() : modello(new Model()) {}
     ~Controller() {
         delete modello;
     }
@@ -27,7 +27,7 @@ public:
 public slots:
     void showSelectedObject(QGridLayout* griglia, Button* pressedButton) {
 
-        Button*button=new Button(pressedButton->getIcona(), pressedButton->getTesto(), griglia->parentWidget());
+        Button*button=new Button(pressedButton->getPath(), pressedButton->getTesto(), griglia->parentWidget());
 
         griglia->addWidget(button,0,0);
         list<string>* listaStats=modello->getListaStatFromLastObj();

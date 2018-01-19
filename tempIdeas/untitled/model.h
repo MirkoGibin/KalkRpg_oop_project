@@ -16,7 +16,7 @@ using std::vector; using std::string;
 class Model : public QObject {
 Q_OBJECT
 public:
-    Modello();
+    //Model();
     list<Oggetto*> memoria;
 //------------------------------------------------------------
 public slots:
