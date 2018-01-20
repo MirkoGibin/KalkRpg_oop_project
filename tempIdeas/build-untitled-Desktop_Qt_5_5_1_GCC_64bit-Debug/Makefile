@@ -50,7 +50,6 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../untitled/main.cpp \
 		../untitled/kalkrpg.cpp \
-		../untitled/button.cpp \
 		../untitled/oggetto.cpp \
 		../untitled/pietra.cpp \
 		../untitled/cristallo.cpp \
@@ -60,15 +59,16 @@ SOURCES       = ../untitled/main.cpp \
 		../untitled/amuleto.cpp \
 		../untitled/controller.cpp \
 		../untitled/model.cpp \
-		../untitled/displayandslider.cpp qrc_icons.cpp \
+		../untitled/displayandslider.cpp \
+		../untitled/display.cpp \
+		../untitled/button.cpp qrc_icons.cpp \
 		moc_kalkrpg.cpp \
-		moc_button.cpp \
 		moc_controller.cpp \
 		moc_model.cpp \
-		moc_displayandslider.cpp
+		moc_displayandslider.cpp \
+		moc_button.cpp
 OBJECTS       = main.o \
 		kalkrpg.o \
-		button.o \
 		oggetto.o \
 		pietra.o \
 		cristallo.o \
@@ -79,12 +79,14 @@ OBJECTS       = main.o \
 		controller.o \
 		model.o \
 		displayandslider.o \
+		display.o \
+		button.o \
 		qrc_icons.o \
 		moc_kalkrpg.o \
-		moc_button.o \
 		moc_controller.o \
 		moc_model.o \
-		moc_displayandslider.o
+		moc_displayandslider.o \
+		moc_button.o
 DIST          = /home/mirko/Qt/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/mirko/Qt/5.5/gcc_64/mkspecs/common/unix.conf \
 		/home/mirko/Qt/5.5/gcc_64/mkspecs/common/linux.conf \
@@ -225,15 +227,15 @@ DIST          = /home/mirko/Qt/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../untitled/cristallo.h \
 		../untitled/erba.h \
 		../untitled/kalkrpg.h \
-		../untitled/button.h \
 		../untitled/unguento.h \
 		../untitled/osso.h \
 		../untitled/amuleto.h \
 		../untitled/controller.h \
 		../untitled/model.h \
-		../untitled/displayandslider.h ../untitled/main.cpp \
+		../untitled/displayandslider.h \
+		../untitled/display.h \
+		../untitled/button.h ../untitled/main.cpp \
 		../untitled/kalkrpg.cpp \
-		../untitled/button.cpp \
 		../untitled/oggetto.cpp \
 		../untitled/pietra.cpp \
 		../untitled/cristallo.cpp \
@@ -243,7 +245,9 @@ DIST          = /home/mirko/Qt/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../untitled/amuleto.cpp \
 		../untitled/controller.cpp \
 		../untitled/model.cpp \
-		../untitled/displayandslider.cpp
+		../untitled/displayandslider.cpp \
+		../untitled/display.cpp \
+		../untitled/button.cpp
 QMAKE_TARGET  = KalkRpg
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = KalkRpg
@@ -570,8 +574,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../untitled/icons.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../untitled/oggetto.h ../untitled/pietra.h ../untitled/cristallo.h ../untitled/erba.h ../untitled/kalkrpg.h ../untitled/button.h ../untitled/unguento.h ../untitled/osso.h ../untitled/amuleto.h ../untitled/controller.h ../untitled/model.h ../untitled/displayandslider.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../untitled/main.cpp ../untitled/kalkrpg.cpp ../untitled/button.cpp ../untitled/oggetto.cpp ../untitled/pietra.cpp ../untitled/cristallo.cpp ../untitled/erba.cpp ../untitled/unguento.cpp ../untitled/osso.cpp ../untitled/amuleto.cpp ../untitled/controller.cpp ../untitled/model.cpp ../untitled/displayandslider.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../untitled/oggetto.h ../untitled/pietra.h ../untitled/cristallo.h ../untitled/erba.h ../untitled/kalkrpg.h ../untitled/unguento.h ../untitled/osso.h ../untitled/amuleto.h ../untitled/controller.h ../untitled/model.h ../untitled/displayandslider.h ../untitled/display.h ../untitled/button.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../untitled/main.cpp ../untitled/kalkrpg.cpp ../untitled/oggetto.cpp ../untitled/pietra.cpp ../untitled/cristallo.cpp ../untitled/erba.cpp ../untitled/unguento.cpp ../untitled/osso.cpp ../untitled/amuleto.cpp ../untitled/controller.cpp ../untitled/model.cpp ../untitled/displayandslider.cpp ../untitled/display.cpp ../untitled/button.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -613,9 +617,9 @@ qrc_icons.cpp: ../untitled/icons.qrc \
 		../untitled/icons/cristallo.png
 	/home/mirko/Qt/5.5/gcc_64/bin/rcc -name icons ../untitled/icons.qrc -o qrc_icons.cpp
 
-compiler_moc_header_make_all: moc_kalkrpg.cpp moc_button.cpp moc_controller.cpp moc_model.cpp moc_displayandslider.cpp
+compiler_moc_header_make_all: moc_kalkrpg.cpp moc_controller.cpp moc_model.cpp moc_displayandslider.cpp moc_button.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_kalkrpg.cpp moc_button.cpp moc_controller.cpp moc_model.cpp moc_displayandslider.cpp
+	-$(DEL_FILE) moc_kalkrpg.cpp moc_controller.cpp moc_model.cpp moc_displayandslider.cpp moc_button.cpp
 moc_kalkrpg.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QGridLayout \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qgridlayout.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlayout.h \
@@ -742,6 +746,9 @@ moc_kalkrpg.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QGridLayout \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qglyphrun.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qrawfont.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontdatabase.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLabel \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlabel.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QPixmap \
 		../untitled/controller.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject \
 		../untitled/model.h \
@@ -762,125 +769,19 @@ moc_kalkrpg.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QGridLayout \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QVBoxLayout \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLineEdit \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlineedit.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIntValidator \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregularexpression.h \
 		../untitled/button.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QList \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QImage \
+		../untitled/display.h \
 		../untitled/kalkrpg.h
 	/home/mirko/Qt/5.5/gcc_64/bin/moc $(DEFINES) -I/home/mirko/Qt/5.5/gcc_64/mkspecs/linux-g++ -I'/home/mirko/Dropbox/UNIPD/Programmazione ad Oggetti/oop_project/tempIdeas/untitled' -I/home/mirko/Qt/5.5/gcc_64/include -I/home/mirko/Qt/5.5/gcc_64/include/QtWidgets -I/home/mirko/Qt/5.5/gcc_64/include/QtGui -I/home/mirko/Qt/5.5/gcc_64/include/QtCore -I. ../untitled/kalkrpg.h -o moc_kalkrpg.cpp
-
-moc_button.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsize.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qnamespace.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qglobal.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qconfig.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfeatures.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtypetraits.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsysinfo.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlogging.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qflags.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_mips.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_x86.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_unix.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmutex.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qnumeric.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qicon.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlist.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qalgorithms.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qiterator.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qrefcount.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qarraydata.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbytearray.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstring.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qchar.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringlist.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregexp.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpixmap.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qrect.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmargins.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qpoint.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qcolor.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qrgb.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qshareddata.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qhash.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qpair.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcoreevent.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmetatype.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qisenum.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject_impl.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qimage.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtransform.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qmatrix.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpolygon.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvector.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qregion.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qdatastream.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qiodevice.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qline.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpainterpath.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpixelformat.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QWidget \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qwidget.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpalette.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qbrush.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfont.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontinfo.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qcursor.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qkeysequence.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qevent.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvariant.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmap.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qdebug.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtextstream.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlocale.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qset.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qurl.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qurlquery.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfile.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfiledevice.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvector2d.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtouchdevice.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject \
-		../untitled/button.h
-	/home/mirko/Qt/5.5/gcc_64/bin/moc $(DEFINES) -I/home/mirko/Qt/5.5/gcc_64/mkspecs/linux-g++ -I'/home/mirko/Dropbox/UNIPD/Programmazione ad Oggetti/oop_project/tempIdeas/untitled' -I/home/mirko/Qt/5.5/gcc_64/include -I/home/mirko/Qt/5.5/gcc_64/include/QtWidgets -I/home/mirko/Qt/5.5/gcc_64/include/QtGui -I/home/mirko/Qt/5.5/gcc_64/include/QtCore -I. ../untitled/button.h -o moc_button.cpp
 
 moc_controller.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject.h \
@@ -1012,6 +913,11 @@ moc_controller.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtextformat.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpen.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtextoption.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIntValidator \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregularexpression.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLabel \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlabel.h \
 		../untitled/button.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
@@ -1019,6 +925,8 @@ moc_controller.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QList \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QImage \
 		../untitled/controller.h
 	/home/mirko/Qt/5.5/gcc_64/bin/moc $(DEFINES) -I/home/mirko/Qt/5.5/gcc_64/mkspecs/linux-g++ -I'/home/mirko/Dropbox/UNIPD/Programmazione ad Oggetti/oop_project/tempIdeas/untitled' -I/home/mirko/Qt/5.5/gcc_64/include -I/home/mirko/Qt/5.5/gcc_64/include/QtWidgets -I/home/mirko/Qt/5.5/gcc_64/include/QtGui -I/home/mirko/Qt/5.5/gcc_64/include/QtCore -I. ../untitled/controller.h -o moc_controller.cpp
 
@@ -1205,8 +1113,125 @@ moc_displayandslider.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QWidget \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpen.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtextoption.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QGridLayout \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIntValidator \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregularexpression.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLabel \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlabel.h \
 		../untitled/displayandslider.h
 	/home/mirko/Qt/5.5/gcc_64/bin/moc $(DEFINES) -I/home/mirko/Qt/5.5/gcc_64/mkspecs/linux-g++ -I'/home/mirko/Dropbox/UNIPD/Programmazione ad Oggetti/oop_project/tempIdeas/untitled' -I/home/mirko/Qt/5.5/gcc_64/include -I/home/mirko/Qt/5.5/gcc_64/include/QtWidgets -I/home/mirko/Qt/5.5/gcc_64/include/QtGui -I/home/mirko/Qt/5.5/gcc_64/include/QtCore -I. ../untitled/displayandslider.h -o moc_displayandslider.cpp
+
+moc_button.cpp: /home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsize.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qnamespace.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qglobal.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qconfig.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfeatures.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtypetraits.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsysinfo.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlogging.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qflags.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_mips.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_x86.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_unix.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmutex.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qnumeric.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qicon.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlist.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qalgorithms.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qiterator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qrefcount.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qarraydata.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbytearray.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstring.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qchar.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringlist.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregexp.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpixmap.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qrect.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmargins.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qpoint.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qcolor.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qrgb.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qshareddata.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qhash.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qpair.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcoreevent.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmetatype.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qisenum.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject_impl.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qimage.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtransform.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qmatrix.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpolygon.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvector.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qregion.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qdatastream.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qiodevice.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qline.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpainterpath.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpixelformat.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QWidget \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qwidget.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpalette.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qbrush.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfont.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontinfo.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qcursor.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qkeysequence.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qevent.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvariant.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmap.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qdebug.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtextstream.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlocale.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qset.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qurl.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qurlquery.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfile.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfiledevice.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvector2d.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtouchdevice.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject \
+		../untitled/button.h
+	/home/mirko/Qt/5.5/gcc_64/bin/moc $(DEFINES) -I/home/mirko/Qt/5.5/gcc_64/mkspecs/linux-g++ -I'/home/mirko/Dropbox/UNIPD/Programmazione ad Oggetti/oop_project/tempIdeas/untitled' -I/home/mirko/Qt/5.5/gcc_64/include -I/home/mirko/Qt/5.5/gcc_64/include/QtWidgets -I/home/mirko/Qt/5.5/gcc_64/include/QtGui -I/home/mirko/Qt/5.5/gcc_64/include/QtCore -I. ../untitled/button.h -o moc_button.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1356,6 +1381,9 @@ main.o: ../untitled/main.cpp /home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QApplic
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qglyphrun.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qrawfont.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontdatabase.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLabel \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlabel.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QPixmap \
 		../untitled/controller.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject \
 		../untitled/model.h \
@@ -1376,11 +1404,17 @@ main.o: ../untitled/main.cpp /home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QApplic
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QVBoxLayout \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLineEdit \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlineedit.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIntValidator \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregularexpression.h \
 		../untitled/button.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QList \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QImage \
+		../untitled/display.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../untitled/main.cpp
 
 kalkrpg.o: ../untitled/kalkrpg.cpp ../untitled/kalkrpg.h \
@@ -1510,6 +1544,9 @@ kalkrpg.o: ../untitled/kalkrpg.cpp ../untitled/kalkrpg.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qglyphrun.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qrawfont.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontdatabase.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLabel \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlabel.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QPixmap \
 		../untitled/controller.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject \
 		../untitled/model.h \
@@ -1530,124 +1567,18 @@ kalkrpg.o: ../untitled/kalkrpg.cpp ../untitled/kalkrpg.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QVBoxLayout \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLineEdit \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlineedit.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIntValidator \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregularexpression.h \
 		../untitled/button.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o kalkrpg.o ../untitled/kalkrpg.cpp
-
-button.o: ../untitled/button.cpp ../untitled/button.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsize.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qnamespace.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qglobal.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qconfig.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfeatures.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtypetraits.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsysinfo.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlogging.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qflags.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_mips.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_x86.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_unix.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmutex.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qnumeric.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qicon.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlist.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qalgorithms.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qiterator.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qrefcount.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qarraydata.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbytearray.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstring.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qchar.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringlist.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregexp.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpixmap.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qrect.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmargins.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qpoint.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qcolor.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qrgb.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qshareddata.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qhash.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qpair.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcoreevent.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmetatype.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qisenum.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject_impl.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qimage.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtransform.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qmatrix.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpolygon.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvector.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qregion.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qdatastream.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qiodevice.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qline.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpainterpath.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpixelformat.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QWidget \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qwidget.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpalette.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qbrush.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfont.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontinfo.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qcursor.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qkeysequence.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qevent.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvariant.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmap.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qdebug.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtextstream.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlocale.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qset.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qurl.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qurlquery.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfile.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfiledevice.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvector2d.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtouchdevice.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o ../untitled/button.cpp
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QList \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QImage \
+		../untitled/display.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o kalkrpg.o ../untitled/kalkrpg.cpp
 
 oggetto.o: ../untitled/oggetto.cpp ../untitled/oggetto.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o oggetto.o ../untitled/oggetto.cpp
@@ -1810,13 +1741,20 @@ controller.o: ../untitled/controller.cpp ../untitled/controller.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtextformat.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpen.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtextoption.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIntValidator \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregularexpression.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLabel \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlabel.h \
 		../untitled/button.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qicon.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
 		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qabstractbutton.h
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QList \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QImage
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controller.o ../untitled/controller.cpp
 
 model.o: ../untitled/model.cpp ../untitled/model.h \
@@ -2002,17 +1940,134 @@ displayandslider.o: ../untitled/displayandslider.cpp ../untitled/displayandslide
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtextformat.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpen.h \
 		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtextoption.h \
-		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QGridLayout
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QGridLayout \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIntValidator \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregularexpression.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QLabel \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qlabel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o displayandslider.o ../untitled/displayandslider.cpp
+
+display.o: ../untitled/display.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o display.o ../untitled/display.cpp
+
+button.o: ../untitled/button.cpp ../untitled/button.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QSize \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsize.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qnamespace.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qglobal.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qconfig.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfeatures.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtypetraits.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsysinfo.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlogging.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qflags.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_mips.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_x86.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qatomic_unix.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmutex.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qnumeric.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/QIcon \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qicon.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlist.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qalgorithms.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qiterator.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qrefcount.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qarraydata.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qbytearray.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstring.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qchar.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringlist.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qregexp.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpixmap.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qrect.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmargins.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qpoint.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qcolor.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qrgb.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qshareddata.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qhash.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qpair.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcoreevent.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmetatype.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qisenum.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qobject_impl.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qimage.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtransform.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qmatrix.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpolygon.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvector.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qregion.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qdatastream.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qiodevice.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qline.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpainterpath.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpixelformat.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QWidget \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qwidget.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qpalette.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qbrush.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfont.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontmetrics.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qfontinfo.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qcursor.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qkeysequence.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qevent.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qvariant.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qmap.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qdebug.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qtextstream.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qlocale.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qset.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qurl.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qurlquery.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfile.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/qfiledevice.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qvector2d.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtGui/qtouchdevice.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/QToolButton \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qtoolbutton.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/mirko/Qt/5.5/gcc_64/include/QtCore/QObject
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o ../untitled/button.cpp
 
 qrc_icons.o: qrc_icons.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_icons.o qrc_icons.cpp
 
 moc_kalkrpg.o: moc_kalkrpg.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_kalkrpg.o moc_kalkrpg.cpp
-
-moc_button.o: moc_button.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_button.o moc_button.cpp
 
 moc_controller.o: moc_controller.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_controller.o moc_controller.cpp
@@ -2022,6 +2077,9 @@ moc_model.o: moc_model.cpp
 
 moc_displayandslider.o: moc_displayandslider.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_displayandslider.o moc_displayandslider.cpp
+
+moc_button.o: moc_button.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_button.o moc_button.cpp
 
 ####### Install
 

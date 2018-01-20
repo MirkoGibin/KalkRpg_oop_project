@@ -63,7 +63,7 @@ public:
     }
 
     void ottieniDa(Erba* erba) {
-    /*    if(typeid(erba) == typeid(*erba)) {
+        if(typeid(erba) == typeid(*erba)) {
 
         } else {
             //lancia eccezione contro parametri illegali

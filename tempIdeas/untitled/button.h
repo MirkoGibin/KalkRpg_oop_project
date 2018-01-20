@@ -14,11 +14,13 @@ private:
     const QString testo_;
 
 public:
-    explicit Button(const char *path, const QString &testo, QWidget *parent = 0) : QToolButton(parent), path_(path), testo_(testo) {
+    explicit Button(const QString &testo, const char *path =0, QWidget *parent = 0) : QToolButton(parent), path_(path), testo_(testo) {
 
         setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-        setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        setIcon(QIcon(path));
+        if(path != 0) {
+            setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+            setIcon(QIcon(path));
+        }
         setText(testo);
         setObjectName(testo);
     } 
@@ -31,21 +33,19 @@ public:
     const char* getPath() const {
         return path_;
     }
-    ~Button() {
-        //delete[] path_;
-    }
+
     QString getTesto() const {
         return testo_;
     }
+
 public slots:
     void setEnabled() {
-        this->QToolButton::setEnabled(true);
-    }
-    void setDisabled() {
-        this->QToolButton::setDisabled(true);
+        QToolButton::setEnabled(true);
     }
 
-signals:
+    void setDisabled() {
+        QToolButton::setDisabled(true);
+    }
 };
 
 #endif // BUTTON_H

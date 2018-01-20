@@ -1,0 +1,28 @@
+button.h tutto regolare
+
+controller.h 
+* QImage da deallocare? in teoria riceve un puntatore ad un immagine, quindi non è affar suo.
+
+# in showSelectedObject:
+    * vengono fatte molte new DisplayAndSlider, che se ho ben capito vengono attaccate alla griglia. Quindi tutto ok
+
+# in getParametri:
+    * viene creata una lista, che viene restituita al chiamante. Tutto ok.
+
+displayandslider.h
+* slider : ridefinito distruttore
+* valore  : ridefinito distruttore
+* descrizione: ridefinito costruttore
+
+* quanto faccio new QIntValidator, la deallocazione avviene in automatico?
+* il QVBoxLayout viene passato tramite set layout, nessuna dealloacazione qui necessaria
+
+model.h
+
+* i new Oggetti() creati nei vari metodi come vengono deallocati?
+
+kalkrpg.h
+
+* i new button creati come vengono deallocati?
+* e objectLayout e operationLayout e simili? Vengono deallocati insieme perchè uniti al mainLayout?
+* controllare tutti i QImage, QSlider ecc che io (mirko) ho creato come supporto a quello che dovevo fare

@@ -14,22 +14,19 @@ class DisplayAndSlider : public QWidget {
 Q_OBJECT
 private:
     QSlider* slider;
-    const QString descrizione;
+    QLabel* descrizione;
     QLineEdit* valore;
 
 public:
-        DisplayAndSlider(QWidget*parent =0,const QString& descrizione_ =0) :
-        QWidget(parent), slider(new QSlider(Qt::Horizontal)), descrizione(descrizione_) {
+        DisplayAndSlider(QWidget*parent =0, const QString& descrizione_ =0) :
+        QWidget(parent), slider(new QSlider(Qt::Horizontal)), descrizione(new QLabel(descrizione_)), valore(new QLineEdit()) {
 
-        valore = new QLineEdit();
-
-        QLabel* descr = new QLabel(descrizione);
-        descr->setAlignment(Qt::AlignCenter);
+        descrizione->setAlignment(Qt::AlignCenter);
 
         QVBoxLayout* displayandslider=new QVBoxLayout;
         slider->setValue(0);
 
-        if(descrizione=="Livello" || descrizione=="Rarità") {
+        if(descrizione->text()=="Livello" || descrizione->text()=="Rarità") {
             slider->setValue(1);
             slider->setRange(1,10);
             valore->setValidator(new QIntValidator(1,10));
@@ -46,7 +43,7 @@ public:
 
         displayandslider->addWidget(valore);
         displayandslider->addWidget(slider);
-        displayandslider->addWidget(descr);
+        displayandslider->addWidget(descrizione);
         setLayout(displayandslider);
         //grigliaP->addLayout(displayandslider,0,0);
     }
@@ -61,8 +58,8 @@ public:
 public slots:
 
     void display(int n) {
-        QString x = QString::number(n);
-        valore->setText(x);
+        QString numero = QString::number(n);
+        valore->setText(numero);
     }
     int value() const {
         return slider->value();

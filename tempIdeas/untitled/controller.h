@@ -6,6 +6,8 @@
 #include"displayandslider.h"
 #include"button.h"
 #include<QSlider>
+#include<QList>
+#include<QImage>
 
 class Controller : public QObject {
 Q_OBJECT
@@ -14,24 +16,33 @@ private:
 
     //data for setting object
     QMap<QString, QSlider*> tempDataToSet;
+    QImage* image;
 
 public:
-    Controller() : modello(new Model()) {}
+    Controller(QImage* img =0) : modello(new Model()), image(img) {}
+
     ~Controller() {
         delete modello;
     }
+
     void flushControllerMemory() {
         tempDataToSet.clear();
     }
+
+    QImage* getImage() const {
+       return image;
+    }
+
+    void setImage(QImage* img) {
+        image = img;
+    }
+
+
 //------------------------------------------------------------------------
 public slots:
-    void showSelectedObject(QGridLayout* griglia, Button* pressedButton) {
+    void showSelectedObject(QGridLayout* griglia) {
 
-       /* Button*button=new Button(pressedButton->getPath(), pressedButton->getTesto(), griglia->parentWidget());
-
-        griglia->addWidget(button,0,0);*/
-
-        list<string>* listaStats=modello->getListaStatFromLastObj();
+       list<string>* listaStats=modello->getListaStatFromLastObj();
 
         auto it=listaStats->begin();
 
@@ -52,17 +63,30 @@ public slots:
             tempDataToSet.insert(name, displayandslider->getSlider());
             griglia->addWidget(displayandslider,2,counter++);
         }
+
         delete listaStats;
         //return griglia;
     }
+
     void setStatsOnObj() const {
         for(auto it=tempDataToSet.begin();it!=tempDataToSet.end();++it) {
             modello->setStatByName(it.key(), it.value()->value());
         }
     }
+
+    QList<QString>* getParametri() const {
+        QList<QString> *parametri = new QList<QString>;
+        for(auto it=tempDataToSet.begin();it!=tempDataToSet.end();++it) {
+            parametri->push_back(it.key() + '\n' + QString::number(it.value()->value()));
+        }
+        return parametri;
+    }
+
     int ricicla() {
         return modello->ricycleLast();
     }
+
+
 //----------------------------------------------------------------------------
     bool newErba() {
         int before=modello->getNumObjInMemory();
@@ -70,30 +94,35 @@ public slots:
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
+
     bool newUnguento() {
         int before=modello->getNumObjInMemory();
         modello->createUnguento();
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
+
     bool newPietra() {
         int before=modello->getNumObjInMemory();
         modello->createPietra();
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
+
     bool newCristallo() {
         int before=modello->getNumObjInMemory();
         modello->createCristallo();
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
+
     bool newOsso() {
         int before=modello->getNumObjInMemory();
         modello->createOsso();
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
+
     bool newAmuleto() {
         int before=modello->getNumObjInMemory();
         modello->createAmuleto();

@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     kalkrpg.cpp \
-    button.cpp \
     oggetto.cpp \
     pietra.cpp \
     cristallo.cpp \
@@ -36,7 +35,9 @@ SOURCES += main.cpp \
     amuleto.cpp \
     controller.cpp \
     model.cpp \
-    displayandslider.cpp
+    displayandslider.cpp \
+    display.cpp \
+    button.cpp
 
 HEADERS += \
     oggetto.h \
@@ -45,13 +46,14 @@ HEADERS += \
     #mathOp.h \
     erba.h \
     kalkrpg.h \
-    button.h \
     unguento.h \
     osso.h \
     amuleto.h \
     controller.h \
     model.h \
-    displayandslider.h
+    displayandslider.h \
+    display.h \
+    button.h
 
 RESOURCES += \
     icons.qrc

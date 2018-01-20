@@ -37,7 +37,7 @@ public:
     }
     //ottieniDa permette di creare un Unguento a partire da un amuleto TS(amuleto) == TD(amuleto)
     virtual void ottieniDa(Amuleto* amuleto) {
-        /*if(typeid(amuleto) == typeid(*amuleto)) {
+        if(typeid(amuleto) == typeid(*amuleto)) {
 
         }
         else {

@@ -18,26 +18,31 @@ Q_OBJECT
 public:
     //Model();
     list<Oggetto*> memoria;
+
 //------------------------------------------------------------
 public slots:
     list<string>* getListaStatFromLastObj() {
         return (memoria.back())->getListaStats();
     }
+
     unsigned int getNumObjInMemory() const {
         return memoria.size();
     }
+
     bool setStatByName(QString name, unsigned int value) const {
-        if(name=="livello")
+        if(name=="Livello")
             memoria.back()->setLivello(value);
-        else if(name=="rarità")
+        else if(name=="Rarità")
                 memoria.back()->setRarita(value);
         else
         memoria.back()->modifyStat(name.toStdString(), value);
         return true;
     }
+
     int ricycleLast() {
         return memoria.back()->ricicla();
     }
+
 //-----------------------------------------------------------
     void createErba() {
         memoria.push_back(new Erba());
@@ -57,8 +62,6 @@ public slots:
     void createAmuleto() {
         memoria.push_back(new Amuleto());
     }
-
-
 
 };
 

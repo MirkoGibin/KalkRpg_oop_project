@@ -8,37 +8,37 @@
 #include<QPixmap>
 #include"controller.h"
 #include "button.h"
+#include "display.h"
+
 
 class KalkRpg : public QWidget {
     Q_OBJECT
 private:
+    QWidget*child;
+    QGridLayout *mainLayout;
+    Controller* controller;
+    QGridLayout* expansionAndSetGrid;
+    QPushButton* confirm;
+    Display* display;
+
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
-        Button *button = new Button(path, testo);
+        Button *button = new Button(testo, path);
         connect(button, SIGNAL(clicked()), this, member);
-        connect(button,SIGNAL(clicked()),this,SLOT(showOndisplay()));
         connect(button, SIGNAL(clicked(bool)), this,SLOT(objectClicked()));
         connect(this, SIGNAL(objToClick(bool)),button, SLOT(setEnabled(bool)));
         return button;
     }
+
     Button* createOpButton(const char *path, const QString &testo, const char* member) {
-        Button *button = new Button(path, testo);
+        Button *button = new Button(testo, path);
         connect(button, SIGNAL(clicked()), this, member);
         connect(button, SIGNAL(clicked(bool)), this,SLOT(operationClicked()));
         connect(this, SIGNAL(opToClick(bool)),button, SLOT(setEnabled(bool)));
         return button;
     }
 
-    QWidget*parent;
-    QWidget*child;
-
-    QGridLayout *mainLayout;
-    Controller* controller;
-
-    QGridLayout* expansionAndSetGrid;
-    QPushButton*confirm;
-
 public:
-    KalkRpg(QWidget *parent = 0, Controller* controller_ =0) : QWidget(parent), controller(controller_) {
+    KalkRpg(QWidget *parent = 0, Controller* controller_ =0 ) : QWidget(parent), mainLayout(new QGridLayout), controller(controller_), display(new Display) {
 
         setWindowTitle("KalkRPG");
 
@@ -62,14 +62,11 @@ public:
         Button* riparaButton = createOpButton(":/icons/ripara.png", tr("Ripara"), SLOT(riparaClicked()));;
 
         //creazione del layout
-        mainLayout = new QGridLayout(); //è campo privato
 
         QGridLayout *objectLayout = new QGridLayout;
         QGridLayout *operationLayout = new QGridLayout;
 
         //display calcolatrice
-        QTextEdit* display = new QTextEdit();
-        display->setReadOnly(true);
 
         objectLayout->setSizeConstraint(QLayout::SetFixedSize);
         operationLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -98,9 +95,16 @@ public:
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
     }
+
+    ~KalkRpg() {
+        delete child;
+        delete mainLayout;
+        delete controller;
+        delete expansionAndSetGrid;
+        delete confirm;
+    }
 private slots:
     void showToSet(Button* pressedButton) {
-        pressedButton=qobject_cast<Button*>(sender());
 
         child=new QWidget(this);
         expansionAndSetGrid=new QGridLayout(child);
@@ -108,38 +112,41 @@ private slots:
         QLabel *image = new QLabel();
         image->setAlignment(Qt::AlignCenter);
         QPixmap *pix = new QPixmap(pressedButton->getPath());
-        pix->
         image->setPixmap(*pix);
 
         mainLayout->addWidget(child, 1, 0, 1, 3 );
 
-        controller->showSelectedObject(expansionAndSetGrid, pressedButton);
+        controller->showSelectedObject(expansionAndSetGrid);
+        controller->setImage(new QImage(pressedButton->getPath()));
 
         expansionAndSetGrid->addWidget(image, 0, 0, 1, expansionAndSetGrid->columnCount());
-        confirm=new QPushButton(tr("Conferma"),child);
+        confirm=new QPushButton(tr("Conferma"), child);
         confirm->setFixedSize(200,50);
 
         expansionAndSetGrid->addWidget(confirm, expansionAndSetGrid->rowCount(), 0, 1, expansionAndSetGrid->columnCount(), Qt::AlignCenter);
 
+       // connect(confirm, SIGNAL(confirmedParameters(Button*)), this, SLOT(confirmClicked(Button* )));
         connect(confirm, SIGNAL(clicked()), this, SLOT(confirmClicked()));
 
     }
-    void confirmClicked() {
-        //delete expansionAndSetGrid;
-        //mainLayout->removeItem(expansionAndSetGrid->itemAtPosition(1,1));
-        //mainLayout->removeItem(expansionAndSetGrid);
-        //qui bisognerebbe invocare il showToDisplay
+
+    void confirmClicked(/*Button* pressedButton*/) {
+
+        display->show(controller->getImage(), controller->getParametri());
+
         controller->setStatsOnObj();
 
         expansionAndSetGrid->parentWidget()->hide();
+
         this->adjustSize();
-        //delete expansionAndSetGrid;
-        //delete child;
+
         expansionAndSetGrid->deleteLater();
         child->deleteLater();
         confirm->deleteLater();
+
         controller->flushControllerMemory();
         emit opToClick(true);
+
     }
 
     void objectClicked() {
@@ -225,23 +232,11 @@ private slots:
     }
 
 
-    void showOndisplay() {
-        QString nome = sender()->objectName();
-        Button* button = findChild<Button*>(nome);
-        QTextEdit* display = findChild<QTextEdit*>();
-        QTextCursor cursor = display->textCursor();
-        cursor.setPosition(0);
-        QTextTable* table = cursor.insertTable(1,3);
-        table->cellAt(0, 0).firstCursorPosition().insertImage(QImage(button->getPath()));
-        for(int j=1; j<3; j++) {
-            table->cellAt(0, j).firstCursorPosition().insertText("Attacco \n 120");
-        }
-
-    }
 
 signals:
     void opToClick(bool);
     void objToClick(bool);
+
     //eventi di display
 
 
