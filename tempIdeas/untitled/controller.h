@@ -19,7 +19,7 @@ private:
     QImage* image;
 
 public:
-    Controller(QImage* img =0) : modello(new Model()), image(img) {}
+    Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0) {}
 
     ~Controller() {
         delete modello;
