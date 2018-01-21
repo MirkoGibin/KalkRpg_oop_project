@@ -3,6 +3,7 @@
 #include<map>
 #include<list>
 #include<algorithm>
+#include<mathOp.h>
 
 using std::list;
 using std::map;
@@ -20,13 +21,13 @@ private:
     /* parameters inside stats in Oggetto are:
      * spirito
      */
-/*    virtual void normalizza() {
+    virtual void normalizza() {
         if(getLivello()*150 <= calcolaMana()) {
             float percentualeRiduzione=getLivello()*150/calcolaMana();
             mathOp::doMultiplyOnMap(stats, percentualeRiduzione);
 
         }
-    }*/
+    }
 
 public:
     //costruttore di default
@@ -39,6 +40,9 @@ public:
     //distruttore virtuale
     virtual ~Oggetto() {}
 
+    virtual Oggetto* clone() const {
+        return new Oggetto(*this);
+    }
 
 //---------METODI DI SET
     virtual void setLivello(int livello) {
@@ -95,7 +99,7 @@ public:
     }
 
 
-/*
+
 //------------OPERAZIONI
     virtual void combina(Oggetto* object) {
         map<string, float> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
@@ -134,15 +138,12 @@ public:
         delete InvePar;
         delete InvMenoPar;
         delete ParMenoInv;
-
-        //elimino l'oggetto passato come parametro
-        delete object;
     }
 
 
 
     //operazioni
-*/
+
     virtual float ricicla() {
         return getSommaStats()*getLivello()*getRarita();
     }

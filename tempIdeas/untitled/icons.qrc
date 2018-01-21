@@ -15,5 +15,7 @@
         <file>icons/combina.png</file>
         <file>icons/ripara.png</file>
         <file>icons/amuleto.png</file>
+		<file>icons/answer.png</file>
+		<file>icons/confermaOp.png</file>
     </qresource>
 </RCC>

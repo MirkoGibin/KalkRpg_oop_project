@@ -4,6 +4,7 @@ INPUT(
 ./release\oggetto.o
 ./release\pietra.o
 ./release\cristallo.o
+./release\mathop.o
 ./release\erba.o
 ./release\unguento.o
 ./release\osso.o

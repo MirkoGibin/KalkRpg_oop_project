@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Controller_t {
-    QByteArrayData data[15];
-    char stringdata0[165];
+    QByteArrayData data[18];
+    char stringdata0[205];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,27 +32,31 @@ struct qt_meta_stringdata_Controller_t {
 static const qt_meta_stringdata_Controller_t qt_meta_stringdata_Controller = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "Controller"
-QT_MOC_LITERAL(1, 11, 18), // "showSelectedObject"
-QT_MOC_LITERAL(2, 30, 0), // ""
-QT_MOC_LITERAL(3, 31, 12), // "QGridLayout*"
-QT_MOC_LITERAL(4, 44, 7), // "griglia"
-QT_MOC_LITERAL(5, 52, 13), // "setStatsOnObj"
-QT_MOC_LITERAL(6, 66, 12), // "getParametri"
-QT_MOC_LITERAL(7, 79, 15), // "QList<QString>*"
-QT_MOC_LITERAL(8, 95, 7), // "ricicla"
-QT_MOC_LITERAL(9, 103, 7), // "newErba"
-QT_MOC_LITERAL(10, 111, 11), // "newUnguento"
-QT_MOC_LITERAL(11, 123, 9), // "newPietra"
-QT_MOC_LITERAL(12, 133, 12), // "newCristallo"
-QT_MOC_LITERAL(13, 146, 7), // "newOsso"
-QT_MOC_LITERAL(14, 154, 10) // "newAmuleto"
+QT_MOC_LITERAL(1, 11, 16), // "somethingChanged"
+QT_MOC_LITERAL(2, 28, 0), // ""
+QT_MOC_LITERAL(3, 29, 8), // "opIsDone"
+QT_MOC_LITERAL(4, 38, 18), // "showSelectedObject"
+QT_MOC_LITERAL(5, 57, 12), // "QGridLayout*"
+QT_MOC_LITERAL(6, 70, 7), // "griglia"
+QT_MOC_LITERAL(7, 78, 13), // "setStatsOnObj"
+QT_MOC_LITERAL(8, 92, 12), // "getParametri"
+QT_MOC_LITERAL(9, 105, 15), // "QList<QString>*"
+QT_MOC_LITERAL(10, 121, 7), // "ricicla"
+QT_MOC_LITERAL(11, 129, 7), // "newErba"
+QT_MOC_LITERAL(12, 137, 11), // "newUnguento"
+QT_MOC_LITERAL(13, 149, 9), // "newPietra"
+QT_MOC_LITERAL(14, 159, 12), // "newCristallo"
+QT_MOC_LITERAL(15, 172, 7), // "newOsso"
+QT_MOC_LITERAL(16, 180, 10), // "newAmuleto"
+QT_MOC_LITERAL(17, 191, 13) // "sliderChanged"
 
     },
-    "Controller\0showSelectedObject\0\0"
-    "QGridLayout*\0griglia\0setStatsOnObj\0"
-    "getParametri\0QList<QString>*\0ricicla\0"
-    "newErba\0newUnguento\0newPietra\0"
-    "newCristallo\0newOsso\0newAmuleto"
+    "Controller\0somethingChanged\0\0opIsDone\0"
+    "showSelectedObject\0QGridLayout*\0griglia\0"
+    "setStatsOnObj\0getParametri\0QList<QString>*\0"
+    "ricicla\0newErba\0newUnguento\0newPietra\0"
+    "newCristallo\0newOsso\0newAmuleto\0"
+    "sliderChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -62,29 +66,40 @@ static const uint qt_meta_data_Controller[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       3,       // signalCount
+
+ // signals: name, argc, parameters, tag, flags
+       1,    1,   84,    2, 0x06 /* Public */,
+       1,    0,   87,    2, 0x26 /* Public | MethodCloned */,
+       3,    0,   88,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   64,    2, 0x0a /* Public */,
-       5,    0,   67,    2, 0x0a /* Public */,
-       6,    0,   68,    2, 0x0a /* Public */,
-       8,    0,   69,    2, 0x0a /* Public */,
-       9,    0,   70,    2, 0x0a /* Public */,
-      10,    0,   71,    2, 0x0a /* Public */,
-      11,    0,   72,    2, 0x0a /* Public */,
-      12,    0,   73,    2, 0x0a /* Public */,
-      13,    0,   74,    2, 0x0a /* Public */,
-      14,    0,   75,    2, 0x0a /* Public */,
+       4,    1,   89,    2, 0x0a /* Public */,
+       7,    0,   92,    2, 0x0a /* Public */,
+       8,    0,   93,    2, 0x0a /* Public */,
+      10,    0,   94,    2, 0x0a /* Public */,
+      11,    0,   95,    2, 0x0a /* Public */,
+      12,    0,   96,    2, 0x0a /* Public */,
+      13,    0,   97,    2, 0x0a /* Public */,
+      14,    0,   98,    2, 0x0a /* Public */,
+      15,    0,   99,    2, 0x0a /* Public */,
+      16,    0,  100,    2, 0x0a /* Public */,
+      17,    1,  101,    2, 0x0a /* Public */,
+
+ // signals: parameters
+    QMetaType::Void, QMetaType::Bool,    2,
+    QMetaType::Void,
+    QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, 0x80000000 | 3,    4,
+    QMetaType::Void, 0x80000000 | 5,    6,
     QMetaType::Void,
-    0x80000000 | 7,
+    0x80000000 | 9,
     QMetaType::Int,
     QMetaType::Bool,
     QMetaType::Bool,
@@ -92,6 +107,7 @@ static const uint qt_meta_data_Controller[] = {
     QMetaType::Bool,
     QMetaType::Bool,
     QMetaType::Bool,
+    QMetaType::Void, QMetaType::Int,    2,
 
        0        // eod
 };
@@ -102,36 +118,57 @@ void Controller::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Controller *_t = static_cast<Controller *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->showSelectedObject((*reinterpret_cast< QGridLayout*(*)>(_a[1]))); break;
-        case 1: _t->setStatsOnObj(); break;
-        case 2: { QList<QString>* _r = _t->getParametri();
+        case 0: _t->somethingChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 1: _t->somethingChanged(); break;
+        case 2: _t->opIsDone(); break;
+        case 3: _t->showSelectedObject((*reinterpret_cast< QGridLayout*(*)>(_a[1]))); break;
+        case 4: _t->setStatsOnObj(); break;
+        case 5: { QList<QString>* _r = _t->getParametri();
             if (_a[0]) *reinterpret_cast< QList<QString>**>(_a[0]) = std::move(_r); }  break;
-        case 3: { int _r = _t->ricicla();
+        case 6: { int _r = _t->ricicla();
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 4: { bool _r = _t->newErba();
+        case 7: { bool _r = _t->newErba();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 5: { bool _r = _t->newUnguento();
+        case 8: { bool _r = _t->newUnguento();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 6: { bool _r = _t->newPietra();
+        case 9: { bool _r = _t->newPietra();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 7: { bool _r = _t->newCristallo();
+        case 10: { bool _r = _t->newCristallo();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 8: { bool _r = _t->newOsso();
+        case 11: { bool _r = _t->newOsso();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 9: { bool _r = _t->newAmuleto();
+        case 12: { bool _r = _t->newAmuleto();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
+        case 13: _t->sliderChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 0:
+        case 3:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
                 *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QGridLayout* >(); break;
             }
             break;
+        }
+    } else if (_c == QMetaObject::IndexOfMethod) {
+        int *result = reinterpret_cast<int *>(_a[0]);
+        void **func = reinterpret_cast<void **>(_a[1]);
+        {
+            typedef void (Controller::*_t)(bool );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Controller::somethingChanged)) {
+                *result = 0;
+                return;
+            }
+        }
+        {
+            typedef void (Controller::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Controller::opIsDone)) {
+                *result = 2;
+                return;
+            }
         }
     }
 }
@@ -161,15 +198,28 @@ int Controller::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 14;
     }
     return _id;
+}
+
+// SIGNAL 0
+void Controller::somethingChanged(bool _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 2
+void Controller::opIsDone()
+{
+    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
