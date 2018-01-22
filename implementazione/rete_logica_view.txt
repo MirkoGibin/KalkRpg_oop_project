@@ -1,0 +1,16 @@
+CAMPI PRIVATI:
+bool waitingForOp;
+- si e' in attesa di una qualsiasi operazione
+bool waitingForObj;
+- si e' in attesa di un qualsiasi oggetto
+bool doing
+- se la calcolatrice sta facendo qualcosa. Serve a teneree
+
+SIGNALS:
+controller:
+- somethingChanged(bool)
+-- viene emesso se un qualsiasi slider dell'oggetto che si sta andando a creare viene cambiato. Utile per il comando "crea"
+
+kalkrpg:
+- doingStuff(bool);
+-- Viene emesso se si sta facendo una qualsiasi operazione. Serve per capire a che stato il sistema e': ovvero, se e' allo stato iniziale o in un altro.

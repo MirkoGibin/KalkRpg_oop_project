@@ -19,7 +19,9 @@ private:
     QImage* image;
 
 public:
-    Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0) {}
+    Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0) {
+        connect(modello, SIGNAL(nothingToDelete()), this, SIGNAL(nothingToDelete()));
+    }
 
     ~Controller() {
         delete modello;
@@ -44,10 +46,6 @@ public:
         modello->clearMemory();
     }
 
-    void combina() const {
-        modello->combina();
-        connect(modello, SIGNAL(opDone()), this, SIGNAL(opIsDone()));
-    }
     QImage* getResultImage() const {
         return modello->getImageFromLastObj();
     }
@@ -60,7 +58,14 @@ public:
         delete values;
         return parametri;
     }
+    void deleteLastObj() {
+        modello->deleteLast();
+    }
 
+    void combina() const {
+        modello->combina();
+        connect(modello, SIGNAL(opDone(bool)), this, SIGNAL(opIsDone(bool)));
+    }
 
 
 //------------------------------------------------------------------------
@@ -72,7 +77,7 @@ public slots:
         auto it=listaStats->begin();
 
         int counter=0;
-        DisplayAndSlider* displayandslider;
+        DisplayAndSlider* displayandslider =0;
 
         for(; it!=listaStats->end();++it) {
             QString name=(*it);
@@ -154,7 +159,8 @@ public slots:
 
 signals:
     void somethingChanged(bool =false);
-    void opIsDone();
+    void opIsDone(bool =false);
+    void nothingToDelete();
 };
 
 #endif // CONTROLLER_H
