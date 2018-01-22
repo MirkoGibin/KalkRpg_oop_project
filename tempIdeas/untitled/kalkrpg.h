@@ -22,9 +22,9 @@ private:
     Display* display;
     Button*opButton;
 
-    bool opIsWaitingOperand =false;
-    bool settingObj =false;
-    bool opIsRunning =false;
+    bool opIsWaitingOperand;
+    bool settingObj;
+    bool opIsRunning;
 
 
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
@@ -138,7 +138,6 @@ public:
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
         //connects per la gestione dei pulsanti della view
-        connect(this, SIGNAL(anotherObjNeeded()), this, SLOT(opChoosenState()));
         connect(controller, SIGNAL(nothingToDelete()), eraseButton, SLOT(setDisabled()));
     }
 
@@ -183,7 +182,7 @@ private slots:
         expansionAndSetGrid->addWidget(confirmObj, expansionAndSetGrid->rowCount(), 0, 1, expansionAndSetGrid->columnCount(), Qt::AlignCenter);
         connect(confirmObj, SIGNAL(clicked()), this, SLOT(confirmObjClicked()));
 
-        settingObjState();
+        settingObjState(); //GOTO
     }
 
     void showResult() {
@@ -229,9 +228,9 @@ private slots:
         if(opIsRunning) {
             controller->combina();
             opIsWaitingOperand=false;
-            opIsRunning=false;
             settingObj=false;
             opButton=nullptr;
+            showResult();
         }
     }
     void estraiClicked() {
@@ -262,31 +261,33 @@ private slots:
 
         settingObj=false;
         if(opIsWaitingOperand && !settingObj && opIsRunning) {
-            confirmOpClickedState();
+            opIsWaitingOperand=false;
+            confirmOpToClickState();
         }
         else objIsCreatedState();
     }
 
     void confirmOpClicked() {
-        opButton->click();
-        opIsWaitingOperand=false;
-        opIsRunning=false;
-        opButton=qobject_cast<Button*>(sender());
-        display->show(opButton->getPath());
-        showResult();
-        startState();
-
-
+        opButton->setEnabled();
+        opButton->animateClick();
+        //opIsWaitingOperand=false;
+        //opIsRunning=true;
+        display->show(qobject_cast<Button*>(sender())->getPath());
+        //startState();
+        objIsCreatedState();
     }
     void objectClicked() {
     }
     void operationClicked() {
-        opIsWaitingOperand=true;
-        opIsRunning=true;
-        emit anotherObjNeeded();
-        opButton=qobject_cast<Button*>(sender());
-        display->show(opButton->getPath());
-        opChoosenState();
+        if(!opIsRunning) {
+            opIsWaitingOperand=true;
+            opIsRunning=true;
+            opButton=qobject_cast<Button*>(sender());
+            display->show(opButton->getPath());
+            opChoosenState();
+        } else {
+            opIsRunning=false; //e' arrivato alla fine del processo
+        }
     }
     void backspaceClicked() {
         if(!opIsRunning && !opIsWaitingOperand && settingObj) { //from startState
@@ -300,6 +301,7 @@ private slots:
             startState();
         }
         else if(opIsWaitingOperand && opIsRunning && !settingObj) { //from opChoosenState
+            //connect(opButton, SIGNAL(clicked()), this, SLOT(operationClicked()));
             opButton=nullptr;
             opIsWaitingOperand=false;
             settingObj=false;
@@ -337,6 +339,9 @@ private slots:
 
 //AUTOMA STATES: --------------------------------------------------------------
     void startState() {
+        opIsWaitingOperand=false;
+        settingObj=false;
+        opIsRunning=false;
         emit objToClick(true);
         emit opToClick(false);
         emit confirmOpToClick(false);
@@ -377,7 +382,7 @@ private slots:
         emit eraseToClick(true);
     }
 
-    void confirmOpClickedState() {
+    void confirmOpToClickState() {
         objToClick(false);
         opToClick(false);
         confirmOpToClick(true);

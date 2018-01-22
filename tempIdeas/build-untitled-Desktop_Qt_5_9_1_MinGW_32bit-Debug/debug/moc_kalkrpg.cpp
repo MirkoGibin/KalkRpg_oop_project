@@ -70,7 +70,7 @@ QT_MOC_LITERAL(35, 497, 15), // "settingObjState"
 QT_MOC_LITERAL(36, 513, 17), // "objIsCreatedState"
 QT_MOC_LITERAL(37, 531, 14), // "opChoosenState"
 QT_MOC_LITERAL(38, 546, 20), // "settingObjForOpState"
-QT_MOC_LITERAL(39, 567, 21) // "confirmOpClickedState"
+QT_MOC_LITERAL(39, 567, 21) // "confirmOpToClickState"
 
     },
     "KalkRpg\0confirmObjToClick\0\0confirmOpToClick\0"
@@ -88,7 +88,7 @@ QT_MOC_LITERAL(39, 567, 21) // "confirmOpClickedState"
     "operationClicked\0backspaceClicked\0"
     "eraseClicked\0startState\0settingObjState\0"
     "objIsCreatedState\0opChoosenState\0"
-    "settingObjForOpState\0confirmOpClickedState"
+    "settingObjForOpState\0confirmOpToClickState"
 };
 #undef QT_MOC_LITERAL
 
@@ -229,7 +229,7 @@ void KalkRpg::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 32: _t->objIsCreatedState(); break;
         case 33: _t->opChoosenState(); break;
         case 34: _t->settingObjForOpState(); break;
-        case 35: _t->confirmOpClickedState(); break;
+        case 35: _t->confirmOpToClickState(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {

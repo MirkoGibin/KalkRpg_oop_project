@@ -105,7 +105,7 @@ public:
             QImage* toInsert=new QImage((*immagini.value(counter)));
             immagini.insert(++counter, toInsert);
         }
-        emit opDone(true);
+        emit opDone();
     }
     void createErba() {
         memoria.push_front(new Erba());
@@ -126,7 +126,7 @@ public:
         memoria.push_front(new Amuleto());
     }
 signals:
-    void opDone(bool =false);
+    void opDone();
     void nothingToDelete();
 
 };

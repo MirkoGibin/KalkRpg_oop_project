@@ -64,7 +64,7 @@ public:
 
     void combina() const {
         modello->combina();
-        connect(modello, SIGNAL(opDone(bool)), this, SIGNAL(opIsDone(bool)));
+        connect(modello, SIGNAL(opDone()), this, SIGNAL(opIsDone()));
     }
 
 
@@ -159,7 +159,7 @@ public slots:
 
 signals:
     void somethingChanged(bool =false);
-    void opIsDone(bool =false);
+    void opIsDone();
     void nothingToDelete();
 };
 
