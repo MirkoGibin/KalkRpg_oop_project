@@ -271,8 +271,12 @@ private slots:
         opButton->click();
         opIsWaitingOperand=false;
         opIsRunning=false;
+        opButton=qobject_cast<Button*>(sender());
+        display->show(opButton->getPath());
         showResult();
         startState();
+
+
     }
     void objectClicked() {
     }
@@ -326,7 +330,6 @@ private slots:
                 settingObj=false;
             }
             controller->clearMemory();
-            display->removeAll();
         }
         startState();
         display->clear();

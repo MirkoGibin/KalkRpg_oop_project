@@ -61,6 +61,7 @@ public:
         QImage image(path);
         history.push_back(cursor);
         cursor.insertImage(image);
+        cursor.insertText("\n");
 
         moveCursor(QTextCursor::End);
     }
