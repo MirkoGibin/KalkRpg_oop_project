@@ -18,8 +18,11 @@ private:
     QGridLayout *mainLayout;
     Controller* controller;
     QGridLayout* expansionAndSetGrid;
-    QPushButton* confirm;
+    QPushButton* confirmObj;
+    QPushButton* confirmOp;
     Display* display;
+
+    bool opIsWaiting =false;
 
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(testo, path);
@@ -29,22 +32,14 @@ private:
         return button;
     }
 
-    Button* createBinButton(const char *path, const QString &testo, const char* member) {
+    Button* createOpButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(testo, path);
         connect(button, SIGNAL(clicked()), this, member);
+        connect(button, SIGNAL(clicked(bool)), this,SLOT(operationClicked()));
+        connect(this, SIGNAL(opToClick(bool)),button, SLOT(setEnabled(bool)));
         button->setDisabled();
-        connect(button, SIGNAL(clicked(bool)), this,SLOT(unaOpClicked()));
-        connect(this, SIGNAL(binToClick(bool)),button, SLOT(setEnabled(bool)));
         return button;
     }
-    Button* createUnaButton(const char *path, const QString &testo, const char* member) {
-        Button *button = new Button(testo, path);
-        connect(button, SIGNAL(clicked()), this, member);
-        connect(button, SIGNAL(clicked(bool)), this,SLOT(binOpClicked()));
-        connect(this, SIGNAL(unaToClick(bool)),button, SLOT(setEnabled(bool)));
-        return button;
-    }
-
 
 public:
     KalkRpg(QWidget *parent = 0, Controller* controller_ =0 ) : QWidget(parent), mainLayout(new QGridLayout), controller(controller_), display(new Display) {
@@ -60,17 +55,18 @@ public:
         Button* amuletoButton = createObjButton(":/icons/amuleto.png", tr("Amuleto"), SLOT(amuletoClicked()));
 
         //creazione pulsanti operazioni unarie
-        Button* creaButton = createUnaButton(":/icons/crea.png", tr("Crea"), SLOT(creaClicked()));
-        Button* riciclaButton = createUnaButton(":/icons/ricicla.png", tr("Ricicla"), SLOT(riciclaClicked()));
-        Button* potenziaButton = createUnaButton(":/icons/potenzia.png", tr("Potenzia"), SLOT(potenziaClicked()));
+        Button* creaButton = createOpButton(":/icons/crea.png", tr("Crea"), SLOT(creaClicked()));
+        connect(this, SIGNAL(doingStuff(bool)), creaButton, SLOT(setDisabled(bool)));
+        Button* riciclaButton = createOpButton(":/icons/ricicla.png", tr("Ricicla"), SLOT(riciclaClicked()));
+        Button* potenziaButton = createOpButton(":/icons/potenzia.png", tr("Potenzia"), SLOT(potenziaClicked()));
 
         //creazione pulsanti operazioni binarie
-        Button* combinaButton = createBinButton(":/icons/combina.png", tr("Combina"), SLOT(combinaClicked()));
-        Button* estraiButton = createBinButton(":/icons/estrai.png", tr("Estrai"), SLOT(estraiClicked()));
-        Button* trasformaButton = createBinButton(":/icons/trasforma.png", tr("Trasforma"), SLOT(trasformaClicked()));
-        Button* distribuisciButton = createBinButton(":/icons/distribuisci.png", tr("Distribuisci"), SLOT(distribuisciClicked()));;
-        Button* aumentaProbabilitaButton = createBinButton(":/icons/aumentaProbabilita.png", tr("Aumenta Probabilita"), SLOT(aumentaProbabilitaClicked()));;
-        Button* riparaButton = createBinButton(":/icons/ripara.png", tr("Ripara"), SLOT(riparaClicked()));;
+        Button* combinaButton = createOpButton(":/icons/combina.png", tr("Combina"), SLOT(combinaClicked()));
+        Button* estraiButton = createOpButton(":/icons/estrai.png", tr("Estrai"), SLOT(estraiClicked()));
+        Button* trasformaButton = createOpButton(":/icons/trasforma.png", tr("Trasforma"), SLOT(trasformaClicked()));
+        Button* distribuisciButton = createOpButton(":/icons/distribuisci.png", tr("Distribuisci"), SLOT(distribuisciClicked()));;
+        Button* aumentaProbabilitaButton = createOpButton(":/icons/aumentaProbabilita.png", tr("Aumenta\nProbabilita"), SLOT(aumentaProbabilitaClicked()));;
+        Button* riparaButton = createOpButton(":/icons/ripara.png", tr("Ripara"), SLOT(riparaClicked()));;
 
         //creazione pulsanti gestione memoria
         Button*backspaceButton=new Button(tr("Backspace"), ":/icons/backspace.png");
@@ -80,9 +76,15 @@ public:
         Button*eraseButton=new Button(tr("Cancella\nMemoria"),":/icons/cancella.png");
         connect(eraseButton, SIGNAL(clicked()), this, SLOT(eraseClicked()));
         connect(this, SIGNAL(eraseToClick(bool)), eraseButton, SLOT(setEnabled(bool)));
+        connect(this, SIGNAL(doingStuff(bool)), eraseButton, SLOT(setDisabled(bool)));
+
+        Button*confermaOpButton=new Button(tr("Conferma\nOperazione"),":/icons/confermaOp.png");
+        connect(confermaOpButton, SIGNAL(clicked()), this, SLOT(confirmOpClicked()));
+        connect(this, SIGNAL(confirmOpToClick(bool)), confermaOpButton, SLOT(setEnabled(bool)));
 
         backspaceButton->setDisabled();
         eraseButton->setDisabled();
+        confermaOpButton->setEnabled();
 
         //creazione del layout
         QGridLayout *objectLayout = new QGridLayout;
@@ -114,6 +116,7 @@ public:
 
         memoryLayout->addWidget(backspaceButton, 0,0);
         memoryLayout->addWidget(eraseButton,1,0);
+        memoryLayout->addWidget(confermaOpButton, 2, 0);
 
         mainLayout->addLayout(objectLayout, 0, 0);
         mainLayout->addLayout(operationLayout, 0, 2);
@@ -122,6 +125,8 @@ public:
 
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
+        //connects per la gestione dei pulsanti della view
+        connect(this, SIGNAL(anotherObjNeeded()), this, SLOT(setStartState()));
     }
 
     ~KalkRpg() {
@@ -130,7 +135,7 @@ public:
         delete controller;
         delete expansionAndSetGrid;
         delete display;
-        delete confirm;
+        delete confirmObj;
     }
 private slots:
     void showToSet(Button* pressedButton) {
@@ -149,82 +154,70 @@ private slots:
         controller->setImage(new QImage(pressedButton->getPath()));
 
         expansionAndSetGrid->addWidget(image, 0, 0, 1, expansionAndSetGrid->columnCount());
-        confirm=new QPushButton(tr("Conferma"), child);
-        confirm->setFixedSize(200,50);
+        confirmObj=new QPushButton(tr("Conferma"), child);
+        confirmObj->setFixedSize(200,50);
 
-        expansionAndSetGrid->addWidget(confirm, expansionAndSetGrid->rowCount(), 0, 1, expansionAndSetGrid->columnCount(), Qt::AlignCenter);
+        expansionAndSetGrid->addWidget(confirmObj, expansionAndSetGrid->rowCount(), 0, 1, expansionAndSetGrid->columnCount(), Qt::AlignCenter);
 
-       // connect(confirm, SIGNAL(confirmedParameters(Button*)), this, SLOT(confirmClicked(Button* )));
-        connect(confirm, SIGNAL(clicked()), this, SLOT(confirmClicked()));
+        connect(confirmObj, SIGNAL(clicked()), this, SLOT(confirmObjClicked()));
 
     }
 
-    void confirmClicked(/*Button* pressedButton*/) {
-
-        display->show(controller->getImage(), controller->getParametri());
-
-        controller->setStatsOnObj();
-
-        expansionAndSetGrid->parentWidget()->hide();
-
-        this->adjustSize();
-
-        expansionAndSetGrid->deleteLater();
-        child->deleteLater();
-        confirm->deleteLater();
-
+    void showResult() {
+        if(controller->getNumObjInMemory()) {
+        display->show(controller->getResultImage(), controller->getResultParametri());
         controller->flushControllerMemory();
-        emit unaToClick(true);
-
+        }
+        emit objToClick(true);
     }
+
 
     //eventi relativi agli oggetti
     void erbaClicked() {
-        emit unaToClick(false);
+        emit opToClick(false);
+        emit doingStuff(true);
         controller->newErba();
         showToSet(qobject_cast<Button*>(sender()));
         return;
     }
     void unguentoClicked(){
-        emit unaToClick(false);
-        controller->newUnguento();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
+
     }
     void pietraClicked(){
-        emit unaToClick(false);
-        controller->newPietra();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
+
     }
     void cristalloClicked() {
-        emit unaToClick(false);
-        controller->newCristallo();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
+
     }
     void ossoClicked() {
-        emit unaToClick(false);
-        controller->newOsso();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
+
     }
     void amuletoClicked() {
-        emit unaToClick(false);
+        emit opToClick(false);
+        emit doingStuff(true);
         controller->newAmuleto();
         showToSet(qobject_cast<Button*>(sender()));
         return;
     }
 
     //eventi relativi alle operazioni
-    void creaClicked() {return;}
-
+    void creaClicked() {
+        return;
+    }
 
     void riciclaClicked() {
         return;
     }
     void combinaClicked() {
-        return;
+        if(!opIsWaiting) {
+            emit anotherObjNeeded();
+            opIsWaiting=true;
+        }
+        else {
+            controller->combina();
+            emit confirmOpToClick(true);
+            opIsWaiting=false;
+        }
     }
     void estraiClicked() {
         return;
@@ -246,33 +239,65 @@ private slots:
     }
 
     //SLOTS FOR MEMORY MANAGEMENT
-    void objectClicked() {
-        emit objToClick(false);
-    }
-    void unaOpClicked() {
-        emit unaToClick(false);
-        emit objToClick(true);
-    }
-    void binOpClicked() {
-        emit unaToClick(false);
-        emit objToClick(true);
-    }
-    void backspaceClicked() {
-        return;
-    }
-    void eraseClicked() {
-        return;
+    void confirmObjClicked(/*Button* pressedButton*/) {
+
+        display->show(controller->getImage(), controller->getParametri());
+        controller->setStatsOnObj();
+
+        expansionAndSetGrid->parentWidget()->hide();
+
+        this->adjustSize();
+
+        expansionAndSetGrid->deleteLater();
+        child->deleteLater();
+        confirmObj->deleteLater();
+
+        controller->flushControllerMemory();
+        emit opToClick(true);
+        if(opIsWaiting) combinaClicked();
     }
 
+    void confirmOpClicked() {
+        showResult();
+    }
+    void objectClicked() {
+    }
+    void operationClicked() {
+    }
+    void backspaceClicked() {
+    }
+    void eraseClicked() {
+    }
+    void setStartState() {
+        emit objToClick(true);
+        emit opToClick(false);
+
+        if(opIsWaiting)
+            emit backspaceToClick(true);
+        else
+            emit backspaceToClick(false);
+
+        if(controller->getNumObjInMemory()) {
+            emit eraseToClick(true);
+        }
+        else {
+            emit eraseToClick(false);
+        }
+    }
 
 
 signals:
-    void unaToClick(bool);
-    void binToClick(bool);
+    void confirmObjToClick(bool);
+    void confirmOpToClick(bool);
+    void opToClick(bool);
     void objToClick(bool);
     void backspaceToClick(bool);
     void eraseToClick(bool);
 
+    void anotherObjNeeded();
+
+
+    void doingStuff(bool);
     //eventi di display
 
 

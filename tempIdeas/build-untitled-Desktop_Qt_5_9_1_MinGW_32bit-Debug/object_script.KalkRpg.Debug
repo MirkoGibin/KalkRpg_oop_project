@@ -4,6 +4,7 @@ INPUT(
 ./debug\oggetto.o
 ./debug\pietra.o
 ./debug\cristallo.o
+./debug\mathop.o
 ./debug\erba.o
 ./debug\unguento.o
 ./debug\osso.o

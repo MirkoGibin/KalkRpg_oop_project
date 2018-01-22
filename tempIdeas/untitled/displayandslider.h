@@ -47,7 +47,6 @@ public:
         displayandslider->addWidget(slider);
         displayandslider->addWidget(descrizione);
         setLayout(displayandslider);
-        //grigliaP->addLayout(displayandslider,0,0);
     }
     ~DisplayAndSlider() {
         delete slider;

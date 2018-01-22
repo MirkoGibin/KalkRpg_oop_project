@@ -28,7 +28,7 @@ SOURCES += main.cpp \
     oggetto.cpp \
     pietra.cpp \
     cristallo.cpp \
-    #mathop.cpp \
+    mathop.cpp \
     erba.cpp \
     unguento.cpp \
     osso.cpp \
@@ -43,7 +43,7 @@ HEADERS += \
     oggetto.h \
     pietra.h \
     cristallo.h \
-    #mathOp.h \
+    mathOp.h \
     erba.h \
     kalkrpg.h \
     unguento.h \

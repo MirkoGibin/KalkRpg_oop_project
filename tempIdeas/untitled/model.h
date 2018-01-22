@@ -1,8 +1,12 @@
 #ifndef MODEL_H
 #define MODEL_H
 #include<QObject>
-#include<string>
-#include<vector>
+#include<QMap>
+#include<QString>
+#include<QImage>
+#include<QSlider>
+#include<QList>
+#include<list>
 #include"oggetto.h"
 #include"erba.h"
 #include"unguento.h"
@@ -12,17 +16,33 @@
 #include"amuleto.h"
 
 
-using std::vector; using std::string;
+using std::vector; using std::string; using std::list;
 class Model : public QObject {
-Q_OBJECT
+    Q_OBJECT
+private:
+    unsigned int counter;
+    QMap<unsigned int, QImage*> immagini;
+    QList<Oggetto*> memoria;
+
 public:
-    //Model();
-    list<Oggetto*> memoria;
+    Model() : counter(0) {}
 
 //------------------------------------------------------------
-public slots:
-    list<string>* getListaStatFromLastObj() {
-        return (memoria.back())->getListaStats();
+    QList<QString>* getListaStatsFromLastObj() {
+        return new QList<QString>(getLastObj()->keys());
+    }
+    QImage* getImageFromLastObj() {
+        return immagini.value(counter);
+    }
+
+    QMap<QString, int>* getLastObj() {
+        QMap<QString, int>* values=new QMap<QString, int>();
+        values->insert("Livello", memoria.front()->getLivello());
+        values->insert("Rarità", memoria.front()->getRarita());
+        list<string>* objListaStats=memoria.front()->getListaStats();
+        for(auto it=objListaStats->begin();it!=objListaStats->end();++it)
+            values->insert(QString::fromStdString(*it), memoria.front()->getValoreStat(*it));
+        return values;
     }
 
     unsigned int getNumObjInMemory() const {
@@ -31,37 +51,58 @@ public slots:
 
     bool setStatByName(QString name, unsigned int value) const {
         if(name=="Livello")
-            memoria.back()->setLivello(value);
+            memoria.front()->setLivello(value);
         else if(name=="Rarità")
-                memoria.back()->setRarita(value);
+                memoria.front()->setRarita(value);
         else
-        memoria.back()->modifyStat(name.toStdString(), value);
+        memoria.front()->modifyStat(name.toStdString(), value);
         return true;
     }
 
-    int ricycleLast() {
-        return memoria.back()->ricicla();
+    void setImage(QImage* immagine) {
+        counter++;
+        immagini.insert(counter, new QImage(*immagine));
     }
+    int ricycleLast() {
+        return memoria.front()->ricicla();
+    }
+    void clearMemory() {
+        memoria.clear();
+    }
+
+    void combina() {
+        auto it=memoria.begin();
+        it++;
+        Oggetto* nuovo=(memoria.front())->clone();
+        nuovo->combina(*it);
+        memoria.push_front(nuovo);
+        QImage* toInsert=new QImage((*immagini.value(counter)));
+        immagini.insert(++counter, toInsert);
+        emit opDone();
+    }
+
 
 //-----------------------------------------------------------
     void createErba() {
-        memoria.push_back(new Erba());
+        memoria.push_front(new Erba());
     }
     void createUnguento() {
-        memoria.push_back(new Unguento());
+        memoria.push_front(new Unguento());
     }
     void createPietra() {
-        memoria.push_back(new Pietra());
+        memoria.push_front(new Pietra());
     }
     void createCristallo() {
-        memoria.push_back(new Cristallo());
+        memoria.push_front(new Cristallo());
     }
     void createOsso() {
-        memoria.push_back(new Osso());
+        memoria.push_front(new Osso());
     }
     void createAmuleto() {
-        memoria.push_back(new Amuleto());
+        memoria.push_front(new Amuleto());
     }
+signals:
+    void opDone();
 
 };
 

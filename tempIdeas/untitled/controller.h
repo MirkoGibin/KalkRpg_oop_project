@@ -36,31 +36,49 @@ public:
     void setImage(QImage* img) {
         image = img;
     }
+    int getNumObjInMemory() const {
+        return modello->getNumObjInMemory();
+    }
+
+    void clearMemory() const {
+        modello->clearMemory();
+    }
+
+    void combina() const {
+        modello->combina();
+        connect(modello, SIGNAL(opDone()), this, SIGNAL(opIsDone()));
+    }
+    QImage* getResultImage() const {
+        return modello->getImageFromLastObj();
+    }
+    QList<QString>* getResultParametri() const {
+        QList<QString> *parametri=new QList<QString>();
+        QMap<QString, int>* values=modello->getLastObj();
+        for(auto it=values->begin();it!=values->end();++it) {
+            parametri->push_back(it.key() + '\n' + QString::number(it.value()));
+        }
+        delete values;
+        return parametri;
+    }
+
 
 
 //------------------------------------------------------------------------
 public slots:
     void showSelectedObject(QGridLayout* griglia) {
 
-       list<string>* listaStats=modello->getListaStatFromLastObj();
+        QList<QString>* listaStats=modello->getListaStatsFromLastObj();
 
         auto it=listaStats->begin();
 
         int counter=0;
         DisplayAndSlider* displayandslider;
 
-        displayandslider=new DisplayAndSlider(griglia->parentWidget(), "Livello");
-        griglia->addWidget(displayandslider,2,counter++);
-        tempDataToSet.insert("Livello", displayandslider->getSlider());
-
-        displayandslider=new DisplayAndSlider(griglia->parentWidget(), "Rarità");
-        griglia->addWidget(displayandslider,2,counter++);
-        tempDataToSet.insert("Rarità", displayandslider->getSlider());
-
         for(; it!=listaStats->end();++it) {
-            QString name=QString::fromStdString(*it);
+            QString name=(*it);
             displayandslider=new DisplayAndSlider(griglia->parentWidget(), name);
             tempDataToSet.insert(name, displayandslider->getSlider());
+            connect(displayandslider->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)));
             griglia->addWidget(displayandslider,2,counter++);
         }
 
@@ -69,6 +87,7 @@ public slots:
     }
 
     void setStatsOnObj() const {
+        modello->setImage(image);
         for(auto it=tempDataToSet.begin();it!=tempDataToSet.end();++it) {
             modello->setStatByName(it.key(), it.value()->value());
         }
@@ -129,7 +148,13 @@ public slots:
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
+    void sliderChanged(int) {
+        emit somethingChanged(true);
+    }
 
+signals:
+    void somethingChanged(bool =false);
+    void opIsDone();
 };
 
 #endif // CONTROLLER_H
