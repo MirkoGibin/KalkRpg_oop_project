@@ -348,6 +348,9 @@ debug/moc_kalkrpg.cpp: C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QGridLayout \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QToolButton \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qtoolbutton.h \
 		../untitled/display.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/QTextCursor \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QScrollBar \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qscrollbar.h \
 		../untitled/kalkrpg.h \
 		debug/moc_predefs.h \
 		C:/Qt/5.9.1/mingw53_32/bin/moc.exe
@@ -1047,7 +1050,10 @@ debug/main.o: ../untitled/main.cpp C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QApp
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/QIcon \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QToolButton \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qtoolbutton.h \
-		../untitled/display.h
+		../untitled/display.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/QTextCursor \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QScrollBar \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qscrollbar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\untitled\main.cpp
 
 debug/kalkrpg.o: ../untitled/kalkrpg.cpp ../untitled/kalkrpg.h \
@@ -1211,7 +1217,10 @@ debug/kalkrpg.o: ../untitled/kalkrpg.cpp ../untitled/kalkrpg.h \
 		C:/Qt/5.9.1/mingw53_32/include/QtGui/QIcon \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QToolButton \
 		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qtoolbutton.h \
-		../untitled/display.h
+		../untitled/display.h \
+		C:/Qt/5.9.1/mingw53_32/include/QtGui/QTextCursor \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/QScrollBar \
+		C:/Qt/5.9.1/mingw53_32/include/QtWidgets/qscrollbar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\kalkrpg.o ..\untitled\kalkrpg.cpp
 
 debug/oggetto.o: ../untitled/oggetto.cpp ../untitled/oggetto.h \

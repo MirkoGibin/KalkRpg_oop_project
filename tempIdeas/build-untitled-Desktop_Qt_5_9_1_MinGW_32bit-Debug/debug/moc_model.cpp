@@ -47,20 +47,18 @@ static const uint qt_meta_data_Model[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       3,       // signalCount
+       2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   29,    2, 0x06 /* Public */,
-       1,    0,   32,    2, 0x26 /* Public | MethodCloned */,
-       3,    0,   33,    2, 0x06 /* Public */,
+       1,    0,   24,    2, 0x06 /* Public */,
+       3,    0,   25,    2, 0x06 /* Public */,
 
  // signals: parameters
-    QMetaType::Void, QMetaType::Bool,    2,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -73,16 +71,15 @@ void Model::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         Model *_t = static_cast<Model *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->opDone((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 1: _t->opDone(); break;
-        case 2: _t->nothingToDelete(); break;
+        case 0: _t->opDone(); break;
+        case 1: _t->nothingToDelete(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (Model::*_t)(bool );
+            typedef void (Model::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Model::opDone)) {
                 *result = 0;
                 return;
@@ -91,11 +88,12 @@ void Model::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         {
             typedef void (Model::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Model::nothingToDelete)) {
-                *result = 2;
+                *result = 1;
                 return;
             }
         }
     }
+    Q_UNUSED(_a);
 }
 
 const QMetaObject Model::staticMetaObject = {
@@ -123,28 +121,27 @@ int Model::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 2;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 2)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 2;
     }
     return _id;
 }
 
 // SIGNAL 0
-void Model::opDone(bool _t1)
+void Model::opDone()
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 
-// SIGNAL 2
+// SIGNAL 1
 void Model::nothingToDelete()
 {
-    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
+    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
