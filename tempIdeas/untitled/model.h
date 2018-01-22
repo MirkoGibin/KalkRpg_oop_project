@@ -29,24 +29,30 @@ public:
 
 //------------------------------------------------------------
     QList<QString>* getListaStatsFromLastObj() {
-        return new QList<QString>(getLastObj()->keys());
+        if(!memoria.isEmpty())
+            return new QList<QString>(getLastObj()->keys());
+        else return 0;
     }
     QImage* getImageFromLastObj() {
-        return immagini.value(counter);
+        if(!immagini.isEmpty())
+            return immagini.value(counter);
+        else return 0;
     }
 
     QMap<QString, int>* getLastObj() {
-        QMap<QString, int>* values=new QMap<QString, int>();
-        values->insert("Livello", memoria.front()->getLivello());
-        values->insert("Rarità", memoria.front()->getRarita());
-        list<string>* objListaStats=memoria.front()->getListaStats();
-        for(auto it=objListaStats->begin();it!=objListaStats->end();++it)
-            values->insert(QString::fromStdString(*it), memoria.front()->getValoreStat(*it));
-        return values;
+        if(!memoria.isEmpty()) {
+            QMap<QString, int>* values=new QMap<QString, int>();
+            values->insert("Livello", memoria.front()->getLivello());
+            values->insert("Rarità", memoria.front()->getRarita());
+            list<string>* objListaStats=memoria.front()->getListaStats();
+            for(auto it=objListaStats->begin();it!=objListaStats->end();++it)
+                values->insert(QString::fromStdString(*it), memoria.front()->getValoreStat(*it));
+            return values;
+        } else return 0;
     }
 
     unsigned int getNumObjInMemory() const {
-        return memoria.size();
+        return counter;//memoria.size();
     }
 
     bool setStatByName(QString name, unsigned int value) const {
@@ -63,26 +69,44 @@ public:
         counter++;
         immagini.insert(counter, new QImage(*immagine));
     }
-    int ricycleLast() {
-        return memoria.front()->ricicla();
-    }
     void clearMemory() {
-        memoria.clear();
-    }
+        if(counter) {
+            memoria.clear();
+            immagini.clear();
+            counter=0;
+        }
+        else emit nothingToDelete();
 
-    void combina() {
-        auto it=memoria.begin();
-        it++;
-        Oggetto* nuovo=(memoria.front())->clone();
-        nuovo->combina(*it);
-        memoria.push_front(nuovo);
-        QImage* toInsert=new QImage((*immagini.value(counter)));
-        immagini.insert(++counter, toInsert);
-        emit opDone();
+    }
+    void deleteLast() {
+        if(!memoria.isEmpty()) {
+            Oggetto* o=memoria.front();
+            memoria.pop_front();
+            delete o;
+            QImage* i=immagini.value(counter);
+            immagini.remove(counter);
+            delete i;
+            counter--;
+        } else emit nothingToDelete();
     }
 
 
 //-----------------------------------------------------------
+    int ricycleLast() {
+        return memoria.front()->ricicla();
+    }
+    void combina() {
+        if(getNumObjInMemory()) {
+            auto it=memoria.begin();
+            it++;
+            Oggetto* nuovo=(memoria.front())->clone();
+            nuovo->combina(*it);
+            memoria.push_front(nuovo);
+            QImage* toInsert=new QImage((*immagini.value(counter)));
+            immagini.insert(++counter, toInsert);
+        }
+        emit opDone(true);
+    }
     void createErba() {
         memoria.push_front(new Erba());
     }
@@ -102,7 +126,8 @@ public:
         memoria.push_front(new Amuleto());
     }
 signals:
-    void opDone();
+    void opDone(bool =false);
+    void nothingToDelete();
 
 };
 
