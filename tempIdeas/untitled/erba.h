@@ -1,7 +1,8 @@
 #ifndef ERBA_H
 #define ERBA_H
-#include "oggetto.h"
 #include <typeinfo>
+#include <list>
+#include "oggetto.h"
 
 class Erba : public Oggetto{
     /* le stats dentro Erba sono:
@@ -25,6 +26,8 @@ public:
         delete this;
         return mana;
     }
+
+
 };
 
 #endif // ERBA_H

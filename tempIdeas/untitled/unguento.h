@@ -14,7 +14,30 @@ public:
     Unguento(int livello =0,
              int rarita =0,
              float spirito =0,
-             float vitalita =0) : Erba(livello, rarita, spirito, vitalita) {}
+             float vitalita =0,
+             float energia =0) : Erba(livello, rarita, spirito, vitalita) {
+        insertStat("Energia", energia);
+    }
+
+    void potenzia(int mana, string parametro ="") {
+
+        int divisore = 10;
+        int incremento = mana / getLivello();
+
+        incrementStat("Energia", incremento * getRarita() / divisore); //Energia riceve un bonus sicuro oltre alla normale distribuzione
+
+        if(parametro == "") {
+            list<string>* statsList = getListaStats();
+            incremento = incremento / statsList->size();
+            for(auto i = statsList->begin(); i != statsList->end(); i++)
+                incrementStat(*i, incremento);
+            delete statsList;
+        }
+        else {
+            incrementStat(parametro, incremento);
+        }
+
+    }
 
     //estraiDa permette di creare un Unguento da una sua superclasse.
 /*    virtual void estraiDa(Oggetto* oggetto) {

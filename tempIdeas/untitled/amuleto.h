@@ -33,6 +33,28 @@ public:
     float ricicla() {
         return 0;
     }
+
+    void potenzia(int mana, string parametro ="") {
+
+        int incremento = mana / getLivello();
+        int divisore;
+
+        if(parametro == "") {
+            divisore = 10;
+            list<string>* statsList = getListaStats();
+            incremento = incremento / statsList->size();
+            for(auto i = statsList->begin(); i != statsList->end(); i++)
+                incrementStat(*i, incremento);
+            delete statsList;
+        }
+        else {
+            divisore = 5;
+            incrementStat(parametro, incremento);
+        }
+
+        incrementStat("Fortuna", incremento * getRarita() / divisore); //Fortuna riceve un bonus sicuro oltre alla normale distribuzione
+
+    }
 };
 
 #endif // AMULETO_H

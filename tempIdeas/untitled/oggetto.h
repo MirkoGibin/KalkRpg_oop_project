@@ -55,6 +55,9 @@ public:
         stats.emplace(str, db);
     }
 
+    void incrementStat(string stat, float value){
+        stats[stat] += value;
+    }
     virtual bool modifyStat(string str, float db) { //GESTIONE DEGLI ERRORI
         bool trovata=true;
         if(stats.count(str)) {
@@ -147,7 +150,25 @@ public:
     virtual float ricicla() {
         return getSommaStats()*getLivello()*getRarita();
     }
-/*
+
+    void potenzia(int mana, string parametro ="") {
+
+        int incremento = mana / getLivello();
+
+        if(parametro == "") {
+            list<string>* statsList = getListaStats();
+            incremento = incremento / statsList->size();
+            for(auto i = statsList->begin(); i != statsList->end(); i++)
+                incrementStat(*i, incremento);
+            delete statsList;
+        }
+        else {
+            incrementStat(parametro, incremento);
+        }
+
+    }
+
+    /*
     virtual void crea(float mana, int livello, int rarita, string statistica) { //PRE = statistica è vuoto o è un valore valido
 
         this->setLivello(livello);
