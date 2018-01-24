@@ -40,9 +40,19 @@ public:
     }
 
     //estraiDa permette di creare un Unguento da una sua superclasse.
-/*    virtual void estraiDa(Oggetto* oggetto) {
+    virtual void estraiDa(Oggetto* oggetto) {
         if(dynamic_cast<Erba*>(oggetto)) {
+            setLivello(oggetto->getLivello());
+            setRarita(oggetto->getRarita());
+            list<string> s = oggetto->getListaStats();
+            int numeroStat = s.size();
+            float energia = oggetto->getSommaStats() / numeroStat;
+            incrementStat("Energia", energia);
+            for(auto i = s.begin(); i != s.end(); ++i)
+                if(*i == "Energia") s.erase(i);
+                else incrementStat(*i, getValoreStat(*i) / numeroStat);
 
+            delete s;
         }
         else {
             //lancia eccezione
@@ -50,7 +60,7 @@ public:
     }
 
     //ottieniDa permette di creare un Unguento a partire da un cristallo TS(cristallo) == TD(cristallo)
-    virtual void ottieniDa(Cristallo* cristallo) {
+    /*virtual void ottieniDa(Cristallo* cristallo) {
         if(typeid(cristallo) == typeid(*cristallo)) {
 
         }

@@ -58,6 +58,12 @@ public:
     void incrementStat(string stat, float value){
         stats[stat] += value;
     }
+
+   /* void incrementStat(list<string> stats, float value) {
+        for(auto i = stats.begin(); i != stats.end(); ++i)
+            incrementStat(*i, value);
+    }*/
+
     virtual bool modifyStat(string str, float db) { //GESTIONE DEGLI ERRORI
         bool trovata=true;
         if(stats.count(str)) {
@@ -151,7 +157,7 @@ public:
         return getSommaStats()*getLivello()*getRarita();
     }
 
-    void potenzia(int mana, string parametro ="") {
+    virtual void potenzia(int mana, string parametro ="") {
 
         int incremento = mana / getLivello();
 
