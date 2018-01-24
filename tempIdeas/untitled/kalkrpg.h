@@ -290,12 +290,14 @@ private slots:
         }
     }
     void backspaceClicked() {
-        if(!opIsRunning && !opIsWaitingOperand && settingObj) { //from startState
+        display->back();
+        if(!opIsRunning && !opIsWaitingOperand && settingObj) { //from settingObjState
             removeSettingPanel();
             if(controller->getNumObjInMemory()) controller->deleteLastObj();
             startState();
         }
         else if(settingObj && !opIsRunning && !opIsRunning) { //from settinObjState && objIsCreatedState
+            settingObj=false;
             removeSettingPanel();
             controller->deleteLastObj();
             startState();
@@ -320,8 +322,12 @@ private slots:
             settingObj=false;
             opIsRunning=true;
             opChoosenState();
-        } else startState();
-        display->back();
+        }
+        else if(!opIsRunning && !opIsWaitingOperand && !settingObj) { //from startState && confirmOpState
+            if(controller->getNumObjInMemory()) controller->deleteLastObj();
+            if(controller->getNumObjInMemory()) objIsCreatedState();
+            else startState();
+        }
     }
     void eraseClicked() {
         if(controller->getNumObjInMemory()) {
