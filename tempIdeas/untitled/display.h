@@ -11,7 +11,7 @@
 
 class Display : public QTextEdit {
 private:
-    QList<QTextCursor> history;
+    QList<int> history;
 public:
     Display(QWidget* parent =0) : QTextEdit(parent) {
         setReadOnly(true);
@@ -33,7 +33,7 @@ public:
 
         QTextTable* table = cursor.insertTable(1,parametri->length()+1, tabFormat);
 
-        history.push_back(cursor);
+        history.push_back(cursor.position());
 
         table->cellAt(0, 0).firstCursorPosition().insertImage(*image);
 
@@ -59,8 +59,9 @@ public:
         cursor.mergeBlockFormat(format);
 
         QImage image(path);
-        history.push_back(cursor);
+
         cursor.insertImage(image);
+        history.push_back(cursor.position());
         cursor.insertText("\n");
 
         moveCursor(QTextCursor::End);
@@ -68,12 +69,13 @@ public:
 
     void back() {
         if(!(history.empty())) {
-            QTextCursor cursor = history.takeLast();
+            QTextCursor cursor = textCursor();
+            cursor.setPosition(history.takeLast());
 
-            if(cursor.currentTable() != 0)
+            if(cursor.currentTable() != nullptr)
                 cursor.currentTable()->removeRows(0,1);
             else {
-                cursor.select(QTextCursor::LineUnderCursor);
+               cursor.select(QTextCursor::LineUnderCursor);
                 cursor.removeSelectedText();
             }
 
