@@ -44,18 +44,17 @@ public:
         if(dynamic_cast<Erba*>(oggetto)) {
             setLivello(oggetto->getLivello());
             setRarita(oggetto->getRarita());
-            list<string> s = oggetto->getListaStats();
-            int numeroStat = s.size();
-            float energia = oggetto->getSommaStats() / numeroStat;
-            incrementStat("Energia", energia);
-            for(auto i = s.begin(); i != s.end(); ++i)
-                if(*i == "Energia") s.erase(i);
-                else incrementStat(*i, getValoreStat(*i) / numeroStat);
+            list<string> *s = oggetto->getListaStats();
+            int numeroStat = s->size();
+
+            for(auto i = s->begin(); i != s->end(); ++i)
+                if(*i == "Energia") incrementStat(*i, oggetto->getSommaStats() / numeroStat);
+                else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
 
             delete s;
         }
         else {
-            //lancia eccezione
+            //eccezione
         }
     }
 

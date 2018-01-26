@@ -53,8 +53,28 @@ public:
         }
 
         incrementStat("Fortuna", incremento * getRarita() / divisore); //Fortuna riceve un bonus sicuro oltre alla normale distribuzione
-
     }
+
+    virtual void estraiDa(Oggetto* oggetto) {
+        if(dynamic_cast<Osso*>(oggetto)) {
+            setLivello(oggetto->getLivello());
+            setRarita(oggetto->getRarita());
+            list<string> *s = oggetto->getListaStats();
+            int numeroStat = s->size();
+
+            for(auto i = s->begin(); i != s->end(); ++i) {
+                if(*i == "Fortuna" && getRarita() > 7)
+                    incrementStat(*i, oggetto->getSommaStats() / numeroStat);
+                else
+                    incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
+            }
+
+            delete s;
+        }
+        else {}
+                //eccezione
+    }
+
 };
 
 #endif // AMULETO_H
