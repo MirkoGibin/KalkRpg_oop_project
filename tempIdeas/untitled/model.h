@@ -52,7 +52,7 @@ public:
     }
 
     unsigned int getNumObjInMemory() const {
-        return counter;//memoria.size();
+        return counter; //memoria.size();
     }
 
     bool setStatByName(QString name, unsigned int value) const {
@@ -66,7 +66,6 @@ public:
     }
 
     void setImage(QImage* immagine) {
-        counter++;
         immagini.insert(counter, new QImage(*immagine));
     }
     void clearMemory() {
@@ -79,7 +78,7 @@ public:
 
     }
     void deleteLast() {
-        if(!memoria.isEmpty()) {
+        if(counter) {
             Oggetto* o=memoria.front();
             memoria.pop_front();
             delete o;
@@ -109,21 +108,27 @@ public:
     }
     void createErba() {
         memoria.push_front(new Erba());
+        counter++;
     }
     void createUnguento() {
         memoria.push_front(new Unguento());
+        counter++;
     }
     void createPietra() {
         memoria.push_front(new Pietra());
+        counter++;
     }
     void createCristallo() {
         memoria.push_front(new Cristallo());
+        counter++;
     }
     void createOsso() {
         memoria.push_front(new Osso());
+        counter++;
     }
     void createAmuleto() {
         memoria.push_front(new Amuleto());
+        counter++;
     }
 signals:
     void opDone();
