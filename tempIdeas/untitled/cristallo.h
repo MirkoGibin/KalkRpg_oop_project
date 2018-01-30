@@ -41,11 +41,10 @@ public:
         incrementStat("Magia", incremento * getRarita() / divisore); //Magia riceve un bonus sicuro oltre alla normale distribuzione
 
         if(parametro == "") {
-            list<string>* statsList = getListaStats();
-            incremento = incremento / statsList->size();
-            for(auto i = statsList->begin(); i != statsList->end(); i++)
+            list<string> statsList = getListaStats();
+            incremento = incremento / statsList.size();
+            for(auto i = statsList.begin(); i != statsList.end(); i++)
                 incrementStat(*i, incremento);
-            delete statsList;
         }
         else {
             if(parametro == "Spirito")
@@ -61,14 +60,12 @@ public:
 
                 setLivello(oggetto->getLivello());
                 setRarita(oggetto->getRarita());
-                list<string> *s = oggetto->getListaStats();
-                int numeroStat = s->size();
+                list<string> s = oggetto->getListaStats();
+                int numeroStat = s.size();
 
-                for(auto i = s->begin(); i != s->end(); ++i)
+                for(auto i = s.begin(); i != s.end(); ++i)
                     if(*i == "Magia") incrementStat(*i, (oggetto->getSommaStats() - getSpirito()) / numeroStat);
                     else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
-
-                delete s;
             }
             else {}
                 //eccezione durezza troppo poca

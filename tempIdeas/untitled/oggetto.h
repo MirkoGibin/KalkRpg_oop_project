@@ -89,10 +89,10 @@ public:
         return getValoreStat("Spirito");
     }
 
-    virtual list<string>* getListaStats()  const {
-        list<string>* keyList = new list<string>();
+    virtual list<string> getListaStats()  const {
+        list<string> keyList;
         for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
-            keyList->push_back(it->first);
+            keyList.push_back(it->first);
         return keyList;
     }
 
@@ -121,21 +121,21 @@ public:
         mathOp::doMultiplyOnMap(percentInvMap, toMultiplyInv);
         mathOp::doMultiplyOnMap(percentParMap, toMultiplyPar);
 
-        list<string>*InvMenoPar=mathOp::chiaviAmenoB(percentInvMap, percentParMap);
-        list<string>*ParMenoInv=mathOp::chiaviAmenoB(percentParMap, percentInvMap);
-        list<string>*InvePar=mathOp::chiaviAeB(percentInvMap, percentParMap);
+        list<string> InvMenoPar=mathOp::chiaviAmenoB(percentInvMap, percentParMap);
+        list<string> ParMenoInv=mathOp::chiaviAmenoB(percentParMap, percentInvMap);
+        list<string> InvePar=mathOp::chiaviAeB(percentInvMap, percentParMap);
 
-        for(list<string>::const_iterator it = InvePar->begin(); it!=InvePar->end(); ++it) {
+        for(list<string>::const_iterator it = InvePar.begin(); it!=InvePar.end(); ++it) {
             percentInvMap[*it]=(percentInvMap.at(*it) + percentParMap.at(*it))/2;
         }
 
         float daDistribuire; //somma da distribuire sulle stats di a non presenti in b
-        for(list<string>::const_iterator it=ParMenoInv->begin(); it!=ParMenoInv->end(); ++it) {
+        for(list<string>::const_iterator it=ParMenoInv.begin(); it!=ParMenoInv.end(); ++it) {
             daDistribuire+=percentParMap.at(*it);
         }
 
-        daDistribuire=daDistribuire/InvMenoPar->size();
-        for(list<string>::const_iterator it=InvMenoPar->begin(); it!=InvMenoPar->end(); ++it) {
+        daDistribuire=daDistribuire/InvMenoPar.size();
+        for(list<string>::const_iterator it=InvMenoPar.begin(); it!=InvMenoPar.end(); ++it) {
             percentInvMap[*it] =(percentInvMap.at(*it) + daDistribuire)/2;
         }
 
@@ -144,9 +144,6 @@ public:
         }
         //ora bisogna normalizzare stats a seconda del livello.
         normalizza();
-        delete InvePar;
-        delete InvMenoPar;
-        delete ParMenoInv;
     }
 
 
@@ -162,11 +159,10 @@ public:
         int incremento = mana / getLivello();
 
         if(parametro == "") {
-            list<string>* statsList = getListaStats();
-            incremento = incremento / statsList->size();
-            for(auto i = statsList->begin(); i != statsList->end(); i++)
+            list<string> statsList = getListaStats();
+            incremento = incremento / statsList.size();
+            for(auto i = statsList.begin(); i != statsList.end(); i++)
                 incrementStat(*i, incremento);
-            delete statsList;
         }
         else {
             incrementStat(parametro, incremento);
@@ -180,25 +176,25 @@ public:
         this->setLivello(livello);
         this->setRarita(rarita);
 
-        list<string>* parametri = getListaStats(); //DA DEALLOCARE
+        list<string> parametri = getListaStats();
         float sumStats=mana/(livello*rarita);
 
-        if(std::find(parametri->begin(), parametri->end(), statistica) != parametri->end()) { //RICHIEDE <ALGORITHM>
+        if(std::find(parametri.begin(), parametri.end(), statistica) != parametri.end()) { //RICHIEDE <ALGORITHM>
             modifyStat(statistica, sumStats/2);
             sumStats=sumStats/2;
-            parametri->remove(statistica);
+            parametri.remove(statistica);
         }
 
-        if(parametri->size()==0) { //oggetto con un solo parametro in stats (spirito)
+        if(parametri.size()==0) { //oggetto con un solo parametro in stats (spirito)
             modifyStat(statistica, getValoreStat(statistica)+sumStats);
 
         } else {
             sumStats=sumStats/parametri->size();
 
-            for(list<string>::const_iterator it=parametri->begin(); it!=parametri->end(); ++it)
+            for(list<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
                 modifyStat(*it, sumStats);
         }
-        delete parametri;
+        //delete parametri;
     }
 */
 };

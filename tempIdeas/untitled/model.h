@@ -28,28 +28,30 @@ public:
     Model() : counter(0) {}
 
 //------------------------------------------------------------
-    QList<QString>* getListaStatsFromLastObj() {
-        if(!memoria.isEmpty())
-            return new QList<QString>(getLastObj()->keys());
-        else return 0;
+    QMap<QString, int> getLastObj() const {
+        QMap<QString, int> values;
+        if(!memoria.isEmpty()) {
+            values.insert("Livello", memoria.front()->getLivello());
+            values.insert("Rarità", memoria.front()->getRarita());
+            list<string> objListaStats=memoria.front()->getListaStats();
+            for(auto it=objListaStats.begin();it!=objListaStats.end();++it)
+                values.insert(QString::fromStdString(*it), memoria.front()->getValoreStat(*it));
+        } else {} //eccezione
+        return values;
     }
-    QImage* getImageFromLastObj() {
+
+    QList<QString> getListaStatsFromLastObj() const {
+        if(!memoria.isEmpty())
+            return QList<QString>(getLastObj().keys());
+        else {}//throw exception
+        return QList<QString>();
+    }
+    QImage* getImageFromLastObj() const {
         if(!immagini.isEmpty())
             return immagini.value(counter);
         else return 0;
     }
 
-    QMap<QString, int>* getLastObj() {
-        if(!memoria.isEmpty()) {
-            QMap<QString, int>* values=new QMap<QString, int>();
-            values->insert("Livello", memoria.front()->getLivello());
-            values->insert("Rarità", memoria.front()->getRarita());
-            list<string>* objListaStats=memoria.front()->getListaStats();
-            for(auto it=objListaStats->begin();it!=objListaStats->end();++it)
-                values->insert(QString::fromStdString(*it), memoria.front()->getValoreStat(*it));
-            return values;
-        } else return 0;
-    }
 
     unsigned int getNumObjInMemory() const {
         return counter; //memoria.size();

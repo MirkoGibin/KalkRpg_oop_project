@@ -41,11 +41,10 @@ public:
 
         if(parametro == "") {
             divisore = 10;
-            list<string>* statsList = getListaStats();
-            incremento = incremento / statsList->size();
-            for(auto i = statsList->begin(); i != statsList->end(); i++)
+            list<string> statsList = getListaStats();
+            incremento = incremento / statsList.size();
+            for(auto i = statsList.begin(); i != statsList.end(); i++)
                 incrementStat(*i, incremento);
-            delete statsList;
         }
         else {
             divisore = 5;
@@ -59,17 +58,16 @@ public:
         if(dynamic_cast<Osso*>(oggetto)) {
             setLivello(oggetto->getLivello());
             setRarita(oggetto->getRarita());
-            list<string> *s = oggetto->getListaStats();
-            int numeroStat = s->size();
+            list<string> s = oggetto->getListaStats();
+            int numeroStat = s.size();
 
-            for(auto i = s->begin(); i != s->end(); ++i) {
+            for(auto i = s.begin(); i != s.end(); ++i) {
                 if(*i == "Fortuna" && getRarita() > 7)
                     incrementStat(*i, oggetto->getSommaStats() / numeroStat);
                 else
                     incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
             }
 
-            delete s;
         }
         else {}
                 //eccezione
