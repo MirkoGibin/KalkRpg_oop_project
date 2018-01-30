@@ -23,7 +23,7 @@ public:
 
     virtual float ricicla() {
         float mana = getSommaStats() - getSpirito()/2 + 2 * getVitalita() + getRarita() * getRarita();
-        delete this;
+        //delete this;
         return mana;
     }
 

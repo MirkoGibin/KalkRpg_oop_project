@@ -76,8 +76,7 @@ public:
             immagini.clear();
             counter=0;
         }
-        else emit nothingToDelete();
-
+        emit nothingToDelete();
     }
     void deleteLast() {
         if(counter) {
@@ -88,7 +87,9 @@ public:
             immagini.remove(counter);
             delete i;
             counter--;
-        } else emit nothingToDelete();
+            if(!counter) emit nothingToDelete();
+        }
+        else emit nothingToDelete();
     }
 
 

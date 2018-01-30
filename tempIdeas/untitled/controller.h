@@ -69,7 +69,7 @@ public:
 
 //------------------------------------------------------------------------
 public slots:
-    void showSelectedObject(QGridLayout* griglia) {
+    void setSelectedObject(QGridLayout* griglia) {
 
         QList<QString> listaStats=modello->getListaStatsFromLastObj();
 

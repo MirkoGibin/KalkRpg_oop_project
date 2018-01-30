@@ -32,7 +32,7 @@ public:
 // ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2
     float ricicla() {
         float mana=getLivello()*getRarita()*(getSommaStats()-getSpirito()+getDurezza());
-        delete this;
+        //delete this;
         return mana;
     }
 };

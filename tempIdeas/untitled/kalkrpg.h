@@ -1,4 +1,4 @@
-    #ifndef KALKRPG_H
+#ifndef KALKRPG_H
 #define KALKRPG_H
 #include <QGridLayout>
 #include<QPushButton>
@@ -25,6 +25,7 @@ private:
     bool waitingOperand;
     bool settingObj;
     bool running;
+    bool riciclaOp;
 
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(testo, path);
@@ -54,7 +55,8 @@ public:
         display(new Display),
         waitingOperand(false),
         settingObj(false),
-        running(false) {
+        running(false),
+        riciclaOp(false) {
         setWindowTitle("KalkRPG");
 
         //creazione pulsanti oggetti
@@ -68,8 +70,11 @@ public:
         //creazione pulsanti operazioni unarie
         Button* creaButton = createOpButton(":/icons/crea.png", tr("Crea"), SLOT(creaClicked()));
         connect(controller, SIGNAL(somethingChanged(bool)), creaButton, SLOT(setDisabled(bool)));
+        connect(this, SIGNAL(startOp(bool)), creaButton, SLOT(setEnabled(bool)));
         Button* riciclaButton = createOpButton(":/icons/ricicla.png", tr("Ricicla"), SLOT(riciclaClicked()));
+        connect(this, SIGNAL(startOp(bool)), riciclaButton, SLOT(setEnabled(bool)));
         Button* potenziaButton = createOpButton(":/icons/potenzia.png", tr("Potenzia"), SLOT(potenziaClicked()));
+        connect(this, SIGNAL(startOp(bool)), potenziaButton, SLOT(setEnabled(bool)));
 
         //creazione pulsanti operazioni binarie
         Button* combinaButton = createOpButton(":/icons/combina.png", tr("Combina"), SLOT(combinaClicked()));
@@ -95,6 +100,7 @@ public:
         backspaceButton->setDisabled();
         eraseButton->setDisabled();
         confermaOpButton->setDisabled();
+        emit startOp(true);
 
         //creazione del layout
         QGridLayout *objectLayout = new QGridLayout;
@@ -116,9 +122,9 @@ public:
 
         operationLayout->addWidget(creaButton, 0, 0);
         operationLayout->addWidget(riciclaButton, 0, 1);
-        operationLayout->addWidget(combinaButton, 0, 2);
+        operationLayout->addWidget(potenziaButton, 0, 2);
         operationLayout->addWidget(estraiButton, 1, 0);
-        operationLayout->addWidget(potenziaButton, 1, 1);
+        operationLayout->addWidget(combinaButton, 1, 1);
         operationLayout->addWidget(trasformaButton, 1, 2);
         operationLayout->addWidget(distribuisciButton, 2, 0);
         operationLayout->addWidget(aumentaProbabilitaButton, 2, 1);
@@ -156,9 +162,11 @@ public:
         confirmObj->deleteLater();
         controller->flushControllerMemory();
     }
-    void showResult() { //DA METTERE IN PRIVATE
+    void showResult(int ris =0) { //DA METTERE IN PRIVATE
         if(controller->getNumObjInMemory()) {
-            display->show(controller->getResultImage(), controller->getResultParametri());
+            if(ris)
+                display->show(QString::number(ris));
+            else display->show(controller->getResultImage(), controller->getResultParametri());
         }
     }
 
@@ -170,16 +178,24 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         return;
     }
     void unguentoClicked(){
-
+        controller->newUnguento();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
     }
     void pietraClicked(){
-
+        controller->newPietra();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
     }
     void cristalloClicked() {
-
+        controller->newCristallo();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
     }
     void ossoClicked() {
-
+        controller->newOsso();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
     }
     void amuletoClicked() {
         controller->newAmuleto();
@@ -202,7 +218,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
 
         mainLayout->addWidget(child, 1, 0, 1, 3 );
 
-        controller->showSelectedObject(expansionAndSetGrid);
+        controller->setSelectedObject(expansionAndSetGrid);
         controller->setImage(new QImage(pressedButton->getPath()));
 
         expansionAndSetGrid->addWidget(image, 0, 0, 1, expansionAndSetGrid->columnCount());
@@ -235,7 +251,17 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     }
 
     void riciclaClicked() {
-        return;
+        if(running) {
+            int result=controller->ricicla();
+            running=false;
+            opButton=nullptr;
+            riciclaOp=false;
+            showResult(result);
+        } else {
+            waitingOperand=true;
+            running=true;
+            riciclaOp=true;
+        }
     }
     void combinaClicked() {
         if(running) {
@@ -293,7 +319,8 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         if(!waitingOperand && running) { //in CONFIRM STATE
             display->back();
             waitingOperand=true;
-            if(controller->getNumObjInMemory()) controller->deleteLastObj();
+            //if(controller->getNumObjInMemory())
+            controller->deleteLastObj();
         } else
         if(waitingOperand && running) { //just choosen op, want to change it
             display->back();
@@ -302,7 +329,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         }
         else {
             display->back();
-            if(controller->getNumObjInMemory()) controller->deleteLastObj();
+            controller->deleteLastObj();
         }
         return objIsCreatedState();
     }
@@ -336,7 +363,11 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         emit confirmOpToClick(false);
         emit backspaceToClick(true);
         if(controller->getNumObjInMemory()) emit eraseToClick(true);
-        else emit eraseToClick(false);
+        else {
+            emit eraseToClick(false);
+            emit opToClick(false);
+        }
+        if(!riciclaOp && !waitingOperand && !running) emit startOp(true);
     }
     void confirmOpToClickState() {
         objToClick(false);
@@ -345,7 +376,6 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         backspaceToClick(true);
         eraseToClick(true);
     }
-
     void doneState() {
         emit objToClick(false);
         emit opToClick(false);
@@ -363,9 +393,7 @@ signals:
     void backspaceToClick(bool);
     void eraseToClick(bool);
 
-    void anotherObjNeeded();
-
-
+    void startOp(bool);
     //eventi di display
 
 

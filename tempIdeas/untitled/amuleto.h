@@ -30,9 +30,9 @@ public:
         return getValoreStat("Fortuna");
     }
 
-    float ricicla() {
+    /*float ricicla() {
         return 0;
-    }
+    }*/
 
     void potenzia(int mana, string parametro ="") {
 

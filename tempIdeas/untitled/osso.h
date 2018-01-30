@@ -40,7 +40,7 @@ public:
 //ricicla fa la moltiplicazione della sommaStats in cui attacco e difesa sono raddoppiati, moltiplicato per livello e rarita
     float ricicla() {
         float mana=(getSommaStats() + getAttacco() + getDifesa()) * getLivello() * getRarita();
-        delete this;
+        //delete this;
         return mana;
     }
 

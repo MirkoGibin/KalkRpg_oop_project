@@ -67,6 +67,24 @@ public:
         moveCursor(QTextCursor::End);
     }
 
+    void show(const QString num) {
+        QTextCursor cursor = textCursor();
+
+        QTextBlockFormat format = cursor.blockFormat();
+        format.setAlignment(Qt::AlignCenter);
+        cursor.mergeBlockFormat(format);
+
+        cursor.insertText(num);
+
+        //cursor.insertImage(num);
+        history.push_back(cursor.position());
+        cursor.insertText("\n");
+
+        moveCursor(QTextCursor::End);
+    }
+
+
+
     void back() {
         if(!(history.empty())) {
             QTextCursor cursor = textCursor();
