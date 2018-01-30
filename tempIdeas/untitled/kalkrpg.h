@@ -25,8 +25,6 @@ private:
     bool waitingOperand;
     bool settingObj;
     bool running;
-    //bool opHasBeenDone;
-
 
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(testo, path);
@@ -277,14 +275,12 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         opButton->setEnabled();
         opButton->animateClick();
         display->show(qobject_cast<Button*>(sender())->getPath());
-        //running=false;
         doneState();
     }
     void operationClicked() {
         if(running) {
             opButton=qobject_cast<Button*>(sender());
             display->show(opButton->getPath());
-            //opChoosenState();
             objIsCreatedState();
         }
     }
@@ -320,7 +316,6 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             }
             controller->clearMemory();
         }
-        //opHasBeenDone=false;
         objIsCreatedState();
         display->clear();
     }
@@ -351,31 +346,6 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         eraseToClick(true);
     }
 
-    /*void startState() {
-        emit objToClick(true);
-        if(opHasBeenDone) {
-            emit backspaceToClick(false);
-            emit opToClick(true);
-        }
-        else {
-            emit opToClick(false);
-            emit backspaceToClick(true);
-        }
-        emit confirmOpToClick(false);
-
-        if(controller->getNumObjInMemory())
-            emit eraseToClick(true);
-        else emit eraseToClick(false);
-    }*/
-
-
-    /*void opChoosenState() {
-        emit objToClick(true);
-        emit opToClick(false);
-        emit confirmOpToClick(false);
-        emit backspaceToClick(true);
-        emit eraseToClick(true);
-    }*/
     void doneState() {
         emit objToClick(false);
         emit opToClick(false);
