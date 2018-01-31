@@ -4,6 +4,7 @@
 #include<list>
 #include<algorithm>
 #include<mathOp.h>
+#include<typeinfo>
 
 using std::list;
 using std::map;
@@ -155,6 +156,8 @@ public:
 
     void trasformaDa(Oggetto *obj) {
         //if(dynamic_cast<Erba*>(obj)) {} //throw eccezione
+        if(typeid(*this) == typeid(*obj)) {} //throw eccezione
+
         if(getListaStats().size() > obj->getListaStats().size()) {} //throw eccezione
 
         setLivello(obj->getLivello());
@@ -165,6 +168,7 @@ public:
             if(!modifyStat(*i, obj->getValoreStat(*i)/2))
                 val += obj->getValoreStat(*i);
         }
+
         parametri.clear();
 
         if(val > 0) {
