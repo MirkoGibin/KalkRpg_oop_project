@@ -358,6 +358,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
                     display->back();
                     waitingOperand=false;
                     running=false;
+                    riciclaOp=false;
                 }
                 else {
                     display->back();
@@ -366,15 +367,13 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         return objIsCreatedState();
     }
     void eraseClicked() {
-        if(controller->getNumObjInMemory()) {
-            waitingOperand=false;
-            running=false;
-            if(settingObj) { //se clicco erase mentre sto settando oggetti
-                removeSettingPanel();
-                settingObj=false;
-            }
-            controller->clearMemory();
+        waitingOperand=false;
+        running=false;
+        if(settingObj) { //se clicco erase mentre sto settando oggetti
+            removeSettingPanel();
+            settingObj=false;
         }
+        controller->clearMemory();
         objIsCreatedState();
         display->clear();
     }
