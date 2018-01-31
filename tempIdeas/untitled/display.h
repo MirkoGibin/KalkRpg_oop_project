@@ -17,6 +17,10 @@ public:
         setReadOnly(true);
         setMinimumSize(600,100);
     }
+    void clear() {
+        QTextEdit::clear();
+        history.clear();
+    }
 
     void show(const QImage* image, QList<QString> parametri) { //scelta di non passare per riferimento perche' viene usato takefirst sulla copia di parametri
 
@@ -86,7 +90,7 @@ public:
 
 
     void back() {
-        if(!(history.empty())) {
+        if(!(history.isEmpty())) {
             QTextCursor cursor = textCursor();
             cursor.setPosition(history.takeLast());
 
@@ -97,7 +101,7 @@ public:
                 cursor.removeSelectedText();
             }
 
-            moveCursor(QTextCursor::End);
+            setTextCursor(cursor);
       }
     }
 };
