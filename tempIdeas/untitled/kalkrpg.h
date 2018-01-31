@@ -1,4 +1,4 @@
-    #ifndef KALKRPG_H
+#ifndef KALKRPG_H
 #define KALKRPG_H
 #include <QGridLayout>
 #include<QPushButton>
@@ -22,10 +22,10 @@ private:
     Display* display;
     Button*opButton;
 
-    bool opIsWaitingOperand =false;
-    bool settingObj =false;
-    bool opIsRunning =false;
-
+    bool waitingOperand;
+    bool settingObj;
+    bool running;
+    bool riciclaOp;
 
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(testo, path);
@@ -53,10 +53,10 @@ public:
         expansionAndSetGrid(0),
         confirmObj(0),
         display(new Display),
-        opIsWaitingOperand(false),
+        waitingOperand(false),
         settingObj(false),
-        opIsRunning(false) {
-
+        running(false),
+        riciclaOp(false) {
         setWindowTitle("KalkRPG");
 
         //creazione pulsanti oggetti
@@ -70,8 +70,11 @@ public:
         //creazione pulsanti operazioni unarie
         Button* creaButton = createOpButton(":/icons/crea.png", tr("Crea"), SLOT(creaClicked()));
         connect(controller, SIGNAL(somethingChanged(bool)), creaButton, SLOT(setDisabled(bool)));
+        connect(this, SIGNAL(startOp(bool)), creaButton, SLOT(setEnabled(bool)));
         Button* riciclaButton = createOpButton(":/icons/ricicla.png", tr("Ricicla"), SLOT(riciclaClicked()));
+        connect(this, SIGNAL(startOp(bool)), riciclaButton, SLOT(setEnabled(bool)));
         Button* potenziaButton = createOpButton(":/icons/potenzia.png", tr("Potenzia"), SLOT(potenziaClicked()));
+        connect(this, SIGNAL(startOp(bool)), potenziaButton, SLOT(setEnabled(bool)));
 
         //creazione pulsanti operazioni binarie
         Button* combinaButton = createOpButton(":/icons/combina.png", tr("Combina"), SLOT(combinaClicked()));
@@ -97,6 +100,7 @@ public:
         backspaceButton->setDisabled();
         eraseButton->setDisabled();
         confermaOpButton->setDisabled();
+        emit startOp(true);
 
         //creazione del layout
         QGridLayout *objectLayout = new QGridLayout;
@@ -118,9 +122,9 @@ public:
 
         operationLayout->addWidget(creaButton, 0, 0);
         operationLayout->addWidget(riciclaButton, 0, 1);
-        operationLayout->addWidget(combinaButton, 0, 2);
+        operationLayout->addWidget(potenziaButton, 0, 2);
         operationLayout->addWidget(estraiButton, 1, 0);
-        operationLayout->addWidget(potenziaButton, 1, 1);
+        operationLayout->addWidget(combinaButton, 1, 1);
         operationLayout->addWidget(trasformaButton, 1, 2);
         operationLayout->addWidget(distribuisciButton, 2, 0);
         operationLayout->addWidget(aumentaProbabilitaButton, 2, 1);
@@ -138,8 +142,8 @@ public:
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
         //connects per la gestione dei pulsanti della view
-        connect(this, SIGNAL(anotherObjNeeded()), this, SLOT(opChoosenState()));
         connect(controller, SIGNAL(nothingToDelete()), eraseButton, SLOT(setDisabled()));
+        connect(controller, SIGNAL(nothingToDelete()), backspaceButton, SLOT(setDisabled()));
     }
 
     ~KalkRpg() {
@@ -150,7 +154,7 @@ public:
         delete display;
         delete confirmObj;
     }
-    void removeSettingPanel() { //nasconde pannello di settaggio. Fa il flush del controller
+    void removeSettingPanel() { //nasconde pannello di settaggio. Fa il flush del controller. DA METTERE IN PRIVATE
         expansionAndSetGrid->parentWidget()->hide();
         this->adjustSize();
         expansionAndSetGrid->deleteLater();
@@ -158,10 +162,51 @@ public:
         confirmObj->deleteLater();
         controller->flushControllerMemory();
     }
+    void showResult(int ris =0) { //DA METTERE IN PRIVATE
+        if(controller->getNumObjInMemory()) {
+            if(ris)
+                display->show(QString::number(ris));
+            else display->show(controller->getResultImage(), controller->getResultParametri());
+        }
+    }
 
-private slots:
+public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
+    //SELECTING OBJECTS
+    void erbaClicked() {
+        controller->newErba();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void unguentoClicked(){
+        controller->newUnguento();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void pietraClicked(){
+        controller->newPietra();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void cristalloClicked() {
+        controller->newCristallo();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void ossoClicked() {
+        controller->newOsso();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+    void amuletoClicked() {
+        controller->newAmuleto();
+        showToSet(qobject_cast<Button*>(sender()));
+        return;
+    }
+
+    //SETTING OBJECTS
     void showToSet(Button* pressedButton) {
         settingObj=true;
+        settingObjState(); //GOTO
 
         child=new QWidget(this);
         expansionAndSetGrid=new QGridLayout(child);
@@ -173,7 +218,7 @@ private slots:
 
         mainLayout->addWidget(child, 1, 0, 1, 3 );
 
-        controller->showSelectedObject(expansionAndSetGrid);
+        controller->setSelectedObject(expansionAndSetGrid);
         controller->setImage(new QImage(pressedButton->getPath()));
 
         expansionAndSetGrid->addWidget(image, 0, 0, 1, expansionAndSetGrid->columnCount());
@@ -183,55 +228,50 @@ private slots:
         expansionAndSetGrid->addWidget(confirmObj, expansionAndSetGrid->rowCount(), 0, 1, expansionAndSetGrid->columnCount(), Qt::AlignCenter);
         connect(confirmObj, SIGNAL(clicked()), this, SLOT(confirmObjClicked()));
 
-        settingObjState();
     }
 
-    void showResult() {
-        if(controller->getNumObjInMemory()) {
-            display->show(controller->getResultImage(), controller->getResultParametri());
+    //CONFIRM OBJECT
+    void confirmObjClicked(/*Button* pressedButton*/) {
+        settingObj=false;
+        if(!waitingOperand)
+            objIsCreatedState();
+        else {
+            confirmOpToClickState();
+            waitingOperand=false;
         }
+        display->show(controller->getImage(), controller->getParametri());
+        controller->setStatsOnObj();
+        removeSettingPanel();
     }
 
 
-    //eventi relativi agli oggetti
-    void erbaClicked() {
-        controller->newErba();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
-    }
-    void unguentoClicked(){
-
-    }
-    void pietraClicked(){
-
-    }
-    void cristalloClicked() {
-
-    }
-    void ossoClicked() {
-
-    }
-    void amuletoClicked() {
-        controller->newAmuleto();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
-    }
-
-    //eventi relativi alle operazioni
+    //OPERATION CLICKED
     void creaClicked() {
         return;
     }
 
     void riciclaClicked() {
-        return;
+        if(running) {
+            int result=controller->ricicla();
+            running=false;
+            opButton=nullptr;
+            riciclaOp=false;
+            showResult(result);
+        } else {
+            waitingOperand=true;
+            running=true;
+            riciclaOp=true;
+        }
     }
     void combinaClicked() {
-        if(opIsRunning) {
+        if(running) {
             controller->combina();
-            opIsWaitingOperand=false;
-            opIsRunning=false;
-            settingObj=false;
+            running=false;
             opButton=nullptr;
+            showResult();
+        } else {
+            waitingOperand=true;
+            running=true;
         }
     }
     void estraiClicked() {
@@ -253,99 +293,61 @@ private slots:
         return;
     }
 
-    //SLOTS FOR MEMORY MANAGEMENT
-    void confirmObjClicked(/*Button* pressedButton*/) {
-        display->show(controller->getImage(), controller->getParametri());
-        controller->setStatsOnObj();
-
-        removeSettingPanel();
-
-        settingObj=false;
-        if(opIsWaitingOperand && !settingObj && opIsRunning) {
-            confirmOpClickedState();
-        }
-        else objIsCreatedState();
+    //GENERALS & MEMORY MANAGEMENT.
+    void objectClicked() {
     }
 
     void confirmOpClicked() {
-        opButton->click();
-        opIsWaitingOperand=false;
-        opIsRunning=false;
-        opButton=qobject_cast<Button*>(sender());
-        display->show(opButton->getPath());
-        showResult();
-        startState();
-
-
-    }
-    void objectClicked() {
+        opButton->setEnabled();
+        opButton->animateClick();
+        display->show(qobject_cast<Button*>(sender())->getPath());
+        doneState();
     }
     void operationClicked() {
-        opIsWaitingOperand=true;
-        opIsRunning=true;
-        emit anotherObjNeeded();
-        opButton=qobject_cast<Button*>(sender());
-        display->show(opButton->getPath());
-        opChoosenState();
-    }
-    void backspaceClicked() {
-        if(!opIsRunning && !opIsWaitingOperand && settingObj) { //from startState
-            removeSettingPanel();
-            if(controller->getNumObjInMemory()) controller->deleteLastObj();
-            startState();
-        }
-        else if(settingObj && !opIsRunning && !opIsRunning) { //from settinObjState && objIsCreatedState
-            removeSettingPanel();
-            controller->deleteLastObj();
-            startState();
-        }
-        else if(opIsWaitingOperand && opIsRunning && !settingObj) { //from opChoosenState
-            opButton=nullptr;
-            opIsWaitingOperand=false;
-            settingObj=false;
-            opIsRunning=false;
+        if(running) {
+            opButton=qobject_cast<Button*>(sender());
+            display->show(opButton->getPath());
             objIsCreatedState();
         }
-        else if(settingObj && opIsWaitingOperand && opIsRunning) { //from settingObjForOpState
+    }
+    void backspaceClicked() {
+        if(settingObj) { //pressing back in first settingObject
+            settingObj=false;
             removeSettingPanel();
             controller->deleteLastObj();
-            settingObj=false;
-            opChoosenState();
-        }
-        else if(opIsRunning && !opIsWaitingOperand && !settingObj) {
+        } else
+        if(!waitingOperand && running) { //in CONFIRM STATE
+            display->back();
+            waitingOperand=true;
+            //if(controller->getNumObjInMemory())
             controller->deleteLastObj();
-            opIsWaitingOperand=true;
-            settingObj=false;
-            opIsRunning=true;
-            opChoosenState();
-        } else startState();
-        display->back();
+        } else
+        if(waitingOperand && running) { //just choosen op, want to change it
+            display->back();
+            waitingOperand=false;
+            running=false;
+        }
+        else {
+            display->back();
+            controller->deleteLastObj();
+        }
+        return objIsCreatedState();
     }
     void eraseClicked() {
         if(controller->getNumObjInMemory()) {
-            opIsWaitingOperand=false;
-            opIsRunning=false;
+            waitingOperand=false;
+            running=false;
             if(settingObj) { //se clicco erase mentre sto settando oggetti
                 removeSettingPanel();
                 settingObj=false;
             }
             controller->clearMemory();
         }
-        startState();
+        objIsCreatedState();
         display->clear();
     }
 
 //AUTOMA STATES: --------------------------------------------------------------
-    void startState() {
-        emit objToClick(true);
-        emit opToClick(false);
-        emit confirmOpToClick(false);
-        emit backspaceToClick(true);
-
-        if(controller->getNumObjInMemory())
-            emit eraseToClick(true);
-        else emit eraseToClick(false);
-    }
     void settingObjState() {
         emit objToClick(false);
         emit opToClick(false);
@@ -353,37 +355,35 @@ private slots:
         emit backspaceToClick(true);
         emit eraseToClick(true);
     }
-
     void objIsCreatedState() {
         emit objToClick(true);
-        emit opToClick(true);
+        if(waitingOperand)
+            emit opToClick(false);
+        else emit opToClick(true);
         emit confirmOpToClick(false);
         emit backspaceToClick(true);
-        emit eraseToClick(true);
+        if(controller->getNumObjInMemory()) emit eraseToClick(true);
+        else {
+            emit eraseToClick(false);
+            emit opToClick(false);
+        }
+        if(!riciclaOp && !waitingOperand && !running) emit startOp(true);
     }
-
-    void opChoosenState() {
-        emit objToClick(true);
-        emit opToClick(false);
-        emit confirmOpToClick(false);
-        emit backspaceToClick(true);
-        emit eraseToClick(true);
-    }
-    void settingObjForOpState() {
-        emit objToClick(false);
-        emit opToClick(false);
-        emit confirmOpToClick(false);
-        emit backspaceToClick(true);
-        emit eraseToClick(true);
-    }
-
-    void confirmOpClickedState() {
+    void confirmOpToClickState() {
         objToClick(false);
         opToClick(false);
         confirmOpToClick(true);
         backspaceToClick(true);
         eraseToClick(true);
     }
+    void doneState() {
+        emit objToClick(false);
+        emit opToClick(false);
+        emit confirmOpToClick(false);
+        emit backspaceToClick(false);
+        emit eraseToClick(true);
+    }
+
 
 signals:
     void confirmObjToClick(bool);
@@ -393,9 +393,7 @@ signals:
     void backspaceToClick(bool);
     void eraseToClick(bool);
 
-    void anotherObjNeeded();
-
-
+    void startOp(bool);
     //eventi di display
 
 

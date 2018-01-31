@@ -28,8 +28,8 @@ public:
          float spirito =0,
          float attacco =0,
          float difesa =0) : Oggetto(livello, rarita, spirito), attacco_("Attacco"), difesa_("Difesa") {
-        insertStat(attacco_ ,attacco);
-        insertStat(difesa_ , difesa);
+        insertStat(attacco_,attacco);
+        insertStat(difesa_, difesa);
     }
 
     float getAttacco() const {
@@ -42,9 +42,8 @@ public:
 
 //ricicla fa la moltiplicazione della sommaStats in cui attacco e difesa sono raddoppiati, moltiplicato per livello e rarita
     float ricicla() {
-        float mana=(getSommaStats() + getAttacco() + getDifesa()) * getLivello() * getRarita();
-        delete this;
-        return mana;
+        return getMana() / 2 + (getValoreStat(attacco_) + getValoreStat(difesa_)) / 2 * getRarita();
+
     }
 
 /*    void ottieniDa(Pietra* pietra) {

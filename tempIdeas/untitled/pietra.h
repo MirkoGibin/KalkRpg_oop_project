@@ -32,9 +32,12 @@ public:
 
 // ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2
     float ricicla() {
-        float mana=getLivello()*getRarita()*(getSommaStats()-getSpirito()+getDurezza());
-        delete this;
-        return mana;
+        return getLivello()*getRarita()*(getSommaStats()-getSpirito()+getDurezza());
+
+    }
+
+    float ricicla() const {
+        return getMana() / 2 + getValoreStat(durezza_) * getRarita();
     }
 };
 

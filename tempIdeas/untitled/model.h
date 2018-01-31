@@ -28,31 +28,33 @@ public:
     Model() : counter(0) {}
 
 //------------------------------------------------------------
-    QList<QString>* getListaStatsFromLastObj() {
-        if(!memoria.isEmpty())
-            return new QList<QString>(getLastObj()->keys());
-        else return 0;
+    QMap<QString, int> getLastObj() const {
+        QMap<QString, int> values;
+        if(!memoria.isEmpty()) {
+            values.insert("Livello", memoria.front()->getLivello());
+            values.insert("Rarità", memoria.front()->getRarita());
+            list<string> objListaStats=memoria.front()->getListaStats();
+            for(auto it=objListaStats.begin();it!=objListaStats.end();++it)
+                values.insert(QString::fromStdString(*it), memoria.front()->getValoreStat(*it));
+        } else {} //eccezione
+        return values;
     }
-    QImage* getImageFromLastObj() {
+
+    QList<QString> getListaStatsFromLastObj() const {
+        if(!memoria.isEmpty())
+            return QList<QString>(getLastObj().keys());
+        else {}//throw exception
+        return QList<QString>();
+    }
+    QImage* getImageFromLastObj() const {
         if(!immagini.isEmpty())
             return immagini.value(counter);
         else return 0;
     }
 
-    QMap<QString, int>* getLastObj() {
-        if(!memoria.isEmpty()) {
-            QMap<QString, int>* values=new QMap<QString, int>();
-            values->insert("Livello", memoria.front()->getLivello());
-            values->insert("Rarità", memoria.front()->getRarita());
-            list<string>* objListaStats=memoria.front()->getListaStats();
-            for(auto it=objListaStats->begin();it!=objListaStats->end();++it)
-                values->insert(QString::fromStdString(*it), memoria.front()->getValoreStat(*it));
-            return values;
-        } else return 0;
-    }
 
     unsigned int getNumObjInMemory() const {
-        return counter;//memoria.size();
+        return counter; //memoria.size();
     }
 
     bool setStatByName(QString name, unsigned int value) const {
@@ -66,7 +68,6 @@ public:
     }
 
     void setImage(QImage* immagine) {
-        counter++;
         immagini.insert(counter, new QImage(*immagine));
     }
     void clearMemory() {
@@ -75,11 +76,10 @@ public:
             immagini.clear();
             counter=0;
         }
-        else emit nothingToDelete();
-
+        emit nothingToDelete();
     }
     void deleteLast() {
-        if(!memoria.isEmpty()) {
+        if(counter) {
             Oggetto* o=memoria.front();
             memoria.pop_front();
             delete o;
@@ -87,7 +87,9 @@ public:
             immagini.remove(counter);
             delete i;
             counter--;
-        } else emit nothingToDelete();
+            if(!counter) emit nothingToDelete();
+        }
+        else emit nothingToDelete();
     }
 
 
@@ -105,28 +107,34 @@ public:
             QImage* toInsert=new QImage((*immagini.value(counter)));
             immagini.insert(++counter, toInsert);
         }
-        emit opDone(true);
+        emit opDone();
     }
     void createErba() {
         memoria.push_front(new Erba());
+        counter++;
     }
     void createUnguento() {
         memoria.push_front(new Unguento());
+        counter++;
     }
     void createPietra() {
         memoria.push_front(new Pietra());
+        counter++;
     }
     void createCristallo() {
         memoria.push_front(new Cristallo());
+        counter++;
     }
     void createOsso() {
         memoria.push_front(new Osso());
+        counter++;
     }
     void createAmuleto() {
         memoria.push_front(new Amuleto());
+        counter++;
     }
 signals:
-    void opDone(bool =false);
+    void opDone();
     void nothingToDelete();
 
 };

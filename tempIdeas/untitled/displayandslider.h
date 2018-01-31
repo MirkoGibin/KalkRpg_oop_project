@@ -24,18 +24,17 @@ public:
         descrizione->setAlignment(Qt::AlignCenter);
 
         QVBoxLayout* displayandslider=new QVBoxLayout;
-        slider->setValue(0);
+        slider->setValue(1);
 
         if(descrizione->text()=="Livello" || descrizione->text()=="Rarità") {
-            slider->setValue(1);
             valore->setText(QString::number(1));
             slider->setRange(1,10);
             valore->setValidator(new QIntValidator(1,10));
         }
         else {
-            slider->setRange(0,199);
-            valore->setText(QString::number(0));
-            valore->setValidator(new QIntValidator(0,199));
+            slider->setRange(1,199);
+            valore->setText(QString::number(1));
+            valore->setValidator(new QIntValidator(1,199));
         }
         connect(slider, SIGNAL(valueChanged(int)), this, SLOT(display(int)));
         connect(valore, SIGNAL(textChanged(QString)), this, SLOT(updateSlider(QString)));

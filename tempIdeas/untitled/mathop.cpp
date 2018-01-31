@@ -13,19 +13,19 @@ void mathOp::doMultiplyOnMap(map<std::__cxx11::string, float> &m, float &toMulti
     }
 }
 
-list<std::__cxx11::string> *mathOp::chiaviAmenoB(map<std::__cxx11::string, float> &A, map<std::__cxx11::string, float> &B) {
-    list<string>* AmenoB=new list<string>();
+list<std::__cxx11::string> mathOp::chiaviAmenoB(map<std::__cxx11::string, float> &A, map<std::__cxx11::string, float> &B) {
+    list<string> AmenoB;
     for(map<string, float>::const_iterator it=A.begin(); it!=A.end(); ++it)
         if(!B.count(it->first))
-            AmenoB->push_back(it->first);
+            AmenoB.push_back(it->first);
     return AmenoB;
 }
 
-list<std::__cxx11::string> *mathOp::chiaviAeB(map<std::__cxx11::string, float> &A, map<std::__cxx11::string, float> &B) {
-    list<string>* AeB=new list<string>();
+list<std::__cxx11::string> mathOp::chiaviAeB(map<std::__cxx11::string, float> &A, map<std::__cxx11::string, float> &B) {
+    list<string> AeB;
     for(map<string, float>::const_iterator it=A.begin(); it!=A.end(); ++it)
         if(B.count(it->first))
-            AeB->push_back(it->first);
+            AeB.push_back(it->first);
     return AeB;
 }
 

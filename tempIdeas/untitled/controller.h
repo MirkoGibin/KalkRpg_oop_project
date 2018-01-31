@@ -49,13 +49,12 @@ public:
     QImage* getResultImage() const {
         return modello->getImageFromLastObj();
     }
-    QList<QString>* getResultParametri() const {
-        QList<QString> *parametri=new QList<QString>();
-        QMap<QString, int>* values=modello->getLastObj();
-        for(auto it=values->begin();it!=values->end();++it) {
-            parametri->push_back(it.key() + '\n' + QString::number(it.value()));
+    QList<QString> getResultParametri() const {
+        QList<QString> parametri;
+        QMap<QString, int> values=modello->getLastObj();
+        for(auto it=values.begin();it!=values.end();++it) {
+            parametri.push_back(it.key() + '\n' + QString::number(it.value()));
         }
-        delete values;
         return parametri;
     }
     void deleteLastObj() {
@@ -64,22 +63,22 @@ public:
 
     void combina() const {
         modello->combina();
-        connect(modello, SIGNAL(opDone(bool)), this, SIGNAL(opIsDone(bool)));
+        connect(modello, SIGNAL(opDone()), this, SIGNAL(opIsDone()));
     }
 
 
 //------------------------------------------------------------------------
 public slots:
-    void showSelectedObject(QGridLayout* griglia) {
+    void setSelectedObject(QGridLayout* griglia) {
 
-        QList<QString>* listaStats=modello->getListaStatsFromLastObj();
+        QList<QString> listaStats=modello->getListaStatsFromLastObj();
 
-        auto it=listaStats->begin();
+        auto it=listaStats.begin();
 
         int counter=0;
         DisplayAndSlider* displayandslider =0;
 
-        for(; it!=listaStats->end();++it) {
+        for(; it!=listaStats.end();++it) {
             QString name=(*it);
             displayandslider=new DisplayAndSlider(griglia->parentWidget(), name);
             tempDataToSet.insert(name, displayandslider->getSlider());
@@ -87,7 +86,6 @@ public slots:
             griglia->addWidget(displayandslider,2,counter++);
         }
 
-        delete listaStats;
         //return griglia;
     }
 
@@ -98,15 +96,15 @@ public slots:
         }
     }
 
-    QList<QString>* getParametri() const {
-        QList<QString> *parametri = new QList<QString>;
+    QList<QString> getParametri() const {
+        QList<QString> parametri;
         for(auto it=tempDataToSet.begin();it!=tempDataToSet.end();++it) {
-            parametri->push_back(it.key() + '\n' + QString::number(it.value()->value()));
+            parametri.push_back(it.key() + '\n' + QString::number(it.value()->value()));
         }
         return parametri;
     }
 
-    int ricicla() {
+    int ricicla() const {
         return modello->ricycleLast();
     }
 
@@ -159,7 +157,7 @@ public slots:
 
 signals:
     void somethingChanged(bool =false);
-    void opIsDone(bool =false);
+    void opIsDone();
     void nothingToDelete();
 };
 
