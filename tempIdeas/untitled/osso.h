@@ -18,23 +18,25 @@ private:
      * attacco
      * difesa
      */
+    string attacco_;
+    string difesa_;
 
 public:
     Osso(int livello =0,
          int rarita =0,
          float spirito =0,
          float attacco =0,
-         float difesa =0) : Oggetto(livello, rarita, spirito) {
-        insertStat("Attacco",attacco);
-        insertStat("Difesa", difesa);
+         float difesa =0) : Oggetto(livello, rarita, spirito), attacco_("Attacco"), difesa_("Difesa") {
+        insertStat(attacco_,attacco);
+        insertStat(difesa_, difesa);
     }
 
     float getAttacco() const {
-        return getValoreStat("Attacco");
+        return getValoreStat(attacco_);
     }
 
     float getDifesa() const {
-        return getValoreStat("Difesa");
+        return getValoreStat(difesa_);
     }
 
 //ricicla fa la moltiplicazione della sommaStats in cui attacco e difesa sono raddoppiati, moltiplicato per livello e rarita

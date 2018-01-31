@@ -17,6 +17,7 @@ private:
      * fortuna
      */
 
+
 public:
     Amuleto(int livello =0,
             int rarita =0,
