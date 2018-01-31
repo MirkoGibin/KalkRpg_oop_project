@@ -19,56 +19,40 @@ public:
         insertStat(energia_, energia);
     }
 
-    public:
-        Unguento(int livello =0,
-                 int rarita =0,
-                 float spirito =0,
-                 float vitalita =0,
-                 float energia =0) : Erba(livello, rarita, spirito, vitalita), energia_("Energia") {
-            insertStat(energia_, energia);
-        }
+   void potenzia(int mana, string parametro ="") {
+       int divisore;
 
-        oid potenzia(int mana, string parametro ="") {
+       if(getRarita() > 6)
+           divisore = 9;
+       else
+           divisore = 12;
 
-                int divisore = 10;
-                int incremento = mana / getLivello();
+       incrementStat(energia_, mana * getLivello() * getRarita() / divisore); //Energia riceve un bonus sicuro oltre alla normale distribuzione
+       Erba::potenzia(mana, parametro);
+   }
 
-                incrementStat(energia_, incremento * getRarita() / divisore); //Energia riceve un bonus sicuro oltre alla normale distribuzione
+   //estraiDa permette di creare un Unguento da una sua superclasse.
+   virtual void estraiDa(Oggetto* oggetto) {
+       if(dynamic_cast<Erba*>(oggetto)) {
+           setLivello(oggetto->getLivello());
+           setRarita(oggetto->getRarita());
+           list<string> s = oggetto->getListaStats();
+           int numeroStat = s.size();
 
-                if(parametro == "") {
-                    list<string> statsList = getListaStats();
-                    incremento = incremento / statsList.size();
-                    for(auto i = statsList.begin(); i != statsList.end(); i++)
-                        incrementStat(*i, incremento);
-                }
-                else {
-                    incrementStat(parametro, incremento);
-                }
+           for(auto i = s.begin(); i != s.end(); ++i)
+               if(*i == energia_) incrementStat(*i, oggetto->getSommaStats() / numeroStat);
+               else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
+       }
+       else {
+           //eccezione
+       }
+   }
 
-            }
-
-            //estraiDa permette di creare un Unguento da una sua superclasse.
-            virtual void estraiDa(Oggetto* oggetto) {
-                if(dynamic_cast<Erba*>(oggetto)) {
-                    setLivello(oggetto->getLivello());
-                    setRarita(oggetto->getRarita());
-                    list<string> s = oggetto->getListaStats();
-                    int numeroStat = s.size();
-
-                    for(auto i = s.begin(); i != s.end(); ++i)
-                        if(*i == energia_) incrementStat(*i, oggetto->getSommaStats() / numeroStat);
-                        else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
-                }
-                else {
-                    //eccezione
-                }
-            }
-
-        float ricicla() const {
-            return Erba::ricicla() + getValoreStat(energia_) * getRarita();
-        }
-        //ottieniDa permette di creare un Unguento a partire da un cristallo TS(cristallo) == TD(cristallo)
-        /*virtual void ottieniDa(Cristallo* cristallo) {
+   float ricicla() const {
+       return Erba::ricicla() + getValoreStat(energia_) * getRarita();
+   }
+   //ottieniDa permette di creare un Unguento a partire da un cristallo TS(cristallo) == TD(cristallo)
+   /*virtual void ottieniDa(Cristallo* cristallo) {
             if(typeid(cristallo) == typeid(*cristallo)) {
 
             }
@@ -85,6 +69,6 @@ public:
                 //lancia eccezione
             }
         }*/
-    };
+};
 
-    #endif // UNGUENTO_H
+#endif // UNGUENTO_H

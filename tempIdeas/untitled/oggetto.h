@@ -41,9 +41,7 @@ public:
     //distruttore virtuale
     virtual ~Oggetto() {}
 
-    virtual Oggetto* clone() const {
-        return new Oggetto(*this);
-    }
+    virtual Oggetto* clone() const =0;
 
 //---------METODI DI SET
     void setLivello(int livello) {

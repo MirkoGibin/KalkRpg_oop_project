@@ -31,28 +31,26 @@ public:
         return getValoreStat(fortuna_);
     }
 
+    Amuleto* clone() const {
+        return new Amuleto(*this);
+    }
+
     float ricicla() const {
         return Osso::ricicla() + getValoreStat(fortuna_) * getRarita();
     }
 
     void potenzia(int mana, string parametro ="") {
 
-        int incremento = mana / getLivello();
         int divisore;
 
-        if(parametro == "") {
+        if(getRarita() > 6 && getLivello() > 6)
             divisore = 10;
-            list<string> statsList = getListaStats();
-            incremento = incremento / statsList.size();
-            for(auto i = statsList.begin(); i != statsList.end(); i++)
-                incrementStat(*i, incremento);
-        }
-        else {
-            divisore = 5;
-            incrementStat(parametro, incremento);
-        }
+        else
+            divisore = 15;
 
-        incrementStat(fortuna_, incremento * getRarita() / divisore); //Fortuna riceve un bonus sicuro oltre alla normale distribuzione
+        incrementStat(fortuna_, mana * getLivello() * getRarita() / divisore); //Fortuna riceve un bonus sicuro oltre alla normale distribuzione
+
+        Osso::potenzia(mana, parametro);
     }
 
     virtual void estraiDa(Oggetto* oggetto) {

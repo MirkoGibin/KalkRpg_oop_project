@@ -26,18 +26,36 @@ public:
         insertStat(durezza_, durezza);
     }
 
+    Pietra* clone() const {
+        return new Pietra(*this);
+    }
+
      float getDurezza() const {
         return getValoreStat(durezza_);
     }
 
 // ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2
-    float ricicla() {
-        return getLivello()*getRarita()*(getSommaStats()-getSpirito()+getDurezza());
-
-    }
 
     float ricicla() const {
-        return getMana() / 2 + getValoreStat(durezza_) * getRarita();
+        return calcolaMana() / 2 + getValoreStat(durezza_) * getRarita();
+    }
+
+    void potenzia(int mana, string parametro ="") {
+
+        int divisore = 5;
+        int incremento = mana / getLivello();
+
+        incrementStat(durezza_, incremento * getRarita() / divisore); //Magia riceve un bonus sicuro oltre alla normale distribuzione
+
+        if(parametro == "") {
+            list<string> statsList = getListaStats();
+            incremento = incremento / statsList.size();
+            for(auto i = statsList.begin(); i != statsList.end(); i++)
+                incrementStat(*i, incremento);
+        }
+        else {
+                incrementStat(parametro, incremento);
+        }
     }
 };
 
