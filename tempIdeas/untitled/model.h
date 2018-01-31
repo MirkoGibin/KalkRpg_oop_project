@@ -93,7 +93,7 @@ public:
     }
 
 
-//-----------------------------------------------------------
+//OPERATIONS-----------------------------------------------------------
     int ricycleLast() {
         return memoria.front()->ricicla();
     }
@@ -109,6 +109,19 @@ public:
         }
         emit opDone();
     }
+
+    void potenzia(int mana, QString parametro) {
+        if(getNumObjInMemory()) {
+            Oggetto* nuovo=memoria.front()->clone();
+            nuovo->potenzia(mana, parametro.toStdString());
+            QImage* toInsert=new QImage((*immagini.value(counter)));
+            immagini.insert(++counter, toInsert);
+            memoria.push_front(nuovo);
+        } else {} //ECCEZIONI
+        emit opDone();
+    }
+
+//CREATE OBJECT IN MEMORY------------------------------------------------
     void createErba() {
         memoria.push_front(new Erba());
         counter++;

@@ -8,6 +8,7 @@
 #include<QSlider>
 #include<QList>
 #include<QImage>
+#include<QComboBox>
 
 class Controller : public QObject {
 Q_OBJECT
@@ -17,9 +18,12 @@ private:
     //data for setting object
     QMap<QString, QSlider*> tempDataToSet;
     QImage* image;
+    QComboBox* combox;
+    QString parametro;
+    int mana;
 
 public:
-    Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0) {
+    Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0), combox(0), parametro(""), mana(1)  {
         connect(modello, SIGNAL(nothingToDelete()), this, SIGNAL(nothingToDelete()));
     }
 
@@ -66,6 +70,16 @@ public:
         connect(modello, SIGNAL(opDone()), this, SIGNAL(opIsDone()));
     }
 
+    int ricicla() const {
+        return modello->ricycleLast();
+    }
+
+    void potenzia() {
+        //int mana=tempDataToSet.value("mana")->value();
+        modello->potenzia(mana, parametro);
+        //flushControllerMemory();
+    }
+
 
 //------------------------------------------------------------------------
 public slots:
@@ -89,11 +103,38 @@ public slots:
         //return griglia;
     }
 
-    void setStatsOnObj() const {
+    void setPotenzia(QGridLayout* griglia) {
+
+        QList<QString> listaStats=modello->getListaStatsFromLastObj();
+
+        auto it=listaStats.begin();
+
+        //int counter=0;
+        DisplayAndSlider* mana=new DisplayAndSlider(griglia->parentWidget(), "Mana");
+        tempDataToSet.insert("Mana", mana->getSlider());
+
+        combox=new QComboBox;
+
+        for(; it!=listaStats.end(); ++it)
+            if(*it!="Livello" && *it!="Rarità")
+                combox->addItem(*it);
+
+        griglia->addWidget(combox, 2, 1);
+        griglia->addWidget(mana, 2,0);
+    }
+
+    void parametroScelto() {
+        parametro=combox->currentText();
+        mana=tempDataToSet.value("Mana")->value();
+        flushControllerMemory();
+    }
+
+    void setStatsOnObj() {
         modello->setImage(image);
         for(auto it=tempDataToSet.begin();it!=tempDataToSet.end();++it) {
             modello->setStatByName(it.key(), it.value()->value());
         }
+        flushControllerMemory();
     }
 
     QList<QString> getParametri() const {
@@ -104,9 +145,6 @@ public slots:
         return parametri;
     }
 
-    int ricicla() const {
-        return modello->ricycleLast();
-    }
 
 
 //----------------------------------------------------------------------------

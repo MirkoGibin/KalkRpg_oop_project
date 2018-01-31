@@ -26,6 +26,7 @@ private:
     bool settingObj;
     bool running;
     bool riciclaOp;
+    bool potenziaOp;
 
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(testo, path);
@@ -56,7 +57,8 @@ public:
         waitingOperand(false),
         settingObj(false),
         running(false),
-        riciclaOp(false) {
+        riciclaOp(false),
+        potenziaOp(false) {
         setWindowTitle("KalkRPG");
 
         //creazione pulsanti oggetti
@@ -74,7 +76,6 @@ public:
         Button* riciclaButton = createOpButton(":/icons/ricicla.png", tr("Ricicla"), SLOT(riciclaClicked()));
         connect(this, SIGNAL(startOp(bool)), riciclaButton, SLOT(setEnabled(bool)));
         Button* potenziaButton = createOpButton(":/icons/potenzia.png", tr("Potenzia"), SLOT(potenziaClicked()));
-        connect(this, SIGNAL(startOp(bool)), potenziaButton, SLOT(setEnabled(bool)));
 
         //creazione pulsanti operazioni binarie
         Button* combinaButton = createOpButton(":/icons/combina.png", tr("Combina"), SLOT(combinaClicked()));
@@ -158,9 +159,9 @@ public:
         expansionAndSetGrid->parentWidget()->hide();
         this->adjustSize();
         expansionAndSetGrid->deleteLater();
-        child->deleteLater();
         confirmObj->deleteLater();
-        controller->flushControllerMemory();
+        child->deleteLater();
+        //controller->flushControllerMemory();
     }
     void showResult(int ris =0) { //DA METTERE IN PRIVATE
         if(controller->getNumObjInMemory()) {
@@ -218,8 +219,11 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
 
         mainLayout->addWidget(child, 1, 0, 1, 3 );
 
-        controller->setSelectedObject(expansionAndSetGrid);
-        controller->setImage(new QImage(pressedButton->getPath()));
+        if(potenziaOp) controller->setPotenzia(expansionAndSetGrid);
+        else {
+            controller->setSelectedObject(expansionAndSetGrid);
+            controller->setImage(new QImage(pressedButton->getPath()));
+        }
 
         expansionAndSetGrid->addWidget(image, 0, 0, 1, expansionAndSetGrid->columnCount());
         confirmObj=new QPushButton(tr("Conferma"), child);
@@ -233,15 +237,22 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     //CONFIRM OBJECT
     void confirmObjClicked(/*Button* pressedButton*/) {
         settingObj=false;
-        if(!waitingOperand)
-            objIsCreatedState();
-        else {
+        if(potenziaOp) {
             confirmOpToClickState();
             waitingOperand=false;
+            controller->parametroScelto();
+            removeSettingPanel();
+        } else {
+            if(!waitingOperand)
+                objIsCreatedState();
+            else {
+                confirmOpToClickState();
+                waitingOperand=false;
+            }
+            display->show(controller->getImage(), controller->getParametri());
+            controller->setStatsOnObj();
+            removeSettingPanel();
         }
-        display->show(controller->getImage(), controller->getParametri());
-        controller->setStatsOnObj();
-        removeSettingPanel();
     }
 
 
@@ -278,7 +289,18 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         return;
     }
     void potenziaClicked() {
-        return;
+        if(running) {
+            controller->potenzia();
+            running=false;
+            opButton=nullptr;
+            potenziaOp=false;
+            showResult();
+        } else {
+            potenziaOp=true;
+            showToSet(qobject_cast<Button*>(sender()));
+            //waitingOperand=false;
+            running=true;
+        }
     }
     void trasformaClicked(){
         return;
@@ -314,23 +336,33 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         if(settingObj) { //pressing back in first settingObject
             settingObj=false;
             removeSettingPanel();
-            controller->deleteLastObj();
+            if(potenziaOp) {
+                display->back();
+                potenziaOp=false;
+                running=false;
+                controller->flushControllerMemory();
+            } else controller->deleteLastObj();
         } else
-        if(!waitingOperand && running) { //in CONFIRM STATE
-            display->back();
-            waitingOperand=true;
-            //if(controller->getNumObjInMemory())
-            controller->deleteLastObj();
-        } else
-        if(waitingOperand && running) { //just choosen op, want to change it
-            display->back();
-            waitingOperand=false;
-            running=false;
-        }
-        else {
-            display->back();
-            controller->deleteLastObj();
-        }
+            if(!waitingOperand && running) { //in CONFIRM STATE
+                display->back();
+                if(potenziaOp) {
+                    running=false;
+                    potenziaOp=false;
+                } else {
+                    waitingOperand=true;
+                    //if(controller->getNumObjInMemory())
+                    controller->deleteLastObj();
+                }
+            } else
+                if(waitingOperand && running) { //just choosen op, want to change it
+                    display->back();
+                    waitingOperand=false;
+                    running=false;
+                }
+                else {
+                    display->back();
+                    controller->deleteLastObj();
+                }
         return objIsCreatedState();
     }
     void eraseClicked() {
