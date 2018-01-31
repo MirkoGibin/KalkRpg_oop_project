@@ -17,6 +17,7 @@ private:
      * durezza
      * magia
      */
+    string magia_;
 
 public:
     //default constructor
@@ -24,13 +25,13 @@ public:
               const int rarita =0,
               const float spirito =0,
               const float durezza =0,
-              const float magia =0) : Pietra(livello, rarita, spirito, durezza) {
-        Oggetto::insertStat("Magia", magia);
+              const float magia =0) : Pietra(livello, rarita, spirito, durezza), magia_("Magia") {
+        Oggetto::insertStat(magia_, magia);
     }
 
     //methods
     virtual double getMagia() const {
-        return getValoreStat("Magia");
+        return getValoreStat(magia_);
     }
 
     virtual void potenzia(int mana, string parametro ="") {
@@ -38,7 +39,7 @@ public:
         int divisore = 5;
         int incremento = mana / getLivello();
 
-        incrementStat("Magia", incremento * getRarita() / divisore); //Magia riceve un bonus sicuro oltre alla normale distribuzione
+        incrementStat(magia_, incremento * getRarita() / divisore); //Magia riceve un bonus sicuro oltre alla normale distribuzione
 
         if(parametro == "") {
             list<string> statsList = getListaStats();
@@ -47,8 +48,8 @@ public:
                 incrementStat(*i, incremento);
         }
         else {
-            if(parametro == "Spirito")
-                incrementStat(parametro, incremento/getMagia());
+            if(parametro != "Spirito")
+                incrementStt(parametro, incremento/getMagia());
             else
                 incrementStat(parametro, incremento);
         }
@@ -64,7 +65,7 @@ public:
                 int numeroStat = s.size();
 
                 for(auto i = s.begin(); i != s.end(); ++i)
-                    if(*i == "Magia") incrementStat(*i, (oggetto->getSommaStats() - getSpirito()) / numeroStat);
+                    if(*i == magia_) incrementStat(*i, (oggetto->getSommaStats() - getSpirito()) / numeroStat);
                     else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
             }
             else {}

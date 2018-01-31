@@ -9,14 +9,14 @@ class Pietra;
 class Osso;
 
 class Unguento : public Erba{
-    /* non ci sono stats aggiuntive in Unguento */
+    string energia_;
 public:
     Unguento(int livello =0,
              int rarita =0,
              float spirito =0,
              float vitalita =0,
-             float energia =0) : Erba(livello, rarita, spirito, vitalita) {
-        insertStat("Energia", energia);
+             float energia =0) : Erba(livello, rarita, spirito, vitalita), energia_("Energia") {
+        insertStat(energia_, energia);
     }
 
     void potenzia(int mana, string parametro ="") {
@@ -24,7 +24,7 @@ public:
         int divisore = 10;
         int incremento = mana / getLivello();
 
-        incrementStat("Energia", incremento * getRarita() / divisore); //Energia riceve un bonus sicuro oltre alla normale distribuzione
+        incrementStat(energia_, incremento * getRarita() / divisore); //Energia riceve un bonus sicuro oltre alla normale distribuzione
 
         if(parametro == "") {
             list<string> statsList = getListaStats();
@@ -47,7 +47,7 @@ public:
             int numeroStat = s.size();
 
             for(auto i = s.begin(); i != s.end(); ++i)
-                if(*i == "Energia") incrementStat(*i, oggetto->getSommaStats() / numeroStat);
+                if(*i == energia_) incrementStat(*i, oggetto->getSommaStats() / numeroStat);
                 else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
         }
         else {
