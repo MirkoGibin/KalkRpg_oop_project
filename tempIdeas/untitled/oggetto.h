@@ -153,33 +153,54 @@ public:
 
     virtual void potenzia(int mana, string parametro ="") = 0;
 
-    /*
-    virtual void crea(float mana, int livello, int rarita, string statistica) { //PRE = statistica è vuoto o è un valore valido
+    void trasformaDa(Oggetto *obj) {
+        //if(dynamic_cast<Erba*>(obj)) {} //throw eccezione
+        if(getListaStats().size() > obj->getListaStats().size()) {} //throw eccezione
 
-        this->setLivello(livello);
-        this->setRarita(rarita);
+        setLivello(obj->getLivello());
+        setRarita(obj->getRarita());
+        list<string> parametri = obj->getListaStats();
+        int val = 0;
+        for(auto i = parametri.begin(); i != parametri.end(); ++i) {
+            if(!modifyStat(*i, obj->getValoreStat(*i)/2))
+                val += obj->getValoreStat(*i);
+        }
+        parametri.clear();
+
+        if(val > 0) {
+            for(auto it = stats.begin(); it != stats.end(); ++it){
+                if(it->second == 0)
+                    parametri.push_back(it->first);
+            }
+
+            val /= parametri.size();
+
+            for(auto i = parametri.begin(); i != parametri.end(); i++)
+                modifyStat(*i, val * getRarita());
+
+        }
+    }
+
+    void crea(float mana, int livello, int rarita, string statistica) { //PRE = statistica è vuoto o è un valore valido
+
+        setLivello(livello);
+        setRarita(rarita);
 
         list<string> parametri = getListaStats();
         float sumStats=mana/(livello*rarita);
 
-        if(std::find(parametri.begin(), parametri.end(), statistica) != parametri.end()) { //RICHIEDE <ALGORITHM>
+        if(statistica != "" && std::find(parametri.begin(), parametri.end(), statistica) != parametri.end()) { //RICHIEDE <ALGORITHM>
             modifyStat(statistica, sumStats/2);
             sumStats=sumStats/2;
             parametri.remove(statistica);
         }
 
-        if(parametri.size()==0) { //oggetto con un solo parametro in stats (spirito)
-            modifyStat(statistica, getValoreStat(statistica)+sumStats);
+        sumStats=sumStats/parametri.size();
 
-        } else {
-            sumStats=sumStats/parametri->size();
-
-            for(list<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
-                modifyStat(*it, sumStats);
-        }
-        //delete parametri;
+        for(list<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
+            modifyStat(*it, sumStats);
     }
-*/
+
 };
 
 #endif // OGGETTO_H

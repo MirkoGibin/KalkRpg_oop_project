@@ -31,6 +31,10 @@ public:
        Erba::potenzia(mana, parametro);
    }
 
+   /*void trasformaDa(Oggetto *obj) {
+
+   }*/
+
    //estraiDa permette di creare un Unguento da una sua superclasse.
    virtual void estraiDa(Oggetto* oggetto) {
        if(dynamic_cast<Erba*>(oggetto)) {
