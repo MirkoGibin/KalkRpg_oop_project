@@ -34,24 +34,24 @@ public:
         return getValoreStat(magia_);
     }
 
+    Cristallo* clone() const {
+        return new Cristallo(*this);
+    }
+
     virtual void potenzia(int mana, string parametro ="") {
 
-        int divisore = 5;
-        int incremento = mana / getLivello();
+        int incremento = mana * getLivello() * getRarita();
+        int divisore;
 
-        incrementStat(magia_, incremento * getRarita() / divisore); //Magia riceve un bonus sicuro oltre alla normale distribuzione
-
-        if(parametro == "") {
-            list<string> statsList = getListaStats();
-            incremento = incremento / statsList.size();
-            for(auto i = statsList.begin(); i != statsList.end(); i++)
-                incrementStat(*i, incremento);
+        if(parametro == "Spirito") {
+            divisore = 15;
+            incrementStat(parametro, incremento/getMagia());
+            incrementStat(magia_, incremento * getRarita() / divisore);
         }
         else {
-            if(parametro != "Spirito")
-                incrementStt(parametro, incremento/getMagia());
-            else
-                incrementStat(parametro, incremento);
+            divisore = 10;
+            incrementStat(magia_, incremento * getRarita() / divisore);
+            Pietra::potenzia(mana, parametro);
         }
     }
 
@@ -75,6 +75,11 @@ public:
             //eccezione no estrazione possibile
         }
     }
+
+        float ricicla() const {
+            return Pietra::ricicla() + getValoreStat(magia_) * getRarita();
+        }
+
 };
 
 #endif // CRISTALLO_H

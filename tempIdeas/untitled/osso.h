@@ -21,6 +21,7 @@ private:
     string attacco_;
     string difesa_;
 
+
 public:
     Osso(int livello =0,
          int rarita =0,
@@ -39,11 +40,35 @@ public:
         return getValoreStat(difesa_);
     }
 
+    Osso* clone() const {
+        return new Osso(*this);
+    }
+
 //ricicla fa la moltiplicazione della sommaStats in cui attacco e difesa sono raddoppiati, moltiplicato per livello e rarita
-    float ricicla() {
-        float mana=(getSommaStats() + getAttacco() + getDifesa()) * getLivello() * getRarita();
-        //delete this;
-        return mana;
+    float ricicla() const {
+        return calcolaMana() / 2 + (getValoreStat(attacco_) + getValoreStat(difesa_)) / 2 * getRarita();
+
+    }
+
+    void potenzia(int mana, string parametro ="") {
+
+        int incremento = mana / getLivello();
+        int divisore;
+
+        if(parametro == "") {
+            divisore = 10;
+            list<string> statsList = getListaStats();
+            incremento = incremento / statsList.size();
+            for(auto i = statsList.begin(); i != statsList.end(); i++)
+                incrementStat(*i, incremento);
+        }
+        else {
+            divisore = 5;
+            incrementStat(parametro, incremento);
+        }
+
+        incrementStat(attacco_, incremento * getRarita() / (2*divisore));
+        incrementStat(difesa_, incremento * getRarita() / (2*divisore));
     }
 
 /*    void ottieniDa(Pietra* pietra) {

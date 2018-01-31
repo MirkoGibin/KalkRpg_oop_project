@@ -15,13 +15,14 @@ private:
     //parameters to describe the item
     int livello_;
     int rarita_;
+    string spirito_;
 
     map<string, float> stats;
 
     /* parameters inside stats in Oggetto are:
      * spirito
      */
-    virtual void normalizza() {
+    void normalizza() {
         if(getLivello()*150 <= calcolaMana()) {
             float percentualeRiduzione=getLivello()*150/calcolaMana();
             mathOp::doMultiplyOnMap(stats, percentualeRiduzione);
@@ -33,25 +34,23 @@ public:
     //costruttore di default
     Oggetto(int livello =0,
             int rarita =0,
-            float spirito =0) : livello_(livello), rarita_(rarita) {
-        stats.emplace("Spirito", spirito);
+            float spirito =0) : livello_(livello), rarita_(rarita), spirito_("Spirito") {
+        stats.emplace(spirito_, spirito);
     }
 
     //distruttore virtuale
     virtual ~Oggetto() {}
 
-    virtual Oggetto* clone() const {
-        return new Oggetto(*this);
-    }
+    virtual Oggetto* clone() const =0;
 
 //---------METODI DI SET
-    virtual void setLivello(int livello) {
+    void setLivello(int livello) {
         livello_=livello;
     }
-    virtual void setRarita(int rarita) {
+    void setRarita(int rarita) {
         rarita_=rarita;
     }
-    virtual void insertStat(string str, float db) {
+    void insertStat(string str, float db) {
         stats.emplace(str, db);
     }
 
@@ -64,7 +63,7 @@ public:
             incrementStat(*i, value);
     }*/
 
-    virtual bool modifyStat(string str, float db) { //GESTIONE DEGLI ERRORI
+    bool modifyStat(string str, float db) { //GESTIONE DEGLI ERRORI
         bool trovata=true;
         if(stats.count(str)) {
             stats[str] = db;
@@ -75,42 +74,42 @@ public:
     }
 
 //------------METODI DI GET
-    virtual float getLivello() const {
+    float getLivello() const {
        return livello_;
     }
-    virtual float getRarita() const {
+    float getRarita() const {
         return rarita_;
     }
-    virtual float getValoreStat(string str) const {
+    float getValoreStat(string str) const {
         return stats.at(str);
     }
 
-    virtual float getSpirito() const {
-        return getValoreStat("Spirito");
+    float getSpirito() const {
+        return getValoreStat(spirito_);
     }
 
-    virtual list<string> getListaStats()  const {
+    list<string> getListaStats()  const {
         list<string> keyList;
         for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
             keyList.push_back(it->first);
         return keyList;
     }
 
-    virtual float getSommaStats() const {
+    float getSommaStats() const {
         float sum = 0;
         for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
             sum+=it->second;
         return sum;
     }
 
-    virtual float calcolaMana() const {
+    float calcolaMana() const {
         return getSommaStats()*getLivello();
     }
 
 
 
 //------------OPERAZIONI
-    virtual void combina(Oggetto* object) {
+    void combina(Oggetto* object) {
         map<string, float> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
         map<string, float> percentParMap = object->stats; //copiata la mappa dell'oggetto di invocazione
 
@@ -150,25 +149,9 @@ public:
 
     //operazioni
 
-    virtual float ricicla() {
-        return getSommaStats()*getLivello()*getRarita();
-    }
+    virtual float ricicla() const = 0;
 
-    virtual void potenzia(int mana, string parametro ="") {
-
-        int incremento = mana / getLivello();
-
-        if(parametro == "") {
-            list<string> statsList = getListaStats();
-            incremento = incremento / statsList.size();
-            for(auto i = statsList.begin(); i != statsList.end(); i++)
-                incrementStat(*i, incremento);
-        }
-        else {
-            incrementStat(parametro, incremento);
-        }
-
-    }
+    virtual void potenzia(int mana, string parametro ="") = 0;
 
     /*
     virtual void crea(float mana, int livello, int rarita, string statistica) { //PRE = statistica è vuoto o è un valore valido
