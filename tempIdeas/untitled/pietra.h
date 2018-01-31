@@ -15,18 +15,19 @@ private:
      * attacco
      * durezza
      */
+    string durezza_;
 
 public:
     //default construtor
     Pietra(int livello =0,
            int rarita =0,
            float spirito =0,
-           float durezza =0) : Oggetto(livello, rarita, spirito) {
-        insertStat("Durezza", durezza);
+           float durezza =0) : Oggetto(livello, rarita, spirito), durezza_("Durezza") {
+        insertStat(durezza_, durezza);
     }
 
      float getDurezza() const {
-        return getValoreStat("Durezza");
+        return getValoreStat(durezza_);
     }
 
 // ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2

@@ -15,6 +15,7 @@ private:
     //parameters to describe the item
     int livello_;
     int rarita_;
+    string spirito_;
 
     map<string, float> stats;
 
@@ -33,8 +34,8 @@ public:
     //costruttore di default
     Oggetto(int livello =0,
             int rarita =0,
-            float spirito =0) : livello_(livello), rarita_(rarita) {
-        stats.emplace("Spirito", spirito);
+            float spirito =0) : livello_(livello), rarita_(rarita), spirito_("Spirito") {
+        stats.emplace(spirito_, spirito);
     }
 
     //distruttore virtuale
@@ -86,7 +87,7 @@ public:
     }
 
     virtual float getSpirito() const {
-        return getValoreStat("Spirito");
+        return getValoreStat(spirito_);
     }
 
     virtual list<string>* getListaStats()  const {

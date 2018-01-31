@@ -9,6 +9,7 @@ class Erba : public Oggetto{
      * spirito
      * Vitalità
      */
+    string vitalita
 public:
     Erba(int livello =0,
          int rarita =0,
