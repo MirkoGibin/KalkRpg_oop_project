@@ -21,9 +21,12 @@ private:
     QComboBox* combox;
     QString parametro;
     int mana;
+    int livello;
+    int rarita;
 
 public:
-    Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0), combox(0), parametro(""), mana(1)  {
+    Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0),
+        combox(0), parametro(""), mana(1), livello(1), rarita(1)  {
         connect(modello, SIGNAL(nothingToDelete()), this, SIGNAL(nothingToDelete()));
     }
 
@@ -41,6 +44,7 @@ public:
 
     void setImage(QImage* img) {
         image = img;
+        modello->setImage(image);
     }
     int getNumObjInMemory() const {
         return modello->getNumObjInMemory();
@@ -78,6 +82,10 @@ public:
         //int mana=tempDataToSet.value("mana")->value();
         modello->potenzia(mana, parametro);
         //flushControllerMemory();
+    }
+
+    void crea() {
+        modello->crea(mana, livello, rarita, parametro);
     }
 
 
@@ -123,14 +131,45 @@ public slots:
         griglia->addWidget(mana, 2,0);
     }
 
-    void parametroScelto() {
+    void setCrea(QGridLayout* griglia) {
+        QList<QString> listaStats=modello->getListaStatsFromLastObj();
+
+        auto it=listaStats.begin();
+
+        //int counter=0;
+        DisplayAndSlider* mana=new DisplayAndSlider(griglia->parentWidget(), "Mana");
+        tempDataToSet.insert("Mana", mana->getSlider());
+        DisplayAndSlider* livello=new DisplayAndSlider(griglia->parentWidget(), "Livello");
+        tempDataToSet.insert("Livello", livello->getSlider());
+        DisplayAndSlider* rarita=new DisplayAndSlider(griglia->parentWidget(), "Rarità");
+        tempDataToSet.insert("Rarità", rarita->getSlider());
+
+        combox=new QComboBox;
+        for(; it!=listaStats.end(); ++it)
+            if(*it!="Livello" && *it!="Rarità")
+                combox->addItem(*it);
+
+        griglia->addWidget(combox, 2, 3);
+        griglia->addWidget(mana, 2,0);
+        griglia->addWidget(livello, 2,1);
+        griglia->addWidget(rarita, 2,2);
+    }
+
+    void sceltiParametriPotenzia() {
         parametro=combox->currentText();
         mana=tempDataToSet.value("Mana")->value();
         flushControllerMemory();
     }
+    void sceltiParametriCrea() {
+        parametro=combox->currentText();
+        mana=tempDataToSet.value("Mana")->value();
+        livello=tempDataToSet.value("Livello")->value();
+        rarita=tempDataToSet.value("Rarità")->value();
+        flushControllerMemory();
+    }
 
     void setStatsOnObj() {
-        modello->setImage(image);
+        //modello->setImage(image);
         for(auto it=tempDataToSet.begin();it!=tempDataToSet.end();++it) {
             modello->setStatByName(it.key(), it.value()->value());
         }
@@ -151,6 +190,7 @@ public slots:
     bool newErba() {
         int before=modello->getNumObjInMemory();
         modello->createErba();
+        //modello->setImage(image);
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
@@ -158,6 +198,7 @@ public slots:
     bool newUnguento() {
         int before=modello->getNumObjInMemory();
         modello->createUnguento();
+        //modello->setImage(image);
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
@@ -165,6 +206,7 @@ public slots:
     bool newPietra() {
         int before=modello->getNumObjInMemory();
         modello->createPietra();
+        //modello->setImage(image);
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
@@ -172,6 +214,7 @@ public slots:
     bool newCristallo() {
         int before=modello->getNumObjInMemory();
         modello->createCristallo();
+        //modello->setImage(image);
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
@@ -179,6 +222,7 @@ public slots:
     bool newOsso() {
         int before=modello->getNumObjInMemory();
         modello->createOsso();
+        //modello->setImage(image);
         int after=modello->getNumObjInMemory();
         return before++==after;
     }
@@ -186,6 +230,7 @@ public slots:
     bool newAmuleto() {
         int before=modello->getNumObjInMemory();
         modello->createAmuleto();
+        //modello->setImage(image);
         int after=modello->getNumObjInMemory();
         return before++==after;
     }

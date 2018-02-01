@@ -121,6 +121,17 @@ public:
         emit opDone();
     }
 
+    void crea(int mana, int livello, int rarita, QString parametro) {
+        if(getNumObjInMemory()) {
+            Oggetto* nuovo=memoria.front()->clone();
+            nuovo->crea(mana, livello, rarita, parametro.toStdString());
+            QImage* toInsert=new QImage((*immagini.value(counter)));
+            immagini.insert(++counter, toInsert);
+            memoria.push_front(nuovo);
+        } else {} //eccezioni
+        emit opDone();
+    }
+
 //CREATE OBJECT IN MEMORY------------------------------------------------
     void createErba() {
         memoria.push_front(new Erba());

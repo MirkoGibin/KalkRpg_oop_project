@@ -153,7 +153,7 @@ public:
 
     virtual void potenzia(int mana, string parametro ="") = 0;
 
-    /*
+
     virtual void crea(float mana, int livello, int rarita, string statistica) { //PRE = statistica è vuoto o è un valore valido
 
         this->setLivello(livello);
@@ -172,14 +172,14 @@ public:
             modifyStat(statistica, getValoreStat(statistica)+sumStats);
 
         } else {
-            sumStats=sumStats/parametri->size();
+            sumStats=sumStats/parametri.size();
 
             for(list<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
                 modifyStat(*it, sumStats);
         }
         //delete parametri;
     }
-*/
+
 };
 
 #endif // OGGETTO_H
