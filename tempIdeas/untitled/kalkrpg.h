@@ -27,6 +27,7 @@ private:
     bool running;
     bool riciclaOp;
     bool potenziaOp;
+    bool creaOp;
 
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(testo, path);
@@ -58,7 +59,8 @@ public:
         settingObj(false),
         running(false),
         riciclaOp(false),
-        potenziaOp(false) {
+        potenziaOp(false),
+        creaOp(false) {
         setWindowTitle("KalkRPG");
 
         //creazione pulsanti oggetti
@@ -175,33 +177,21 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     //SELECTING OBJECTS
     void erbaClicked() {
         controller->newErba();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
     }
     void unguentoClicked(){
         controller->newUnguento();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
     }
     void pietraClicked(){
         controller->newPietra();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
     }
     void cristalloClicked() {
         controller->newCristallo();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
     }
     void ossoClicked() {
         controller->newOsso();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
     }
     void amuletoClicked() {
         controller->newAmuleto();
-        showToSet(qobject_cast<Button*>(sender()));
-        return;
     }
 
     //SETTING OBJECTS
@@ -220,9 +210,9 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         mainLayout->addWidget(child, 1, 0, 1, 3 );
 
         if(potenziaOp) controller->setPotenzia(expansionAndSetGrid);
+        else if(creaOp) controller->setCrea(expansionAndSetGrid);
         else {
             controller->setSelectedObject(expansionAndSetGrid);
-            controller->setImage(new QImage(pressedButton->getPath()));
         }
 
         expansionAndSetGrid->addWidget(image, 0, 0, 1, expansionAndSetGrid->columnCount());
@@ -240,7 +230,13 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         if(potenziaOp) {
             confirmOpToClickState();
             waitingOperand=false;
-            controller->parametroScelto();
+            controller->sceltiParametriPotenzia();
+            removeSettingPanel();
+        } else if(creaOp) {
+            confirmOpToClickState();
+            waitingOperand=false;
+            display->show(controller->getImage(), controller->getParametri());
+            controller->sceltiParametriCrea();
             removeSettingPanel();
         } else {
             if(!waitingOperand)
@@ -258,7 +254,17 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
 
     //OPERATION CLICKED
     void creaClicked() {
-        return;
+        if(running) {
+            controller->crea();
+            opButton=nullptr;
+            creaOp=false;
+            running=false;
+            showResult();
+        } else {
+            waitingOperand=true;
+            creaOp=true;
+            running=true;
+        }
     }
 
     void riciclaClicked() {
@@ -317,6 +323,9 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
 
     //GENERALS & MEMORY MANAGEMENT.
     void objectClicked() {
+        Button*pressedButton=qobject_cast<Button*>(sender());
+        controller->setImage(new QImage(pressedButton->getPath()));
+        showToSet(pressedButton);
     }
 
     void confirmOpClicked() {
@@ -329,7 +338,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         if(running) {
             opButton=qobject_cast<Button*>(sender());
             display->show(opButton->getPath());
-            objIsCreatedState();
+            if(!potenziaOp) objIsCreatedState();
         }
     }
     void backspaceClicked() {
@@ -341,29 +350,32 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
                 potenziaOp=false;
                 running=false;
                 controller->flushControllerMemory();
-            } else controller->deleteLastObj();
-        } else
-            if(!waitingOperand && running) { //in CONFIRM STATE
-                display->back();
-                if(potenziaOp) {
-                    running=false;
-                    potenziaOp=false;
-                } else {
-                    waitingOperand=true;
-                    //if(controller->getNumObjInMemory())
-                    controller->deleteLastObj();
-                }
-            } else
-                if(waitingOperand && running) { //just choosen op, want to change it
-                    display->back();
-                    waitingOperand=false;
-                    running=false;
-                    riciclaOp=false;
-                }
-                else {
-                    display->back();
-                    controller->deleteLastObj();
-                }
+            } else if(creaOp) {
+                controller->deleteLastObj();
+                waitingOperand=true;
+            }
+
+            else controller->deleteLastObj();
+        } else if(!waitingOperand && running) { //in CONFIRM STATE
+            display->back();
+            if(potenziaOp) {
+                running=false;
+                potenziaOp=false;
+            } else { //valido anche per creaOp
+                waitingOperand=true;
+                //if(controller->getNumObjInMemory())
+                controller->deleteLastObj();
+            }
+        } else if(waitingOperand && running) { //just choosen op, want to change it
+            display->back();
+            waitingOperand=false;
+            running=false;
+            riciclaOp=false;
+            creaOp=false;
+        } else {
+            display->back();
+            controller->deleteLastObj();
+        }
         return objIsCreatedState();
     }
     void eraseClicked() {
