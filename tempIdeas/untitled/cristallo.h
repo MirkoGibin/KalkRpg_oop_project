@@ -76,9 +76,24 @@ public:
         }
     }
 
-        float ricicla() const {
-            return Pietra::ricicla() + getValoreStat(magia_) * getRarita();
-        }
+    float ricicla() const {
+        return Pietra::ricicla() + getValoreStat(magia_) * getRarita();
+    }
+
+    Oggetto* distribuisci(Oggetto* obj) {
+        float val = getMagia() / 2;
+
+        if(getDurezza() < val) {} //throw eccezione
+
+        editDurezza(-val);
+
+        list<string> parametri = obj->getListaStats();
+
+        for(auto it = parametri.begin(); it != parametri.end(); ++it)
+            obj->incrementStat(*it, val / parametri.size());
+
+        return obj;
+    }
 
 };
 

@@ -34,6 +34,10 @@ public:
         return getValoreStat(durezza_);
     }
 
+     void editDurezza(float val) {
+         incrementStat(durezza_, val);
+     }
+
 // ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2
 
     float ricicla() const {
