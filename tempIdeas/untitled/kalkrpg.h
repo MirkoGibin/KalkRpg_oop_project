@@ -104,11 +104,13 @@ public:
         emit startOp(true);
 
         //creazione del layout
+
         QGridLayout *objectLayout = new QGridLayout;
         QGridLayout *operationLayout = new QGridLayout;
         QGridLayout *memoryLayout = new QGridLayout;
 
         //display calcolatrice
+        mainLayout->setSizeConstraint(QLayout::SetFixedSize);
         objectLayout->setSizeConstraint(QLayout::SetFixedSize);
         operationLayout->setSizeConstraint(QLayout::SetFixedSize);
         memoryLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -136,9 +138,10 @@ public:
         memoryLayout->addWidget(confermaOpButton, 2, 0);
 
         mainLayout->addLayout(objectLayout, 0, 0);
+        mainLayout->addWidget(display, 0, 1, 2, 1);
         mainLayout->addLayout(operationLayout, 0, 2);
         mainLayout->addLayout(memoryLayout, 0, 3);
-        mainLayout->addWidget(display, 0, 1);
+
 
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
@@ -217,7 +220,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         QPixmap *pix = new QPixmap(pressedButton->getPath());
         image->setPixmap(*pix);
 
-        mainLayout->addWidget(child, 1, 0, 1, 3 );
+        mainLayout->addWidget(child, 3, 0, 1, 3 );
 
         if(potenziaOp) controller->setPotenzia(expansionAndSetGrid);
         else {
