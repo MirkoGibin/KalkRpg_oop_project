@@ -90,11 +90,11 @@ public:
         connect(backspaceButton, SIGNAL(clicked()), this, SLOT(backspaceClicked()));
         connect(this, SIGNAL(backspaceToClick(bool)), backspaceButton, SLOT(setEnabled(bool)));
 
-        Button*eraseButton=new Button(tr("Cancella\nMemoria"),":/icons/cancella.png");
+        Button*eraseButton=new Button(tr("Cancella"),":/icons/cancella.png");
         connect(eraseButton, SIGNAL(clicked()), this, SLOT(eraseClicked()));
         connect(this, SIGNAL(eraseToClick(bool)), eraseButton, SLOT(setEnabled(bool)));
 
-        Button*confermaOpButton=new Button(tr("Conferma\nOperazione"),":/icons/confermaOp.png");
+        Button*confermaOpButton=new Button(tr("Conferma"),":/icons/confermaOp.png");
         connect(confermaOpButton, SIGNAL(clicked()), this, SLOT(confirmOpClicked()));
         connect(this, SIGNAL(confirmOpToClick(bool)), confermaOpButton, SLOT(setEnabled(bool)));
 

@@ -26,7 +26,7 @@ public:
     } 
     QSize sizeHint() const override {
         QSize size = QToolButton::sizeHint();
-        size.rheight() += 20;
+        size.rheight() += 5;
         size.rwidth() = qMax(size.width(), size.height());
         return size;
     }
