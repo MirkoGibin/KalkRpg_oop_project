@@ -28,6 +28,7 @@ public:
     Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0),
         combox(0), parametro(""), mana(1), livello(1), rarita(1)  {
         connect(modello, SIGNAL(nothingToDelete()), this, SIGNAL(nothingToDelete()));
+        connect(modello, SIGNAL(isCristallo(bool)), this, SIGNAL(isCristallo(bool)));
     }
 
     ~Controller() {
@@ -54,12 +55,12 @@ public:
         modello->clearMemory();
     }
 
-    QImage* getResultImage() const {
-        return modello->getImageFromLastObj();
+    QImage* getResultImage(int contatore =0) const {
+        return modello->getImageFromLastObj(contatore);
     }
-    QList<QString> getResultParametri() const {
+    QList<QString> getResultParametri(int contatore =0) const {
         QList<QString> parametri;
-        QMap<QString, int> values=modello->getLastObj();
+        QMap<QString, int> values=modello->getLastObj(contatore);
         for(auto it=values.begin();it!=values.end();++it) {
             parametri.push_back(it.key() + '\n' + QString::number(it.value()));
         }
@@ -86,6 +87,9 @@ public:
 
     void crea() {
         modello->crea(mana, livello, rarita, parametro);
+    }
+    void distribuisci() {
+        modello->distribuisci();
     }
 
 
@@ -242,6 +246,7 @@ signals:
     void somethingChanged(bool =false);
     void opIsDone();
     void nothingToDelete();
+    void isCristallo(bool =false);
 };
 
 #endif // CONTROLLER_H
