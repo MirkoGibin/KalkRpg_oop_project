@@ -38,7 +38,7 @@ SOURCES += main.cpp \
     displayandslider.cpp \
     display.cpp \
     button.cpp \
-    errore.cpp
+    operationexception.cpp
 
 HEADERS += \
     oggetto.h \
@@ -55,7 +55,8 @@ HEADERS += \
     displayandslider.h \
     display.h \
     button.h \
-    errore.h
+    operationexception.h 
+
 
 RESOURCES += \
     icons.qrc

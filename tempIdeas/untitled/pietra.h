@@ -19,11 +19,12 @@ private:
 
 public:
     //default construtor
-    Pietra(int livello =0,
-           int rarita =0,
-           float spirito =0,
-           float durezza =0) : Oggetto(livello, rarita, spirito), durezza_("Durezza") {
+    Pietra(int livello =1,
+           int rarita =1,
+           float spirito =1,
+           float durezza =1) : Oggetto(livello, rarita, spirito), durezza_("Durezza") {
         insertStat(durezza_, durezza);
+        sanitizeInput();
     }
 
     Pietra* clone() const {
@@ -60,6 +61,8 @@ public:
         else {
                 incrementStat(parametro, incremento);
         }
+
+        normalizza();
     }
 };
 

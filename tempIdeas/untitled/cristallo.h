@@ -21,12 +21,13 @@ private:
 
 public:
     //default constructor
-    Cristallo(const int livello =0,
-              const int rarita =0,
-              const float spirito =0,
-              const float durezza =0,
-              const float magia =0) : Pietra(livello, rarita, spirito, durezza), magia_("Magia") {
+    Cristallo(const int livello =1,
+              const int rarita =1,
+              const float spirito =1,
+              const float durezza =1,
+              const float magia =1) : Pietra(livello, rarita, spirito, durezza), magia_("Magia") {
         Oggetto::insertStat(magia_, magia);
+        sanitizeInput();
     }
 
     //methods
@@ -57,22 +58,26 @@ public:
 
     virtual void estraiDa(Oggetto* oggetto) {
         if(typeid(Pietra*) == typeid(*oggetto)) {
-            if((static_cast<Pietra*>(oggetto))->getDurezza() >= 10) {
 
+            list<string> s = getListaStats();
+
+            if((static_cast<Pietra*>(oggetto))->getDurezza() >= 10) {
                 setLivello(oggetto->getLivello());
                 setRarita(oggetto->getRarita());
-                list<string> s = getListaStats();
+
                 int numeroStat = s.size();
 
                 for(auto i = s.begin(); i != s.end(); ++i)
                     if(*i == magia_) incrementStat(*i, (oggetto->getSommaStats() - getSpirito()) / numeroStat);
                     else incrementStat(*i, oggetto->getValoreStat(*i) * (numeroStat - 1) / numeroStat );
             }
-            else {}
-                //eccezione durezza troppo poca
+            else {
+                for(auto i = s.begin(); i != s.end(); ++i)
+                    modifyStat(*i, 1);
+            }
         }
         else {
-           // throw Errore("estrai");
+            throw OperationException(OperationException::estrazione);
         }
     }
 
@@ -93,7 +98,11 @@ public:
 
         for(auto it = parametri.begin(); it != parametri.end(); ++it)
             obj->incrementStat(*it, val / parametri.size());
+
+        obj->normalizza();
     }
+
+
 
 };
 

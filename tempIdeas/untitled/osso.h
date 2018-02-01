@@ -23,13 +23,14 @@ private:
 
 
 public:
-    Osso(int livello =0,
-         int rarita =0,
-         float spirito =0,
-         float attacco =0,
-         float difesa =0) : Oggetto(livello, rarita, spirito), attacco_("Attacco"), difesa_("Difesa") {
+    Osso(int livello =1,
+         int rarita =1,
+         float spirito =1,
+         float attacco =1,
+         float difesa =1) : Oggetto(livello, rarita, spirito), attacco_("Attacco"), difesa_("Difesa") {
         insertStat(attacco_,attacco);
         insertStat(difesa_, difesa);
+        sanitizeInput();
     }
 
     float getAttacco() const {
@@ -69,6 +70,8 @@ public:
 
         incrementStat(attacco_, incremento * getRarita() / (2*divisore));
         incrementStat(difesa_, incremento * getRarita() / (2*divisore));
+
+        normalizza();
     }
 
 
