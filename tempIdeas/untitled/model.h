@@ -28,27 +28,31 @@ public:
     Model() : counter(0) {}
 
 //------------------------------------------------------------
-    QMap<QString, int> getLastObj() const {
+    QMap<QString, int> getLastObj(int contatore =0) const {
         QMap<QString, int> values;
         if(!memoria.isEmpty()) {
-            values.insert("Livello", memoria.front()->getLivello());
-            values.insert("Rarità", memoria.front()->getRarita());
-            list<string> objListaStats=memoria.front()->getListaStats();
+            auto obj=--(memoria.end());
+            if(contatore<memoria.size())
+                for(int i=0;i<contatore;i++) obj--;
+
+            values.insert("Livello", (*obj)->getLivello());
+            values.insert("Rarità", (*obj)->getRarita());
+            list<string> objListaStats=(*obj)->getListaStats();
             for(auto it=objListaStats.begin();it!=objListaStats.end();++it)
-                values.insert(QString::fromStdString(*it), memoria.front()->getValoreStat(*it));
+                values.insert(QString::fromStdString(*it), (*obj)->getValoreStat(*it));
         } else {} //eccezione
         return values;
     }
 
-    QList<QString> getListaStatsFromLastObj() const {
+    QList<QString> getListaStatsFromLastObj(int contatore =0) const {
         if(!memoria.isEmpty())
-            return QList<QString>(getLastObj().keys());
+            return QList<QString>(getLastObj(contatore).keys());
         else {}//throw exception
         return QList<QString>();
     }
-    QImage* getImageFromLastObj() const {
+    QImage* getImageFromLastObj(int contatore =0) const {
         if(!immagini.isEmpty())
-            return immagini.value(counter);
+            return immagini.value(counter-contatore);
         else return 0;
     }
 
@@ -59,11 +63,11 @@ public:
 
     bool setStatByName(QString name, unsigned int value) const {
         if(name=="Livello")
-            memoria.front()->setLivello(value);
+            memoria.back()->setLivello(value);
         else if(name=="Rarità")
-                memoria.front()->setRarita(value);
+                memoria.back()->setRarita(value);
         else
-        memoria.front()->modifyStat(name.toStdString(), value);
+        memoria.back()->modifyStat(name.toStdString(), value);
         return true;
     }
 
@@ -80,14 +84,15 @@ public:
     }
     void deleteLast() {
         if(counter) {
-            Oggetto* o=memoria.front();
-            memoria.pop_front();
+            Oggetto* o=memoria.back();
+            memoria.pop_back();
             delete o;
             QImage* i=immagini.value(counter);
             immagini.remove(counter);
             delete i;
             counter--;
             if(!counter) emit nothingToDelete();
+            if(counter && dynamic_cast<Cristallo*>(memoria.back())) emit isCristallo(true);
         }
         else emit nothingToDelete();
     }
@@ -95,15 +100,15 @@ public:
 
 //OPERATIONS-----------------------------------------------------------
     int ricycleLast() {
-        return memoria.front()->ricicla();
+        return memoria.back()->ricicla();
     }
     void combina() {
         if(getNumObjInMemory()) {
-            auto it=memoria.begin();
-            it++;
-            Oggetto* nuovo=(memoria.front())->clone();
+            auto it=--(memoria.end());
+            it--;
+            Oggetto* nuovo=(memoria.back())->clone();
             nuovo->combina(*it);
-            memoria.push_front(nuovo);
+            memoria.push_back(nuovo);
             QImage* toInsert=new QImage((*immagini.value(counter)));
             immagini.insert(++counter, toInsert);
         }
@@ -112,54 +117,76 @@ public:
 
     void potenzia(int mana, QString parametro) {
         if(getNumObjInMemory()) {
-            Oggetto* nuovo=memoria.front()->clone();
+            Oggetto* nuovo=memoria.back()->clone();
             nuovo->potenzia(mana, parametro.toStdString());
             QImage* toInsert=new QImage((*immagini.value(counter)));
             immagini.insert(++counter, toInsert);
-            memoria.push_front(nuovo);
+            memoria.push_back(nuovo);
         } else {} //ECCEZIONI
         emit opDone();
     }
 
     void crea(int mana, int livello, int rarita, QString parametro) {
         if(getNumObjInMemory()) {
-            Oggetto* nuovo=memoria.front()->clone();
+            Oggetto* nuovo=memoria.back()->clone();
             nuovo->crea(mana, livello, rarita, parametro.toStdString());
             QImage* toInsert=new QImage((*immagini.value(counter)));
             immagini.insert(++counter, toInsert);
-            memoria.push_front(nuovo);
+            memoria.push_back(nuovo);
         } else {} //eccezioni
+        emit opDone();
+    }
+
+    void distribuisci() {
+        if(getNumObjInMemory()>1) {
+            auto it=--(memoria.end());
+            it--;
+            Cristallo*cri=(dynamic_cast<Cristallo*>(*it))->clone();
+            QImage* criImage=new QImage((*immagini.value(counter-1)));
+
+            Oggetto* parametro=(memoria.back())->clone();
+            QImage* parametroImage=new QImage((*immagini.value(counter)));
+
+            cri->distribuisci(parametro);
+
+            memoria.push_back(cri);
+            immagini.insert(++counter, criImage);
+
+            memoria.push_back(parametro);
+            immagini.insert(++counter, parametroImage);
+        }
         emit opDone();
     }
 
 //CREATE OBJECT IN MEMORY------------------------------------------------
     void createErba() {
-        memoria.push_front(new Erba());
+        memoria.push_back(new Erba());
         counter++;
     }
     void createUnguento() {
-        memoria.push_front(new Unguento());
+        memoria.push_back(new Unguento());
         counter++;
     }
     void createPietra() {
-        memoria.push_front(new Pietra());
+        memoria.push_back(new Pietra());
         counter++;
     }
     void createCristallo() {
-        memoria.push_front(new Cristallo());
+        memoria.push_back(new Cristallo());
         counter++;
     }
     void createOsso() {
-        memoria.push_front(new Osso());
+        memoria.push_back(new Osso());
         counter++;
     }
     void createAmuleto() {
-        memoria.push_front(new Amuleto());
+        memoria.push_back(new Amuleto());
         counter++;
     }
 signals:
     void opDone();
     void nothingToDelete();
+    void isCristallo(bool =false);
 
 };
 
