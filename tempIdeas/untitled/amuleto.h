@@ -78,23 +78,27 @@ public:
 
         list<string> parametri = obj->getListaStats();
         float val = obj->getSommaStats() / parametri.size();
-        if(getFortuna() < val ) {
-            return obj;//throw Errore("duplica");
-        }
-
-        incrementStat(fortuna_, -val);
 
         Oggetto* newObj = obj->clone();
 
-        if(newObj->getRarita() < 5) {
+        if(getFortuna() < val ) {
+            modifyStat(fortuna_, 1);
             for(auto it = parametri.begin(); it != parametri.end(); it++) {
-                if(newObj->getValoreStat(*it) > val)
-                    newObj->modifyStat(*it, val);
+                newObj->modifyStat(*it, 1);
+            }
+        }
+        else {
+            incrementStat(fortuna_, -val);
+
+            if(getRarita() < 5) {
+                for(auto it = parametri.begin(); it != parametri.end(); it++) {
+                    if(newObj->getValoreStat(*it) > val/2)
+                        newObj->modifyStat(*it, val/2);
+                }
             }
         }
 
         return newObj;
-
 
     }
 

@@ -92,7 +92,11 @@ public:
             delete i;
             counter--;
             if(!counter) emit nothingToDelete();
-            if(counter && dynamic_cast<Cristallo*>(memoria.back())) emit isCristallo(true);
+            if(counter) {
+                if(dynamic_cast<Cristallo*>(memoria.back())) isCristallo(true);
+                if(dynamic_cast<Unguento*>(memoria.back())) isUnguento(true);
+                if(dynamic_cast<Amuleto*>(memoria.back())) isAmuleto(true);
+            }
         }
         else emit nothingToDelete();
     }
@@ -181,6 +185,28 @@ public:
         emit opDone();
     }
 
+    void duplica() {
+        if(getNumObjInMemory()>1) {
+            auto it=--(memoria.end());
+            it--;
+            Amuleto*amu=(dynamic_cast<Amuleto*>(*it)->clone());
+            QImage* amuImage=new QImage((*immagini.value(counter-1)));
+
+            Oggetto* parametro=(memoria.back());
+            QImage* parametroImage=new QImage((*immagini.value(counter)));
+            if(amu) {
+                Oggetto*nuovo=amu->duplica(parametro);
+
+                memoria.push_back(amu);
+                immagini.insert(++counter, amuImage);
+
+                memoria.push_back(nuovo);
+                immagini.insert(++counter, parametroImage);
+            } else {} //LANCIA ECCEZIONE
+        }
+        emit opDone();
+    }
+
 //CREATE OBJECT IN MEMORY------------------------------------------------
     void createErba() {
         memoria.push_back(new Erba());
@@ -211,6 +237,7 @@ signals:
     void nothingToDelete();
     void isCristallo(bool =false);
     void isUnguento(bool =false);
+    void isAmuleto(bool =false);
 
 };
 

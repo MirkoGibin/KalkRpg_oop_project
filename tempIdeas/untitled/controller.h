@@ -30,6 +30,7 @@ public:
         connect(modello, SIGNAL(nothingToDelete()), this, SIGNAL(nothingToDelete()));
         connect(modello, SIGNAL(isCristallo(bool)), this, SIGNAL(isCristallo(bool)));
         connect(modello, SIGNAL(isUnguento(bool)), this, SIGNAL(isUnguento(bool)));
+        connect(modello, SIGNAL(isAmuleto(bool)), this, SIGNAL(isAmuleto(bool)));
     }
 
     ~Controller() {
@@ -80,20 +81,23 @@ public:
         return modello->ricycleLast();
     }
 
-    void potenzia() {
+    void potenzia() const {
         //int mana=tempDataToSet.value("mana")->value();
         modello->potenzia(mana, parametro);
         //flushControllerMemory();
     }
 
-    void crea() {
+    void crea() const {
         modello->crea(mana, livello, rarita, parametro);
     }
-    void distribuisci() {
+    void distribuisci() const {
         modello->distribuisci();
     }
-    void ripara() {
+    void ripara() const {
         modello->ripara();
+    }
+    void duplica() const {
+        modello->duplica();
     }
 
 
@@ -250,8 +254,10 @@ signals:
     void somethingChanged(bool =false);
     void opIsDone();
     void nothingToDelete();
+
     void isCristallo(bool =false);
     void isUnguento(bool =false);
+    void isAmuleto(bool =false);
 };
 
 #endif // CONTROLLER_H
