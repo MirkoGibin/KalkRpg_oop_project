@@ -5,6 +5,7 @@
 #include<algorithm>
 #include<mathOp.h>
 #include<typeinfo>
+#include<climits>
 
 using std::list;
 using std::map;
@@ -75,6 +76,28 @@ public:
     }
 
 //------------METODI DI GET
+    //ritorna una coppia di stringhe. La prima indica la statistica con il minor valore, la seconda la statistica con il maggior valore.
+    std::pair<string,string> findMinMaxStat() const {
+        std::pair<string, string> minmax;
+        float max = -1;
+        float min = INT_MAX;
+
+        for(auto it = stats.begin(); it != stats.end(); it++) {
+            if(it->second > max) {
+                max = it->second;
+                minmax.second = it->first;
+            }
+            else {
+                if(it->second <= min) { // a parità di valore, voglio la stat più in fondo alla lista
+                    min = it->second;
+                    minmax.first = it->first;
+                }
+            }
+        }
+
+        return minmax;
+    }
+
     float getLivello() const {
        return livello_;
     }

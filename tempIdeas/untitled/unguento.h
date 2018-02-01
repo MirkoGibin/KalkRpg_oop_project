@@ -31,10 +31,6 @@ public:
        Erba::potenzia(mana, parametro);
    }
 
-   /*void trasformaDa(Oggetto *obj) {
-
-   }*/
-
    //estraiDa permette di creare un Unguento da una sua superclasse.
    virtual void estraiDa(Oggetto* oggetto) {
        if(dynamic_cast<Erba*>(oggetto)) {
@@ -55,24 +51,31 @@ public:
    float ricicla() const {
        return Erba::ricicla() + getValoreStat(energia_) * getRarita();
    }
-   //ottieniDa permette di creare un Unguento a partire da un cristallo TS(cristallo) == TD(cristallo)
-   /*virtual void ottieniDa(Cristallo* cristallo) {
-            if(typeid(cristallo) == typeid(*cristallo)) {
 
-            }
-            else {
-                //lancia eccezione
-            }
-        }
-        //ottieniDa permette di creare un Unguento a partire da un amuleto TS(amuleto) == TD(amuleto)
-        virtual void ottieniDa(Amuleto* amuleto) {
-            if(typeid(amuleto) == typeid(*amuleto)) {
+   void ripara(Oggetto* obj) {
 
-            }
-            else {
-                //lancia eccezione
-            }
-        }*/
+       std::pair<string, string> minmax = findMinMaxStat();
+
+       float maxValue = obj->getValoreStat(minmax.second);
+       float diff = maxValue - obj->getValoreStat(minmax.first);
+
+       if(getValoreStat(energia_) < diff) {} //throw
+
+       incrementStat(energia_, -diff);
+
+       if(getRarita() > 7) {
+           list<string> parametri = obj->getListaStats();
+           for(auto it = parametri.begin(); it != parametri.end(); it++) {
+               obj->modifyStat(*it, maxValue);
+           }
+       }
+       else {
+           obj->modifyStat(minmax.first, maxValue);
+       }
+   }
+
+
+
 };
 
 #endif // UNGUENTO_H
