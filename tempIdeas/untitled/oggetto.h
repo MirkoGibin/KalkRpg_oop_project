@@ -7,7 +7,7 @@
 #include<typeinfo>
 #include<climits>
 #include<tuple>
-#include"errore.h"
+#include"operationException.h"
 
 using std::list;
 using std::map;
@@ -26,22 +26,13 @@ private:
     /* parameters inside stats in Oggetto are:
      * spirito
      */
-    void normalizza() {
-        if(getLivello()*150 <= calcolaMana()) {
-            float percentualeRiduzione=getLivello()*150/calcolaMana();
-            mathOp::doMultiplyOnMap(stats, percentualeRiduzione);
 
-        }
-    }
 
-public: /* void incrementStat(list<string> stats, float value) {
-        for(auto i = stats.begin(); i != stats.end(); ++i)
-            incrementStat(*i, value);
-    }*/
+public:
     //costruttore di default
-    Oggetto(int livello =0,
-            int rarita =0,
-            float spirito =0) : livello_(livello), rarita_(rarita), spirito_("Spirito") {
+    Oggetto(int livello =1,
+            int rarita =1,
+            float spirito =1) : livello_(livello), rarita_(rarita), spirito_("Spirito") {
         stats.emplace(spirito_, spirito);
     }
 
@@ -138,6 +129,30 @@ public: /* void incrementStat(list<string> stats, float value) {
 
 
 //------------OPERAZIONI
+    void normalizza() {
+        if(getLivello()*150 <= calcolaMana()) {
+            float percentualeRiduzione=getLivello()*150/calcolaMana();
+            mathOp::doMultiplyOnMap(stats, percentualeRiduzione);
+        }
+    }
+
+    void sanitizeInput() {
+        if(livello_ < 1)
+            livello_ = 1;
+        if(rarita_ < 1)
+            rarita_ = 1;
+
+        double sum = 0;
+
+        for(auto it = stats.begin(); it != stats.end(); ++it) {
+            if(it->second < 1) it->second = 1;
+            else sum += it->second;
+        }
+
+      if(sum > 150 * livello_)
+         normalizza();
+      }
+
     void combina(Oggetto* object) {
         map<string, float> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
         map<string, float> percentParMap = object->stats; //copiata la mappa dell'oggetto di invocazione
@@ -184,7 +199,9 @@ public: /* void incrementStat(list<string> stats, float value) {
 
     void trasformaDa(Oggetto *obj) {
 
-        if(getListaStats().size() > obj->getListaStats().size()) {return;} //throw eccezione
+        if(getListaStats().size() > obj->getListaStats().size()) {
+            throw OperationException(OperationException::trasformazione);
+        }
 
         setLivello(obj->getLivello());
         setRarita(obj->getRarita());
@@ -229,6 +246,8 @@ public: /* void incrementStat(list<string> stats, float value) {
 
         for(list<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
             modifyStat(*it, sumStats);
+
+        normalizza();
     }
 
 };

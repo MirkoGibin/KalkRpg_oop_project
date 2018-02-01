@@ -11,11 +11,12 @@ class Erba : public Oggetto{
      */
     string vitalita_;
 public:
-    Erba(int livello =0,
-         int rarita =0,
-         float spirito =0,
-         float vitalita =0) : Oggetto(livello, rarita, spirito), vitalita_("Vitalità") {
+    Erba(int livello =1,
+         int rarita =1,
+         float spirito =1,
+         float vitalita =1) : Oggetto(livello, rarita, spirito), vitalita_("Vitalità") {
             insertStat(vitalita_, vitalita);
+            sanitizeInput();
     }
 
     float getVitalita() const {
@@ -47,6 +48,8 @@ public:
          else {
              incrementStat(parametro, incremento);
          }
+
+         normalizza();
      }
 
 

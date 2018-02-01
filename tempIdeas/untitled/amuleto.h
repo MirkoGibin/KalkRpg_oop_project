@@ -19,14 +19,17 @@ private:
     string fortuna_;
 
 public:
-    Amuleto(int livello =0,
-            int rarita =0,
-            float spirito =0,
-            float attacco =0,
-            float difesa =0,
-            float fortuna =0) : Osso(livello,rarita,spirito,attacco,difesa), fortuna_("Fortuna") {
-        insertStat(fortuna_, fortuna);
+    Amuleto(int livello =1,
+            int rarita =1,
+            float spirito =1,
+            float attacco =1,
+            float difesa =1,
+            float fortuna =1) : Osso(livello,rarita,spirito,attacco,difesa), fortuna_("Fortuna") {
+       insertStat(fortuna_, fortuna);
+
+       sanitizeInput();
     }
+
     float getFortuna() const {
         return getValoreStat(fortuna_);
     }
@@ -78,23 +81,27 @@ public:
 
         list<string> parametri = obj->getListaStats();
         float val = obj->getSommaStats() / parametri.size();
-        if(getFortuna() < val ) {
-            return obj;//throw Errore("duplica");
-        }
-
-        incrementStat(fortuna_, -val);
 
         Oggetto* newObj = obj->clone();
 
-        if(newObj->getRarita() < 5) {
+        if(getFortuna() < val ) {
+            modifyStat(fortuna_, 1);
             for(auto it = parametri.begin(); it != parametri.end(); it++) {
-                if(newObj->getValoreStat(*it) > val)
-                    newObj->modifyStat(*it, val);
+                newObj->modifyStat(*it, 1);
+            }
+        }
+        else {
+            incrementStat(fortuna_, -val);
+
+            if(getRarita() < 5) {
+                for(auto it = parametri.begin(); it != parametri.end(); it++) {
+                    if(newObj->getValoreStat(*it) > val/2)
+                        newObj->modifyStat(*it, val/2);
+                }
             }
         }
 
         return newObj;
-
 
     }
 
