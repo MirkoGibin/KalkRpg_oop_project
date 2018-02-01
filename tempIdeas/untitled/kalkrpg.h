@@ -84,7 +84,7 @@ public:
         Button* estraiButton = createOpButton(":/icons/estrai.png", tr("Estrai"), SLOT(estraiClicked()));
         Button* trasformaButton = createOpButton(":/icons/trasforma.png", tr("Trasforma"), SLOT(trasformaClicked()));
         Button* distribuisciButton = createOpButton(":/icons/distribuisci.png", tr("Distribuisci"), SLOT(distribuisciClicked()));;
-        Button* aumentaProbabilitaButton = createOpButton(":/icons/aumentaProbabilita.png", tr("Aumenta\nProbabilita"), SLOT(aumentaProbabilitaClicked()));;
+        Button* duplicaButton = createOpButton(":/icons/duplica.png", tr("Duplica"), SLOT(duplicaClicked()));;
         Button* riparaButton = createOpButton(":/icons/ripara.png", tr("Ripara"), SLOT(riparaClicked()));;
 
         //creazione pulsanti gestione memoria
@@ -92,11 +92,11 @@ public:
         connect(backspaceButton, SIGNAL(clicked()), this, SLOT(backspaceClicked()));
         connect(this, SIGNAL(backspaceToClick(bool)), backspaceButton, SLOT(setEnabled(bool)));
 
-        Button*eraseButton=new Button(tr("Cancella\nMemoria"),":/icons/cancella.png");
+        Button*eraseButton=new Button(tr("Cancella"),":/icons/cancella.png");
         connect(eraseButton, SIGNAL(clicked()), this, SLOT(eraseClicked()));
         connect(this, SIGNAL(eraseToClick(bool)), eraseButton, SLOT(setEnabled(bool)));
 
-        Button*confermaOpButton=new Button(tr("Conferma\nOperazione"),":/icons/confermaOp.png");
+        Button*confermaOpButton=new Button(tr("Conferma"),":/icons/confermaOp.png");
         connect(confermaOpButton, SIGNAL(clicked()), this, SLOT(confirmOpClicked()));
         connect(this, SIGNAL(confirmOpToClick(bool)), confermaOpButton, SLOT(setEnabled(bool)));
 
@@ -106,11 +106,13 @@ public:
         emit startOp(true);
 
         //creazione del layout
+
         QGridLayout *objectLayout = new QGridLayout;
         QGridLayout *operationLayout = new QGridLayout;
         QGridLayout *memoryLayout = new QGridLayout;
 
         //display calcolatrice
+        mainLayout->setSizeConstraint(QLayout::SetFixedSize);
         objectLayout->setSizeConstraint(QLayout::SetFixedSize);
         operationLayout->setSizeConstraint(QLayout::SetFixedSize);
         memoryLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -130,7 +132,7 @@ public:
         operationLayout->addWidget(combinaButton, 1, 1);
         operationLayout->addWidget(trasformaButton, 1, 2);
         operationLayout->addWidget(distribuisciButton, 2, 0);
-        operationLayout->addWidget(aumentaProbabilitaButton, 2, 1);
+        operationLayout->addWidget(duplicaButton, 2, 1);
         operationLayout->addWidget(riparaButton, 2, 2);
 
         memoryLayout->addWidget(backspaceButton, 0,0);
@@ -138,9 +140,10 @@ public:
         memoryLayout->addWidget(confermaOpButton, 2, 0);
 
         mainLayout->addLayout(objectLayout, 0, 0);
+        mainLayout->addWidget(display, 0, 1, 2, 1);
         mainLayout->addLayout(operationLayout, 0, 2);
         mainLayout->addLayout(memoryLayout, 0, 3);
-        mainLayout->addWidget(display, 0, 1);
+
 
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
@@ -207,7 +210,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         QPixmap *pix = new QPixmap(pressedButton->getPath());
         image->setPixmap(*pix);
 
-        mainLayout->addWidget(child, 1, 0, 1, 3 );
+        mainLayout->addWidget(child, 3, 0, 1, 3 );
 
         if(potenziaOp) controller->setPotenzia(expansionAndSetGrid);
         else if(creaOp) controller->setCrea(expansionAndSetGrid);
@@ -314,7 +317,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     void distribuisciClicked(){
         return;
     }
-    void aumentaProbabilitaClicked(){
+    void duplicaClicked(){
         return;
     }
     void riparaClicked(){

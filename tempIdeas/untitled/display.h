@@ -15,7 +15,7 @@ private:
 public:
     Display(QWidget* parent =0) : QTextEdit(parent) {
         setReadOnly(true);
-        setMinimumSize(600,100);
+        setMinimumSize(600,250);
     }
     void clear() {
         QTextEdit::clear();
