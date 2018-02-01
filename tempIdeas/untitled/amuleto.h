@@ -72,6 +72,28 @@ public:
                 //eccezione
     }
 
+    Oggetto* duplica(Oggetto * obj) {
+
+        list<string> parametri = obj->getListaStats();
+        float val = obj->getSommaStats() / parametri.size();
+        if(getFortuna() < val ) {} //throw
+
+        incrementStat(fortuna_, -val);
+
+        Oggetto* newObj = obj->clone();
+
+        if(newObj->getRarita() < 5) {
+            for(auto it = parametri.begin(); it != parametri.end(); it++) {
+                if(newObj->getValoreStat(*it) > val)
+                    newObj->modifyStat(*it, val);
+            }
+        }
+
+        return newObj;
+
+
+    }
+
 };
 
 #endif // AMULETO_H
