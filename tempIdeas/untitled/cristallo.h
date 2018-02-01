@@ -72,7 +72,7 @@ public:
                 //eccezione durezza troppo poca
         }
         else {
-            //eccezione no estrazione possibile
+            throw Errore("estrai");
         }
     }
 
@@ -80,10 +80,12 @@ public:
         return Pietra::ricicla() + getValoreStat(magia_) * getRarita();
     }
 
-    Oggetto* distribuisci(Oggetto* obj) {
+    void distribuisci(Oggetto* obj) {
         float val = getMagia() / 2;
 
-        if(getDurezza() < val) {} //throw eccezione
+        if(getDurezza() < val) {
+            throw Errore("distribuisci");
+        }
 
         editDurezza(-val);
 
@@ -91,8 +93,6 @@ public:
 
         for(auto it = parametri.begin(); it != parametri.end(); ++it)
             obj->incrementStat(*it, val / parametri.size());
-
-        return obj;
     }
 
 };

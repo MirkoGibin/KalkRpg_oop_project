@@ -136,13 +136,13 @@ public:
         operationLayout->addWidget(riparaButton, 2, 2);
 
         memoryLayout->addWidget(backspaceButton, 0,0);
-        memoryLayout->addWidget(eraseButton,1,0);
-        memoryLayout->addWidget(confermaOpButton, 2, 0);
+        memoryLayout->addWidget(eraseButton,0,1);
+        memoryLayout->addWidget(confermaOpButton, 0, 2);
 
         mainLayout->addLayout(objectLayout, 0, 0);
         mainLayout->addWidget(display, 0, 1, 2, 1);
         mainLayout->addLayout(operationLayout, 0, 2);
-        mainLayout->addLayout(memoryLayout, 0, 3);
+        mainLayout->addLayout(memoryLayout, 1, 2, Qt::AlignBottom);
 
 
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget

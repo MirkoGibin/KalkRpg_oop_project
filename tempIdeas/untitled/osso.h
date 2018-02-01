@@ -71,37 +71,6 @@ public:
         incrementStat(difesa_, incremento * getRarita() / (2*divisore));
     }
 
-/*    void ottieniDa(Pietra* pietra) {
-        if(typeid(pietra) == typeid(pietra)) { //tipo dinamico deve essere uguale a tipo statico
-            float pSpir=pietra->getSpirito();
-            float pDur=pietra->getDurezza();
-
-            float oSpir=pSpir*0.50;
-            float oAtt=pDur;
-            float oDif=pDur*0.50;
-            setLivello(pietra->getLivello());
-            setRarita(pietra->getRarita());
-            modifyStat("spirito", oSpir);
-            modifyStat("attacco", oAtt);
-            modifyStat("difesa", oDif);
-        } else {
-            //lancia eccezione
-        }
-    }
-
-    void ottieniDa(Erba* erba) {
-        if(typeid(erba) == typeid(*erba)) {
-
-        } else {
-            //lancia eccezione contro parametri illegali
-        }
-
-    }
-
-    void estraiDa(Oggetto*obj) {
-        //lancia eccezione, non si puo' invocare questo metodo a questo livello
-    }*/
-
 
 
 

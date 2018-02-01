@@ -32,7 +32,10 @@ private:
         }
     }
 
-public:
+public: /* void incrementStat(list<string> stats, float value) {
+        for(auto i = stats.begin(); i != stats.end(); ++i)
+            incrementStat(*i, value);
+    }*/
     //costruttore di default
     Oggetto(int livello =0,
             int rarita =0,
@@ -59,11 +62,6 @@ public:
     void incrementStat(string stat, float value){
         stats[stat] += value;
     }
-
-   /* void incrementStat(list<string> stats, float value) {
-        for(auto i = stats.begin(); i != stats.end(); ++i)
-            incrementStat(*i, value);
-    }*/
 
     bool modifyStat(string str, float db) { //GESTIONE DEGLI ERRORI
         bool trovata=true;

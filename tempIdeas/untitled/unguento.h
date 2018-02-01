@@ -44,7 +44,7 @@ public:
                else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
        }
        else {
-           //eccezione
+           throw Errore("estrai")
        }
    }
 
@@ -59,7 +59,9 @@ public:
        float maxValue = obj->getValoreStat(minmax.second);
        float diff = maxValue - obj->getValoreStat(minmax.first);
 
-       if(getValoreStat(energia_) < diff) {} //throw
+       if(getValoreStat(energia_) < diff) {
+           throw Errore("ripara");
+       }
 
        incrementStat(energia_, -diff);
 

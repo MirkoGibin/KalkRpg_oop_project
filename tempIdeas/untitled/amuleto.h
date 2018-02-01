@@ -68,15 +68,19 @@ public:
             }
 
         }
-        else {}
-                //eccezione
+        else {
+            throw Errore("estrai");
+        }
+
     }
 
     Oggetto* duplica(Oggetto * obj) {
 
         list<string> parametri = obj->getListaStats();
         float val = obj->getSommaStats() / parametri.size();
-        if(getFortuna() < val ) {} //throw
+        if(getFortuna() < val ) {
+            throw Errore("duplica");
+        }
 
         incrementStat(fortuna_, -val);
 
