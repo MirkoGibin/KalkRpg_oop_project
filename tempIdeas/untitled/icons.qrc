@@ -11,11 +11,11 @@
         <file>icons/estrai.png</file>
         <file>icons/distribuisci.png</file>
         <file>icons/crea.png</file>
-        <file>icons/aumentaProbabilita.png</file>
         <file>icons/combina.png</file>
         <file>icons/ripara.png</file>
         <file>icons/amuleto.png</file>
-		<file>icons/answer.png</file>
-		<file>icons/confermaOp.png</file>
+        <file>icons/answer.png</file>
+        <file>icons/confermaOp.png</file>
+        <file>icons/duplica.png</file>
     </qresource>
 </RCC>

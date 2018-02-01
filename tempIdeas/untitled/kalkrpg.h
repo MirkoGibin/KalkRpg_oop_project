@@ -82,7 +82,7 @@ public:
         Button* estraiButton = createOpButton(":/icons/estrai.png", tr("Estrai"), SLOT(estraiClicked()));
         Button* trasformaButton = createOpButton(":/icons/trasforma.png", tr("Trasforma"), SLOT(trasformaClicked()));
         Button* distribuisciButton = createOpButton(":/icons/distribuisci.png", tr("Distribuisci"), SLOT(distribuisciClicked()));;
-        Button* aumentaProbabilitaButton = createOpButton(":/icons/aumentaProbabilita.png", tr("Aumenta\nProbabilita"), SLOT(aumentaProbabilitaClicked()));;
+        Button* duplicaButton = createOpButton(":/icons/duplica.png", tr("Duplica"), SLOT(duplicaClicked()));;
         Button* riparaButton = createOpButton(":/icons/ripara.png", tr("Ripara"), SLOT(riparaClicked()));;
 
         //creazione pulsanti gestione memoria
@@ -128,7 +128,7 @@ public:
         operationLayout->addWidget(combinaButton, 1, 1);
         operationLayout->addWidget(trasformaButton, 1, 2);
         operationLayout->addWidget(distribuisciButton, 2, 0);
-        operationLayout->addWidget(aumentaProbabilitaButton, 2, 1);
+        operationLayout->addWidget(duplicaButton, 2, 1);
         operationLayout->addWidget(riparaButton, 2, 2);
 
         memoryLayout->addWidget(backspaceButton, 0,0);
@@ -308,7 +308,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     void distribuisciClicked(){
         return;
     }
-    void aumentaProbabilitaClicked(){
+    void duplicaClicked(){
         return;
     }
     void riparaClicked(){
