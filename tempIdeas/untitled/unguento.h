@@ -18,6 +18,9 @@ public:
              float energia =0) : Erba(livello, rarita, spirito, vitalita), energia_("Energia") {
         insertStat(energia_, energia);
     }
+    Unguento*clone() const {
+        return new Unguento(*this);
+    }
 
    void potenzia(int mana, string parametro ="") {
        int divisore;
@@ -44,7 +47,7 @@ public:
                else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
        }
        else {
-           throw Errore("estrai")
+           throw Errore("estrai");
        }
    }
 
@@ -54,14 +57,14 @@ public:
 
    void ripara(Oggetto* obj) {
 
-       std::pair<string, string> minmax = findMinMaxStat();
+       std::pair<string, string> minmax = obj->findMinMaxStat();
 
        float maxValue = obj->getValoreStat(minmax.second);
        float diff = maxValue - obj->getValoreStat(minmax.first);
 
-       if(getValoreStat(energia_) < diff) {
+       /*if(getValoreStat(energia_) < diff) {
            throw Errore("ripara");
-       }
+       }*/
 
        incrementStat(energia_, -diff);
 

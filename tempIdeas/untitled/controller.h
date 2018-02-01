@@ -29,6 +29,7 @@ public:
         combox(0), parametro(""), mana(1), livello(1), rarita(1)  {
         connect(modello, SIGNAL(nothingToDelete()), this, SIGNAL(nothingToDelete()));
         connect(modello, SIGNAL(isCristallo(bool)), this, SIGNAL(isCristallo(bool)));
+        connect(modello, SIGNAL(isUnguento(bool)), this, SIGNAL(isUnguento(bool)));
     }
 
     ~Controller() {
@@ -90,6 +91,9 @@ public:
     }
     void distribuisci() {
         modello->distribuisci();
+    }
+    void ripara() {
+        modello->ripara();
     }
 
 
@@ -247,6 +251,7 @@ signals:
     void opIsDone();
     void nothingToDelete();
     void isCristallo(bool =false);
+    void isUnguento(bool =false);
 };
 
 #endif // CONTROLLER_H

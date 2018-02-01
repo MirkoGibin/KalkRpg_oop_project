@@ -146,14 +146,37 @@ public:
 
             Oggetto* parametro=(memoria.back())->clone();
             QImage* parametroImage=new QImage((*immagini.value(counter)));
+            if(cri) {
+                cri->distribuisci(parametro);
 
-            cri->distribuisci(parametro);
+                memoria.push_back(cri);
+                immagini.insert(++counter, criImage);
 
-            memoria.push_back(cri);
-            immagini.insert(++counter, criImage);
+                memoria.push_back(parametro);
+                immagini.insert(++counter, parametroImage);
+            } else {} //LANCIA ECCEZIONE
+        }
+        emit opDone();
+    }
 
-            memoria.push_back(parametro);
-            immagini.insert(++counter, parametroImage);
+    void ripara() {
+        if(getNumObjInMemory()>1) {
+            auto it=--(memoria.end());
+            it--;
+            Unguento*ung=(dynamic_cast<Unguento*>(*it))->clone();
+            QImage* ungImage=new QImage((*immagini.value(counter-1)));
+
+            Oggetto* parametro=(memoria.back())->clone();
+            QImage* parametroImage=new QImage((*immagini.value(counter)));
+            if(ung) {
+                ung->ripara(parametro);
+
+                memoria.push_back(ung);
+                immagini.insert(++counter, ungImage);
+
+                memoria.push_back(parametro);
+                immagini.insert(++counter, parametroImage);
+            } else {} //LANCIA ECCEZIONE
         }
         emit opDone();
     }
@@ -187,6 +210,7 @@ signals:
     void opDone();
     void nothingToDelete();
     void isCristallo(bool =false);
+    void isUnguento(bool =false);
 
 };
 

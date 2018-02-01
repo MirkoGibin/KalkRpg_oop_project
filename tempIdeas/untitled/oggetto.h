@@ -6,6 +6,8 @@
 #include<mathOp.h>
 #include<typeinfo>
 #include<climits>
+#include<tuple>
+#include"errore.h"
 
 using std::list;
 using std::map;
@@ -76,24 +78,29 @@ public: /* void incrementStat(list<string> stats, float value) {
 //------------METODI DI GET
     //ritorna una coppia di stringhe. La prima indica la statistica con il minor valore, la seconda la statistica con il maggior valore.
     std::pair<string,string> findMinMaxStat() const {
-        std::pair<string, string> minmax;
+        //std::pair<string, string> minmax;
         float max = -1;
         float min = INT_MAX;
+
+        string statMax;
+        string statMin;
 
         for(auto it = stats.begin(); it != stats.end(); it++) {
             if(it->second > max) {
                 max = it->second;
-                minmax.second = it->first;
+                //minmax.second
+                statMax= it->first;
             }
             else {
                 if(it->second <= min) { // a parità di valore, voglio la stat più in fondo alla lista
                     min = it->second;
-                    minmax.first = it->first;
+                    //minmax.first
+                    statMin= it->first;
                 }
             }
         }
 
-        return minmax;
+        return std::make_pair(statMin, statMax);
     }
 
     float getLivello() const {

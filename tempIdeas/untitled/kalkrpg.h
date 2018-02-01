@@ -29,6 +29,7 @@ private:
     bool potenziaOp;
     bool creaOp;
     bool cristalloObj;
+    bool unguentoObj;
 
     Button* createObjButton(const char *path, const QString &testo, const char* member) {
         Button *button = new Button(testo, path);
@@ -62,7 +63,8 @@ public:
         riciclaOp(false),
         potenziaOp(false),
         creaOp(false),
-        cristalloObj(false) {
+        cristalloObj(false),
+        unguentoObj(false) {
         setWindowTitle("KalkRPG");
 
         //creazione pulsanti oggetti
@@ -87,9 +89,10 @@ public:
         Button* trasformaButton = createOpButton(":/icons/trasforma.png", tr("Trasforma"), SLOT(trasformaClicked()));
         Button* distribuisciButton = createOpButton(":/icons/distribuisci.png", tr("Distribuisci"), SLOT(distribuisciClicked()));;
         connect(this, SIGNAL(cristallo(bool)), distribuisciButton, SLOT(setEnabled(bool)));
+
         Button* duplicaButton = createOpButton(":/icons/duplica.png", tr("Duplica"), SLOT(duplicaClicked()));;
         Button* riparaButton = createOpButton(":/icons/ripara.png", tr("Ripara"), SLOT(riparaClicked()));;
-        disconnect(this, SIGNAL(opToClick(bool)),riparaButton, SLOT(setEnabled(bool)));
+        connect(this, SIGNAL(unguento(bool)), riparaButton, SLOT(setEnabled(bool)));
 
         //creazione pulsanti gestione memoria
         Button*backspaceButton=new Button(tr("Backspace"), ":/icons/backspace.png");
@@ -155,6 +158,7 @@ public:
         connect(controller, SIGNAL(nothingToDelete()), eraseButton, SLOT(setDisabled()));
         connect(controller, SIGNAL(nothingToDelete()), backspaceButton, SLOT(setDisabled()));
         connect(controller, SIGNAL(isCristallo(bool)), this, SLOT(cristalloInMemory(bool)));
+        connect(controller, SIGNAL(isUnguento(bool)), this, SLOT(unguentoInMemory(bool)));
     }
 
     ~KalkRpg() {
@@ -185,15 +189,18 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     //SELECTING OBJECTS
     void erbaClicked() {
         controller->newErba();
-        cristalloObj=false;
+        //cristalloObj=false;
+        //unguentoObj=false;
     }
     void unguentoClicked(){
         controller->newUnguento();
-        cristalloObj=false;
+        //cristalloObj=false;
+        unguentoObj=true;
     }
     void pietraClicked(){
         controller->newPietra();
-        cristalloObj=false;
+        //cristalloObj=false;
+        //unguentoObj=false;
     }
     void cristalloClicked() {
         cristalloObj=true;
@@ -201,11 +208,11 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     }
     void ossoClicked() {
         controller->newOsso();
-        cristalloObj=false;
+        //cristalloObj=false;
     }
     void amuletoClicked() {
         controller->newAmuleto();
-        cristalloObj=false;
+        //cristalloObj=false;
     }
 
     //SETTING OBJECTS
@@ -342,7 +349,16 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         return;
     }
     void riparaClicked(){
-        return;
+        if(running) {
+            controller->ripara();
+            running=false;
+            opButton=nullptr;
+            showResult(0,1);
+            showResult(0,0);
+        } else {
+            waitingOperand=true;
+            running=true;
+        }
     }
 
     //GENERALS & MEMORY MANAGEMENT.
@@ -369,6 +385,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         if(settingObj) { //pressing back in first settingObject
             settingObj=false;
             if(cristalloObj) cristalloObj=false;
+            if(unguentoObj) unguentoObj=false;
             removeSettingPanel();
             if(potenziaOp) {
                 display->back();
@@ -390,6 +407,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
                 //if(controller->getNumObjInMemory())
                 controller->deleteLastObj();
                 if(cristalloObj) cristalloObj=false;
+                if(unguentoObj) unguentoObj=false;
             }
         } else if(waitingOperand && running) { //just choosen op, want to change it
             display->back();
@@ -399,6 +417,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             creaOp=false;
         } else {
             if(cristalloObj) cristalloObj=false;
+            if(unguentoObj) unguentoObj=false;
             display->back();
             controller->deleteLastObj();
         }
@@ -408,6 +427,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         waitingOperand=false;
         running=false;
         cristalloObj=false;
+        unguentoObj=false;
         if(settingObj) { //se clicco erase mentre sto settando oggetti
             removeSettingPanel();
             settingObj=false;
@@ -433,6 +453,8 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             emit opToClick(true);
             if(cristalloObj) emit cristallo(true);
             else emit cristallo(false);
+            if(unguentoObj) emit unguento(true);
+            else emit unguento(false);
         }
         emit confirmOpToClick(false);
         emit backspaceToClick(true);
@@ -449,7 +471,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         emit confirmOpToClick(true);
         emit backspaceToClick(true);
         emit eraseToClick(true);
-        emit cristallo(false);
+        //emit cristallo(false);
     }
     void doneState() {
         emit objToClick(false);
@@ -457,11 +479,14 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         emit confirmOpToClick(false);
         emit backspaceToClick(false);
         emit eraseToClick(true);
-        emit cristallo(false);
+        //emit cristallo(false);
     }
 
     void cristalloInMemory(bool) {
         cristalloObj=true;
+    }
+    void unguentoInMemory(bool) {
+        unguentoObj=true;
     }
 
 
@@ -476,6 +501,7 @@ signals:
     void startOp(bool);
 
     void cristallo(bool);
+    void unguento(bool);
     //eventi di display
 
 
