@@ -183,10 +183,8 @@ public: /* void incrementStat(list<string> stats, float value) {
     virtual void potenzia(int mana, string parametro ="") = 0;
 
     void trasformaDa(Oggetto *obj) {
-        //if(dynamic_cast<Erba*>(obj)) {} //throw eccezione
-        if(typeid(*this) == typeid(*obj)) {} //throw eccezione
 
-        if(getListaStats().size() > obj->getListaStats().size()) {} //throw eccezione
+        if(getListaStats().size() > obj->getListaStats().size()) {return;} //throw eccezione
 
         setLivello(obj->getLivello());
         setRarita(obj->getRarita());

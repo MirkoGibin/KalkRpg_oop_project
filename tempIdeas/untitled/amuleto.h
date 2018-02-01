@@ -54,22 +54,22 @@ public:
     }
 
     virtual void estraiDa(Oggetto* oggetto) {
-        if(dynamic_cast<Osso*>(oggetto)) {
+        if(typeid(Osso*) == typeid(*oggetto)) {
             setLivello(oggetto->getLivello());
             setRarita(oggetto->getRarita());
-            list<string> s = oggetto->getListaStats();
+            list<string> s = getListaStats();
             int numeroStat = s.size();
 
             for(auto i = s.begin(); i != s.end(); ++i) {
-                if(*i == fortuna_ && getRarita() > 7)
+                if(*i == fortuna_)
                     incrementStat(*i, oggetto->getSommaStats() / numeroStat);
                 else
-                    incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
+                    incrementStat(*i,  oggetto->getValoreStat(*i) * (numeroStat - 1) / numeroStat );
             }
 
         }
         else {
-            throw Errore("estrai");
+           return;// throw Errore("estrai");
         }
 
     }
@@ -78,9 +78,9 @@ public:
 
         list<string> parametri = obj->getListaStats();
         float val = obj->getSommaStats() / parametri.size();
-        /*if(getFortuna() < val ) {
-            throw Errore("duplica");
-        }*/
+        if(getFortuna() < val ) {
+            return obj;//throw Errore("duplica");
+        }
 
         incrementStat(fortuna_, -val);
 

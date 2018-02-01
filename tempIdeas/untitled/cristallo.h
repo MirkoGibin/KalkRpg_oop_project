@@ -56,23 +56,23 @@ public:
     }
 
     virtual void estraiDa(Oggetto* oggetto) {
-        if(dynamic_cast<Pietra*>(oggetto)) {
-            if(getDurezza() >= 10) {
+        if(typeid(Pietra*) == typeid(*oggetto)) {
+            if((static_cast<Pietra*>(oggetto))->getDurezza() >= 10) {
 
                 setLivello(oggetto->getLivello());
                 setRarita(oggetto->getRarita());
-                list<string> s = oggetto->getListaStats();
+                list<string> s = getListaStats();
                 int numeroStat = s.size();
 
                 for(auto i = s.begin(); i != s.end(); ++i)
                     if(*i == magia_) incrementStat(*i, (oggetto->getSommaStats() - getSpirito()) / numeroStat);
-                    else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
+                    else incrementStat(*i, oggetto->getValoreStat(*i) * (numeroStat - 1) / numeroStat );
             }
             else {}
                 //eccezione durezza troppo poca
         }
         else {
-            throw Errore("estrai");
+           // throw Errore("estrai");
         }
     }
 
@@ -84,7 +84,7 @@ public:
         float val = getMagia() / 2;
 
         if(getDurezza() < val) {
-            throw Errore("distribuisci");
+            return;//throw Errore("distribuisci");
         }
 
         editDurezza(-val);

@@ -36,18 +36,23 @@ public:
 
    //estraiDa permette di creare un Unguento da una sua superclasse.
    virtual void estraiDa(Oggetto* oggetto) {
-       if(dynamic_cast<Erba*>(oggetto)) {
+       if(typeid(Erba*) == typeid(*oggetto)) {
            setLivello(oggetto->getLivello());
            setRarita(oggetto->getRarita());
-           list<string> s = oggetto->getListaStats();
+           list<string> s = getListaStats();
            int numeroStat = s.size();
 
            for(auto i = s.begin(); i != s.end(); ++i)
-               if(*i == energia_) incrementStat(*i, oggetto->getSommaStats() / numeroStat);
-               else incrementStat(*i, getValoreStat(*i) / numeroStat * (numeroStat - 1));
+               if(*i == energia_)
+                   modifyStat(*i, oggetto->getSommaStats() / numeroStat);
+               else
+                   if(getRarita() > 7)
+                       modifyStat(*i,  oggetto->getValoreStat(*i));
+                   else
+                       modifyStat(*i,  oggetto->getValoreStat(*i) *(numeroStat - 1) / numeroStat );
        }
        else {
-           throw Errore("estrai");
+           return; //throw Errore("estrai");
        }
    }
 
@@ -62,9 +67,9 @@ public:
        float maxValue = obj->getValoreStat(minmax.second);
        float diff = maxValue - obj->getValoreStat(minmax.first);
 
-       /*if(getValoreStat(energia_) < diff) {
-           throw Errore("ripara");
-       }*/
+       if(getValoreStat(energia_) < diff) {
+           return;//throw Errore("ripara");
+       }
 
        incrementStat(energia_, -diff);
 
