@@ -16,7 +16,7 @@ private:
 public:
     explicit Button(const QString &testo, const char *path =0, QWidget *parent = 0) : QToolButton(parent), path_(path), testo_(testo) {
 
-        setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
         if(path != 0) {
             setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
             setIcon(QIcon(path));
@@ -26,8 +26,7 @@ public:
     } 
     QSize sizeHint() const override {
         QSize size = QToolButton::sizeHint();
-        size.rheight() += 5;
-        size.rwidth() = qMax(size.width(), size.height());
+        size.rwidth() = 70;
         return size;
     }
     const char* getPath() const {

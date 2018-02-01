@@ -17,5 +17,7 @@
         <file>icons/answer.png</file>
         <file>icons/confermaOp.png</file>
         <file>icons/duplica.png</file>
+        <file>icons/cancella.png</file>
+        <file>icons/backspace.png</file>
     </qresource>
 </RCC>
