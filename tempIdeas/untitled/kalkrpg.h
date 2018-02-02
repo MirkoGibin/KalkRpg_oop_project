@@ -166,7 +166,6 @@ public:
         mainLayout->addLayout(operationLayout, 0, 2);
         mainLayout->addLayout(memoryLayout, 1, 2, Qt::AlignBottom);
 
-
         setLayout(mainLayout);
 
         //connects per la gestione dei pulsanti della gestione della memoria nella view

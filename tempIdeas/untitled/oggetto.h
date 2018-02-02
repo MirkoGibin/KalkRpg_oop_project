@@ -154,7 +154,10 @@ public:
 
         for(auto it = stats.begin(); it != stats.end(); ++it) {
             if(it->second < 1) it->second = 1;
-            else sum += it->second;
+            else
+                if(it->second > 150) it->second = 150;
+
+            sum += it->second;
         }
 
       if(sum > 150 * livello_ * stats.size())

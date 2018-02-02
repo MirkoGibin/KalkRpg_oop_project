@@ -27,7 +27,7 @@ public:
     QSize sizeHint() const override {
         QSize size = QToolButton::sizeHint();
         size.rwidth() = 83;
-        size.height() = 60;
+        size.rheight() = 60;
         return size;
     }
     const char* getPath() const {
