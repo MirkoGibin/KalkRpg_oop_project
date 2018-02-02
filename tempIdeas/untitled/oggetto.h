@@ -180,7 +180,7 @@ public:
             percentInvMap[*it]=(percentInvMap.at(*it) + percentParMap.at(*it))/2;
         }
 
-        double daDistribuire; //somma da distribuire sulle stats di a non presenti in b
+        double daDistribuire = 0; //somma da distribuire sulle stats di a non presenti in b
         for(list<string>::const_iterator it=ParMenoInv.begin(); it!=ParMenoInv.end(); ++it) {
             daDistribuire+=percentParMap.at(*it);
         }
