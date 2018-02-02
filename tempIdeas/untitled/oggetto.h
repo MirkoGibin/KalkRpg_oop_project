@@ -7,6 +7,7 @@
 #include<typeinfo>
 #include<climits>
 #include<tuple>
+
 #include"operationexception.h"
 
 using std::list;

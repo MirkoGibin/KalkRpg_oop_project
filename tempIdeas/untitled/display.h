@@ -27,7 +27,7 @@ public:
         QTextCursor cursor = textCursor();
 
         QTextTableFormat tabFormat;
-        tabFormat.setBorder(0);
+        tabFormat.setBorder(1);
         tabFormat.setAlignment(Qt::AlignCenter);
 
         QVector<QTextLength> cellWidth;
@@ -35,10 +35,9 @@ public:
             cellWidth.push_back(QTextLength(QTextLength::FixedLength, 70));
         tabFormat.setColumnWidthConstraints(cellWidth);
 
+
         QTextTable* table = cursor.insertTable(1,parametri.length()+1, tabFormat);
-
         history.push_back(cursor.position());
-
         table->cellAt(0, 0).firstCursorPosition().insertImage(*image);
 
         int j=1;
@@ -50,8 +49,8 @@ public:
             tabCursor.insertText(parametri.takeFirst());
             j++;
         }
-        //delete parametri;
-        moveCursor(QTextCursor::End);
+
+        moveCursor(cursor.EndOfBlock);
         ensureCursorVisible();
     }
 
@@ -68,7 +67,7 @@ public:
         history.push_back(cursor.position());
         cursor.insertText("\n");
 
-        moveCursor(QTextCursor::End);
+        setTextCursor(cursor);
     }
 
     void show(const QString num) {

@@ -44,13 +44,19 @@ public:
             int numeroStat = s.size();
 
             for(auto i = s.begin(); i != s.end(); ++i)
-                if(*i == energia_)
-                    modifyStat(*i, oggetto->getSommaStats() / numeroStat);
+                if(*i == energia_) {
+                    double val = oggetto->getSommaStats() / numeroStat;
+                    if(val<1) val = 1;
+                    modifyStat(*i, val);
+                }
                 else
                     if(getRarita() > 7)
                         modifyStat(*i,  oggetto->getValoreStat(*i));
-                    else
-                        modifyStat(*i,  oggetto->getValoreStat(*i) *(numeroStat - 1) / numeroStat );
+                    else {
+                        double val = oggetto->getValoreStat(*i) *(numeroStat - 1) / numeroStat;
+                        if(val < 1) val =1;
+                        modifyStat(*i, val);
+                    }
         }
         else {
             throw OperationException(OperationException::estrazione);
