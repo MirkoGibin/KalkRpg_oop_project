@@ -25,6 +25,7 @@ private:
     bool waitingOperand;
     bool settingObj;
     bool running;
+
     bool riciclaOp;
     bool potenziaOp;
     bool creaOp;
@@ -83,7 +84,7 @@ public:
 
         //creazione pulsanti operazioni unarie
         Button* creaButton = createOpButton(":/icons/crea.png", tr("Crea"), SLOT(creaClicked()));
-        connect(controller, SIGNAL(somethingChanged(bool)), creaButton, SLOT(setDisabled(bool)));
+        //connect(controller, SIGNAL(somethingChanged(bool)), creaButton, SLOT(setDisabled(bool)));
         connect(this, SIGNAL(startOp(bool)), creaButton, SLOT(setEnabled(bool)));
         Button* riciclaButton = createOpButton(":/icons/ricicla.png", tr("Ricicla"), SLOT(riciclaClicked()));
         connect(this, SIGNAL(startOp(bool)), riciclaButton, SLOT(setEnabled(bool)));
@@ -128,7 +129,6 @@ public:
         emit unaryOp(false);
 
         //creazione del layout
-
         QGridLayout *objectLayout = new QGridLayout;
         QGridLayout *operationLayout = new QGridLayout;
         QGridLayout *memoryLayout = new QGridLayout;
@@ -167,12 +167,10 @@ public:
         mainLayout->addLayout(memoryLayout, 1, 2, Qt::AlignBottom);
 
 
-        setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
+        setLayout(mainLayout);
 
         //connects per la gestione dei pulsanti della gestione della memoria nella view
         connect(controller, SIGNAL(nothingToDelete()), eraseButton, SLOT(setDisabled()));
-        //connect(controller, SIGNAL(nothingToDelete()), backspaceButton, SLOT(setDisabled())); non serve perche' in objectIsCreatedState() viene messo utilizzabile.
-        //perche' potrebbe dover cancellare alcune operazioni unarie che non si basano sulla presenza in memoria o meno di dati.
 
         //connects per la gestione dei pulsanti delle operazioni child-only nei back
         connect(controller, SIGNAL(isCristallo(bool)), this, SLOT(cristalloInMemory(bool)));
@@ -194,9 +192,8 @@ public:
         expansionAndSetGrid->deleteLater();
         confirmObj->deleteLater();
         child->deleteLater();
-        //controller->flushControllerMemory();
     }
-    void showResult(int ris =0, int contatore =0) { //DA METTERE IN PRIVATE
+    void showResult(int ris =0, int contatore =0) {
         if(controller->getNumObjInMemory()) {
             if(ris)
                 display->show(QString::number(ris));
@@ -234,7 +231,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     //SETTING OBJECTS
     void showToSet(Button* pressedButton) {
         settingObj=true;
-        settingObjState(); //GOTO
+        settingObjState();
 
         child=new QWidget(this);
         expansionAndSetGrid=new QGridLayout(child);
@@ -262,30 +259,26 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     }
 
     //CONFIRM OBJECT
-    void confirmObjClicked(/*Button* pressedButton*/) {
+    void confirmObjClicked() {
         settingObj=false;
         if(potenziaOp) {
             confirmOpToClickState();
-            //waitingOperand=false;
             controller->sceltiParametriPotenzia();
             removeSettingPanel();
         } else if(creaOp) {
             confirmOpToClickState();
-            //waitingOperand=false;
             display->show(controller->getImage(), controller->getParametri());
             controller->sceltiParametriCrea();
             removeSettingPanel();
         } else if(trasformaOp){//PER TRASFORMAOP
             display->show(controller->getResultImage(), controller->getResultParametri());
             confirmOpToClickState();
-            //waitingOperand=false;
         } else {
             if(!waitingOperand) {
                 objIsCreatedState();
             }
             else {
                 confirmOpToClickState();
-                //waitingOperand=false;
             }
             display->show(controller->getImage(), controller->getParametri());
             controller->setStatsOnObj();
@@ -346,7 +339,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             trasformaOp=false; //USIAMO LA STESSA VARIABILE di trasformaOp PERCHE IL COMPORTAMENTO E' LO STESSO
             opButton=nullptr;
         } else {
-            waitingOperand=true; //VEDI QUI
+            waitingOperand=true;
             running=true;
             trasformaOp=true;
         }
@@ -377,7 +370,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             trasformaOp=false;
             opButton=nullptr;
         } else {
-            waitingOperand=true; //VEDI QUI
+            waitingOperand=true;
             running=true;
             trasformaOp=true;
         }
@@ -496,7 +489,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
                 controller->deleteLastObj();
                 setChildVariables();
             }
-        } else if(waitingOperand && running) { //just choosen op, want to change it
+        } else if(waitingOperand && running) {
             display->back();
             waitingOperand=false;
             running=false;
@@ -609,15 +602,6 @@ signals:
     void riparaToClick(bool);
     void duplicaToClick(bool);
     void unaryOp(bool);
-
-    //eventi di display
-
-
-    //eventi relativi alla gestione
-    /*void confermaClicked();
-    void indietroClicked();
-    void esciClicked();
-    void clearDisplayClicked();*/
 };
 
 #endif // KALKRPG_H

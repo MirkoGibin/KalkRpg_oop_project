@@ -26,13 +26,12 @@ private:
     int rarita;
 
 public:
-    Controller(/*QImage* img =0*/) : modello(new Model()), image(/*img*/0),
+    Controller() : modello(new Model()), image(0),
         combox(0), parametro(""), mana(1), livello(1), rarita(1)  {
         connect(modello, SIGNAL(nothingToDelete()), this, SIGNAL(nothingToDelete()));
         connect(modello, SIGNAL(isCristallo(bool)), this, SIGNAL(isCristallo(bool)));
         connect(modello, SIGNAL(isUnguento(bool)), this, SIGNAL(isUnguento(bool)));
         connect(modello, SIGNAL(isAmuleto(bool)), this, SIGNAL(isAmuleto(bool)));
-        //connect(modello, SIGNAL(error(QString)), this, SLOT(error(QString)));
     }
 
     ~Controller() {
@@ -84,9 +83,7 @@ public:
     }
 
     void potenzia() const {
-        //int mana=tempDataToSet.value("mana")->value();
         modello->potenzia(mana, parametro);
-        //flushControllerMemory();
     }
 
     void crea() const {
@@ -124,7 +121,6 @@ public slots:
             QString name=(*it);
             displayandslider=new DisplayAndSlider(griglia->parentWidget(), name);
             tempDataToSet.insert(name, displayandslider->getSlider());
-            connect(displayandslider->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)));
             griglia->addWidget(displayandslider,2,counter++);
         }
 
@@ -137,7 +133,6 @@ public slots:
 
         auto it=listaStats.begin();
 
-        //int counter=0;
         DisplayAndSlider* mana=new DisplayAndSlider(griglia->parentWidget(), "Mana", true);
         tempDataToSet.insert("Mana", mana->getSlider());
 
@@ -157,7 +152,6 @@ public slots:
 
         auto it=listaStats.begin();
 
-        //int counter=0;
         DisplayAndSlider* mana=new DisplayAndSlider(griglia->parentWidget(), "Mana", true);
         tempDataToSet.insert("Mana", mana->getSlider());
         DisplayAndSlider* livello=new DisplayAndSlider(griglia->parentWidget(), "Livello");
@@ -191,7 +185,6 @@ public slots:
     }
 
     void setStatsOnObj() {
-        //modello->setImage(image);
         for(auto it=tempDataToSet.begin();it!=tempDataToSet.end();++it) {
             modello->setStatByName(it.key(), it.value()->value());
         }
@@ -209,64 +202,31 @@ public slots:
 
 
 //----------------------------------------------------------------------------
-    bool newErba() {
-        int before=modello->getNumObjInMemory();
+    void newErba() {
         modello->createErba();
-        //modello->setImage(image);
-        int after=modello->getNumObjInMemory();
-        return before++==after;
     }
 
-    bool newUnguento() {
-        int before=modello->getNumObjInMemory();
+    void newUnguento() {
         modello->createUnguento();
-        //modello->setImage(image);
-        int after=modello->getNumObjInMemory();
-        return before++==after;
     }
 
-    bool newPietra() {
-        int before=modello->getNumObjInMemory();
+    void newPietra() {
         modello->createPietra();
-        //modello->setImage(image);
-        int after=modello->getNumObjInMemory();
-        return before++==after;
     }
 
-    bool newCristallo() {
-        int before=modello->getNumObjInMemory();
+    void newCristallo() {
         modello->createCristallo();
-        //modello->setImage(image);
-        int after=modello->getNumObjInMemory();
-        return before++==after;
     }
 
-    bool newOsso() {
-        int before=modello->getNumObjInMemory();
+    void newOsso() {
         modello->createOsso();
-        //modello->setImage(image);
-        int after=modello->getNumObjInMemory();
-        return before++==after;
     }
 
-    bool newAmuleto() {
-        int before=modello->getNumObjInMemory();
+    void newAmuleto() {
         modello->createAmuleto();
-        //modello->setImage(image);
-        int after=modello->getNumObjInMemory();
-        return before++==after;
     }
-    void sliderChanged(int) {
-        emit somethingChanged(true);
-    }
-
-    /*void error(QString s) {
-        throw ViewException(s);
-    } */
-
 
 signals:
-    void somethingChanged(bool =false);
     void opIsDone();
     void nothingToDelete();
 

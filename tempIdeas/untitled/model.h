@@ -137,7 +137,6 @@ public:
             QImage* toInsert=new QImage((*immagini.value(counter)));
             immagini.insert(++counter, toInsert);
         }
-        emit opDone();
     }
 
     void potenzia(int mana, QString parametro) {
@@ -148,7 +147,6 @@ public:
             immagini.insert(++counter, toInsert);
             memoria.push_back(nuovo);
         } else {} //ECCEZIONI
-        emit opDone();
     }
 
     void crea(int mana, int livello, int rarita, QString parametro) {
@@ -159,7 +157,6 @@ public:
             immagini.insert(++counter, toInsert);
             memoria.push_back(nuovo);
         } else {} //eccezioni
-        emit opDone();
     }
 
     void distribuisci() {
@@ -181,7 +178,6 @@ public:
                 immagini.insert(++counter, parametroImage);
             } else {} //LANCIA ECCEZIONE
         }
-        emit opDone();
     }
 
     void ripara() {
@@ -203,7 +199,6 @@ public:
                 immagini.insert(++counter, parametroImage);
             } else {} //LANCIA ECCEZIONE
         }
-        emit opDone();
     }
 
     void duplica() {
@@ -225,7 +220,6 @@ public:
                 immagini.insert(++counter, parametroImage);
             } else {} //LANCIA ECCEZIONE
         }
-        emit opDone();
     }
 
     void trasforma() {
@@ -240,14 +234,12 @@ public:
                 QImage* toInsert=new QImage((*immagini.value(counter)));
                 immagini.insert(++counter, toInsert);
             } catch(OperationException oe) {
-                //emit error(QString::fromStdString(oe));
                 Oggetto*o=memoria.back();
                 memoria.pop_back();
                 delete o;
                 throw ViewException(QString::fromStdString(oe.getErrore()));
             }
         }
-        emit opDone();
     }
 
     void estrai() {
@@ -258,29 +250,28 @@ public:
                 Oggetto*inv=(memoria.back())->clone();
                 Oggetto* parametro=(*it);
 
-                if(dynamic_cast<Cristallo*>(inv))
-                    dynamic_cast<Cristallo*>(inv)->estraiDa(parametro);
-                else
-                if(dynamic_cast<Unguento*>(inv))
-                    dynamic_cast<Unguento*>(inv)->estraiDa(parametro);
-                else
-                if(dynamic_cast<Amuleto*>(inv))
-                    dynamic_cast<Amuleto*>(inv)->estraiDa(parametro);
+                Cristallo*c =dynamic_cast<Cristallo*>(inv);
+                if(c) c->estraiDa(parametro);
                 else {
-                    delete inv;
-                    throw OperationException(OperationException::estrazione);
+                    Amuleto* a =dynamic_cast<Amuleto*>(inv);
+                    if(a) a->estraiDa(parametro);
+                    else {
+                        Unguento* u =dynamic_cast<Unguento*>(inv);
+                        if(u) u->estraiDa(parametro);
+                        else {
+                            delete inv;
+                            throw OperationException(OperationException::estrazione);
+                        }
+                    }
                 }
-
                 memoria.push_back(inv);
                 QImage* toInsert=new QImage((*immagini.value(counter)));
                 immagini.insert(++counter, toInsert);
             } catch(OperationException oe) {
-                //emit error(QString::fromStdString(oe));
                 throw ViewException(QString::fromStdString(oe.getErrore()));
 
             }
         }
-        emit opDone();
     }
 
 //CREATE OBJECT IN MEMORY------------------------------------------------
@@ -309,7 +300,7 @@ public:
         counter++;
     }
 signals:
-    void opDone();
+    //void opDone();
     void nothingToDelete();
     void isCristallo(bool =false);
     void isUnguento(bool =false);
