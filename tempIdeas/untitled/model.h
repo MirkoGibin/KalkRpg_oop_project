@@ -99,7 +99,7 @@ public:
         }
         else emit nothingToDelete();
     }
-    void whatsInMemory() const {
+    void whatsInMemory() {
         if(dynamic_cast<Cristallo*>(memoria.back())) {
             emit isCristallo(true);
             emit isUnguento(false);
@@ -235,13 +235,49 @@ public:
                 it--;
                 Oggetto*inv=(memoria.back())->clone();
                 Oggetto* parametro=(*it);
+                memoria.push_back(inv);
                 inv->trasformaDa(parametro);
+                QImage* toInsert=new QImage((*immagini.value(counter)));
+                immagini.insert(++counter, toInsert);
+            } catch(OperationException oe) {
+                //emit error(QString::fromStdString(oe));
+                Oggetto*o=memoria.back();
+                memoria.pop_back();
+                delete o;
+                throw ViewException(QString::fromStdString(oe.getErrore()));
+            }
+        }
+        emit opDone();
+    }
+
+    void estrai() {
+        if(getNumObjInMemory()>1) {
+            try {
+                auto it=--(memoria.end());
+                it--;
+                Oggetto*inv=(memoria.back())->clone();
+                Oggetto* parametro=(*it);
+
+                if(dynamic_cast<Cristallo*>(inv))
+                    dynamic_cast<Cristallo*>(inv)->estraiDa(parametro);
+                else
+                if(dynamic_cast<Unguento*>(inv))
+                    dynamic_cast<Unguento*>(inv)->estraiDa(parametro);
+                else
+                if(dynamic_cast<Amuleto*>(inv))
+                    dynamic_cast<Amuleto*>(inv)->estraiDa(parametro);
+                else {
+                    delete inv;
+                    throw OperationException(OperationException::estrazione);
+                }
+
                 memoria.push_back(inv);
                 QImage* toInsert=new QImage((*immagini.value(counter)));
                 immagini.insert(++counter, toInsert);
             } catch(OperationException oe) {
                 //emit error(QString::fromStdString(oe));
                 throw ViewException(QString::fromStdString(oe.getErrore()));
+
             }
         }
         emit opDone();
