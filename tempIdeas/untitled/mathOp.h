@@ -8,11 +8,11 @@ namespace mathOp {
 
 using std::map; using std::string; using std::list;
 
-void doMultiplyOnMap(map<string, double>&m, double&toMultiply);
+void doMultiplyOnMap(map<string, double>&, double&);
 
-list<string> chiaviAmenoB(map<string, double>& A, map<string, double>& B);
+list<string> chiaviAmenoB(map<string, double>&, map<string, double>&);
 
-list<string> chiaviAeB(map<string, double>& A, map<string, double>& B);
+list<string> chiaviAeB(map<string, double>&, map<string, double>&);
 
 }
 #endif // MATHOP_H
