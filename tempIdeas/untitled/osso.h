@@ -25,19 +25,19 @@ private:
 public:
     Osso(int livello =1,
          int rarita =1,
-         float spirito =1,
-         float attacco =1,
-         float difesa =1) : Oggetto(livello, rarita, spirito), attacco_("Attacco"), difesa_("Difesa") {
+         double spirito =1,
+         double attacco =1,
+         double difesa =1) : Oggetto(livello, rarita, spirito), attacco_("Attacco"), difesa_("Difesa") {
         insertStat(attacco_,attacco);
         insertStat(difesa_, difesa);
         sanitizeInput();
     }
 
-    float getAttacco() const {
+    double getAttacco() const {
         return getValoreStat(attacco_);
     }
 
-    float getDifesa() const {
+    double getDifesa() const {
         return getValoreStat(difesa_);
     }
 
@@ -46,14 +46,14 @@ public:
     }
 
 //ricicla fa la moltiplicazione della sommaStats in cui attacco e difesa sono raddoppiati, moltiplicato per livello e rarita
-    float ricicla() const {
+    double ricicla() const {
         return calcolaMana() / 2 + (getValoreStat(attacco_) + getValoreStat(difesa_)) / 2 * getRarita();
 
     }
 
-    void potenzia(int mana, string parametro ="") {
+    void potenzia(double mana, string parametro ="") {
 
-        int incremento = mana / getLivello();
+        double incremento = mana / getLivello();
         int divisore;
 
         if(parametro == "") {

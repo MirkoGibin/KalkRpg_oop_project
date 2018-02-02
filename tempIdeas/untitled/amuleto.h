@@ -21,16 +21,16 @@ private:
 public:
     Amuleto(int livello =1,
             int rarita =1,
-            float spirito =1,
-            float attacco =1,
-            float difesa =1,
-            float fortuna =1) : Osso(livello,rarita,spirito,attacco,difesa), fortuna_("Fortuna") {
+            double spirito =1,
+            double attacco =1,
+            double difesa =1,
+            double fortuna =1) : Osso(livello,rarita,spirito,attacco,difesa), fortuna_("Fortuna") {
        insertStat(fortuna_, fortuna);
 
        sanitizeInput();
     }
 
-    float getFortuna() const {
+    double getFortuna() const {
         return getValoreStat(fortuna_);
     }
 
@@ -38,11 +38,11 @@ public:
         return new Amuleto(*this);
     }
 
-    float ricicla() const {
+    double ricicla() const {
         return Osso::ricicla() + getValoreStat(fortuna_) * getRarita();
     }
 
-    void potenzia(int mana, string parametro ="") {
+    void potenzia(double mana, string parametro ="") {
 
         int divisore;
 
@@ -80,7 +80,7 @@ public:
     Oggetto* duplica(Oggetto * obj) {
 
         list<string> parametri = obj->getListaStats();
-        float val = obj->getSommaStats() / parametri.size();
+        double val = obj->getSommaStats() / parametri.size();
 
         Oggetto* newObj = obj->clone();
 

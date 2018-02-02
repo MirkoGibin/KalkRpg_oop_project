@@ -23,9 +23,9 @@ public:
     //default constructor
     Cristallo(const int livello =1,
               const int rarita =1,
-              const float spirito =1,
-              const float durezza =1,
-              const float magia =1) : Pietra(livello, rarita, spirito, durezza), magia_("Magia") {
+              const double spirito =1,
+              const double durezza =1,
+              const double magia =1) : Pietra(livello, rarita, spirito, durezza), magia_("Magia") {
         Oggetto::insertStat(magia_, magia);
         sanitizeInput();
     }
@@ -39,9 +39,9 @@ public:
         return new Cristallo(*this);
     }
 
-    virtual void potenzia(int mana, string parametro ="") {
+    virtual void potenzia(double mana, string parametro ="") {
 
-        int incremento = mana * getLivello() * getRarita();
+        double incremento = mana * getLivello() * getRarita();
         int divisore;
 
         if(parametro == "Spirito") {
@@ -81,12 +81,12 @@ public:
         }
     }
 
-    float ricicla() const {
+    double ricicla() const {
         return Pietra::ricicla() + getValoreStat(magia_) * getRarita();
     }
 
     void distribuisci(Oggetto* obj) {
-        float val = getMagia() / 2;
+        double val = getMagia() / 2;
 
         if(getDurezza() < val) {
             return;//throw Errore("distribuisci");

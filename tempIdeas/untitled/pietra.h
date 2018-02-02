@@ -21,8 +21,8 @@ public:
     //default construtor
     Pietra(int livello =1,
            int rarita =1,
-           float spirito =1,
-           float durezza =1) : Oggetto(livello, rarita, spirito), durezza_("Durezza") {
+           double spirito =1,
+           double durezza =1) : Oggetto(livello, rarita, spirito), durezza_("Durezza") {
         insertStat(durezza_, durezza);
         sanitizeInput();
     }
@@ -31,24 +31,24 @@ public:
         return new Pietra(*this);
     }
 
-     float getDurezza() const {
+     double getDurezza() const {
         return getValoreStat(durezza_);
     }
 
-     void editDurezza(float val) {
+     void editDurezza(double val) {
          incrementStat(durezza_, val);
      }
 
 // ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2
 
-    float ricicla() const {
+    double ricicla() const {
         return calcolaMana() / 2 + getValoreStat(durezza_) * getRarita();
     }
 
-    void potenzia(int mana, string parametro ="") {
+    void potenzia(double mana, string parametro ="") {
 
         int divisore = 5;
-        int incremento = mana / getLivello();
+        double incremento = mana / getLivello();
 
         incrementStat(durezza_, incremento * getRarita() / divisore); //Magia riceve un bonus sicuro oltre alla normale distribuzione
 

@@ -13,13 +13,13 @@ class Erba : public Oggetto{
 public:
     Erba(int livello =1,
          int rarita =1,
-         float spirito =1,
-         float vitalita =1) : Oggetto(livello, rarita, spirito), vitalita_("Vitalità") {
+         double spirito =1,
+         double vitalita =1) : Oggetto(livello, rarita, spirito), vitalita_("Vitalità") {
             insertStat(vitalita_, vitalita);
             sanitizeInput();
     }
 
-    float getVitalita() const {
+    double getVitalita() const {
         return getValoreStat(vitalita_);
     }
 
@@ -27,15 +27,15 @@ public:
         return new Erba(*this);
     }
 
-     float ricicla() const {
+     double ricicla() const {
         return calcolaMana() / 2 + getValoreStat(vitalita_) * getRarita();
 
     }
 
-     void potenzia(int mana, string parametro ="") {
+     void potenzia(double mana, string parametro ="") {
 
          int divisore = 10;
-         int incremento = mana / getLivello();
+         double incremento = mana / getLivello();
 
          incrementStat(vitalita_, incremento * getRarita() / divisore); //Vitalità riceve un bonus sicuro oltre alla normale distribuzione
 

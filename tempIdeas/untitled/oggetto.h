@@ -21,7 +21,7 @@ private:
     int rarita_;
     string spirito_;
 
-    map<string, float> stats;
+    map<string, double> stats;
 
     /* parameters inside stats in Oggetto are:
      * spirito
@@ -32,7 +32,7 @@ public:
     //costruttore di default
     Oggetto(int livello =1,
             int rarita =1,
-            float spirito =1) : livello_(livello), rarita_(rarita), spirito_("Spirito") {
+            double spirito =1) : livello_(livello), rarita_(rarita), spirito_("Spirito") {
         stats.emplace(spirito_, spirito);
     }
 
@@ -48,15 +48,15 @@ public:
     void setRarita(int rarita) {
         rarita_=rarita;
     }
-    void insertStat(string str, float db) {
+    void insertStat(string str, double db) {
         stats.emplace(str, db);
     }
 
-    void incrementStat(string stat, float value){
+    void incrementStat(string stat, double value){
         stats[stat] += value;
     }
 
-    bool modifyStat(string str, float db) { //GESTIONE DEGLI ERRORI
+    bool modifyStat(string str, double db) { //GESTIONE DEGLI ERRORI
         bool trovata=true;
         if(stats.count(str)) {
             stats[str] = db;
@@ -70,8 +70,8 @@ public:
     //ritorna una coppia di stringhe. La prima indica la statistica con il minor valore, la seconda la statistica con il maggior valore.
     std::pair<string,string> findMinMaxStat() const {
         //std::pair<string, string> minmax;
-        float max = -1;
-        float min = INT_MAX;
+        double max = -1;
+        double min = INT_MAX;
 
         string statMax;
         string statMin;
@@ -94,35 +94,35 @@ public:
         return std::make_pair(statMin, statMax);
     }
 
-    float getLivello() const {
+    double getLivello() const {
        return livello_;
     }
-    float getRarita() const {
+    double getRarita() const {
         return rarita_;
     }
-    float getValoreStat(string str) const {
+    double getValoreStat(string str) const {
         return stats.at(str);
     }
 
-    float getSpirito() const {
+    double getSpirito() const {
         return getValoreStat(spirito_);
     }
 
     list<string> getListaStats()  const {
         list<string> keyList;
-        for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
+        for(map<string, double>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
             keyList.push_back(it->first);
         return keyList;
     }
 
-    float getSommaStats() const {
-        float sum = 0;
-        for(map<string, float>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
+    double getSommaStats() const {
+        double sum = 0;
+        for(map<string, double>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
             sum+=it->second;
         return sum;
     }
 
-    float calcolaMana() const {
+    double calcolaMana() const {
         return getSommaStats()*getLivello();
     }
 
@@ -131,7 +131,7 @@ public:
 //------------OPERAZIONI
     void normalizza() {
         if(getLivello()*150 <= calcolaMana()) {
-            float percentualeRiduzione=getLivello()*150/calcolaMana();
+            double percentualeRiduzione=getLivello()*150/calcolaMana();
             mathOp::doMultiplyOnMap(stats, percentualeRiduzione);
         }
     }
@@ -154,12 +154,12 @@ public:
       }
 
     void combina(Oggetto* object) {
-        map<string, float> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
-        map<string, float> percentParMap = object->stats; //copiata la mappa dell'oggetto di invocazione
+        map<string, double> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
+        map<string, double> percentParMap = object->stats; //copiata la mappa dell'oggetto di invocazione
 
 
-        float toMultiplyInv=getLivello()/calcolaMana();
-        float toMultiplyPar=object->getLivello()/object->calcolaMana();
+        double toMultiplyInv=getLivello()/calcolaMana();
+        double toMultiplyPar=object->getLivello()/object->calcolaMana();
 
         mathOp::doMultiplyOnMap(percentInvMap, toMultiplyInv);
         mathOp::doMultiplyOnMap(percentParMap, toMultiplyPar);
@@ -172,7 +172,7 @@ public:
             percentInvMap[*it]=(percentInvMap.at(*it) + percentParMap.at(*it))/2;
         }
 
-        float daDistribuire; //somma da distribuire sulle stats di a non presenti in b
+        double daDistribuire; //somma da distribuire sulle stats di a non presenti in b
         for(list<string>::const_iterator it=ParMenoInv.begin(); it!=ParMenoInv.end(); ++it) {
             daDistribuire+=percentParMap.at(*it);
         }
@@ -182,7 +182,7 @@ public:
             percentInvMap[*it] =(percentInvMap.at(*it) + daDistribuire)/2;
         }
 
-        for(map<string,float>::const_iterator it=percentInvMap.begin(); it!=percentInvMap.end(); ++it) {
+        for(map<string,double>::const_iterator it=percentInvMap.begin(); it!=percentInvMap.end(); ++it) {
             stats[it->first] = stats.at(it->first)*getLivello() + it->second*object->calcolaMana();
         }
         //ora bisogna normalizzare stats a seconda del livello.
@@ -193,9 +193,9 @@ public:
 
     //operazioni
 
-    virtual float ricicla() const = 0;
+    virtual double ricicla() const = 0;
 
-    virtual void potenzia(int mana, string parametro ="") = 0;
+    virtual void potenzia(double mana, string parametro ="") = 0;
 
     void trasformaDa(const Oggetto *obj) {
 
@@ -206,7 +206,7 @@ public:
         setLivello(obj->getLivello());
         setRarita(obj->getRarita());
         list<string> parametri = obj->getListaStats();
-        int val = 0;
+        double val = 0;
         for(auto i = parametri.begin(); i != parametri.end(); ++i) {
             if(!modifyStat(*i, obj->getValoreStat(*i)/2))
                 val += obj->getValoreStat(*i);
@@ -222,23 +222,24 @@ public:
             }
 
             int par=parametri.size();
-            if(!par) par=1;
-            val = val/par;
+            if(par > 0) { // c'è almeno un parametro caratteristico da settare
+                val = val/par;
 
-            for(auto i = parametri.begin(); i != parametri.end(); i++)
-                modifyStat(*i, val * getRarita());
+                for(auto i = parametri.begin(); i != parametri.end(); i++)
+                  modifyStat(*i, val * getRarita());
+            }
 
         }
 //------------------------------------
     }
 
-    void crea(float mana, int livello, int rarita, string statistica) { //PRE = statistica è vuoto o è un valore valido
+    void crea(double mana, int livello, int rarita, string statistica = "") { //PRE = statistica è vuoto o è un valore valido
 
         setLivello(livello);
         setRarita(rarita);
 
         list<string> parametri = getListaStats();
-        float sumStats=mana/(livello*rarita);
+        double sumStats=mana/(livello*rarita);
 
         if(statistica != "" && std::find(parametri.begin(), parametri.end(), statistica) != parametri.end()) { //RICHIEDE <ALGORITHM>
             modifyStat(statistica, sumStats/2);

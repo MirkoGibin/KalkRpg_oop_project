@@ -13,9 +13,9 @@ class Unguento : public Erba{
 public:
     Unguento(int livello =1,
              int rarita =1,
-             float spirito =1,
-             float vitalita =1,
-             float energia =1) : Erba(livello, rarita, spirito, vitalita), energia_("Energia") {
+             double spirito =1,
+             double vitalita =1,
+             double energia =1) : Erba(livello, rarita, spirito, vitalita), energia_("Energia") {
         insertStat(energia_, energia);
         sanitizeInput();
     }
@@ -23,7 +23,7 @@ public:
         return new Unguento(*this);
     }
 
-    void potenzia(int mana, string parametro ="") {
+    void potenzia(double mana, string parametro ="") {
         int divisore;
 
         if(getRarita() > 6)
@@ -57,7 +57,7 @@ public:
         }
     }
 
-    float ricicla() const {
+    double ricicla() const {
         return Erba::ricicla() + getValoreStat(energia_) * getRarita();
     }
 
@@ -65,8 +65,8 @@ public:
 
         std::pair<string, string> minmax = obj->findMinMaxStat();
 
-        float maxValue = obj->getValoreStat(minmax.second);
-        float diff = maxValue - obj->getValoreStat(minmax.first);
+        double maxValue = obj->getValoreStat(minmax.second);
+        double diff = maxValue - obj->getValoreStat(minmax.first);
 
         if(getValoreStat(energia_) < diff) {
             return;//throw Errore("ripara");
