@@ -33,13 +33,13 @@ public:
         }
         else if(forMana) {
             valore->setText(QString::number(1));
-            slider->setRange(1,1000);
-            valore->setValidator(new QIntValidator(1,1000));
+            slider->setRange(1,6000);
+            valore->setValidator(new QIntValidator(1,6000));
         }
         else {
-            slider->setRange(1,199);
+            slider->setRange(1,150);
             valore->setText(QString::number(1));
-            valore->setValidator(new QIntValidator(1,199));
+            valore->setValidator(new QIntValidator(1,150));
         }
         connect(slider, SIGNAL(valueChanged(int)), this, SLOT(display(int)));
         connect(valore, SIGNAL(textChanged(QString)), this, SLOT(updateSlider(QString)));
