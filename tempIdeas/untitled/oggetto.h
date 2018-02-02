@@ -35,6 +35,7 @@ public:
             int rarita =1,
             double spirito =1) : livello_(livello), rarita_(rarita), spirito_("Spirito") {
         stats.emplace(spirito_, spirito);
+        normalizza();
     }
 
     //distruttore virtuale
@@ -70,7 +71,6 @@ public:
 //------------METODI DI GET
     //ritorna una coppia di stringhe. La prima indica la statistica con il minor valore, la seconda la statistica con il maggior valore.
     std::pair<string,string> findMinMaxStat() const {
-        //std::pair<string, string> minmax;
         double max = -1;
         double min = INT_MAX;
 
@@ -80,13 +80,11 @@ public:
         for(auto it = stats.begin(); it != stats.end(); it++) {
             if(it->second > max) {
                 max = it->second;
-                //minmax.second
                 statMax= it->first;
             }
             else {
                 if(it->second <= min) { // a parità di valore, voglio la stat più in fondo alla lista
                     min = it->second;
-                    //minmax.first
                     statMin= it->first;
                 }
             }
@@ -131,8 +129,9 @@ public:
 
 //------------OPERAZIONI
     void normalizza() {
-        if(getLivello()*150 <= calcolaMana()) {
-            double percentualeRiduzione=getLivello()*150/calcolaMana();
+        int maxStat = 150;
+        if(getLivello()*maxStat*stats.size() <= calcolaMana()) {
+            double percentualeRiduzione=getLivello()*maxStat*stats.size()/calcolaMana();
             mathOp::doMultiplyOnMap(stats, percentualeRiduzione);
         }
     }
@@ -140,8 +139,16 @@ public:
     void sanitizeInput() {
         if(livello_ < 1)
             livello_ = 1;
+        else
+            if(livello_ >10)
+                livello_ = 10;
+
         if(rarita_ < 1)
             rarita_ = 1;
+        else
+            if(rarita_>10)
+                rarita_ = 10;
+
 
         double sum = 0;
 
@@ -150,7 +157,7 @@ public:
             else sum += it->second;
         }
 
-      if(sum > 150 * livello_)
+      if(sum > 150 * livello_ * stats.size())
          normalizza();
       }
 
@@ -229,6 +236,7 @@ public:
                 for(auto i = parametri.begin(); i != parametri.end(); i++)
                   modifyStat(*i, val * getRarita());
             }
+            normalizza();
 
         }
 //------------------------------------
