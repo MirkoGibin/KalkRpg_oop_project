@@ -59,13 +59,12 @@ public:
     }
 
     bool modifyStat(string str, double db) { //GESTIONE DEGLI ERRORI
-        bool trovata=true;
+        bool trovata=false;
         if(stats.count(str)) {
             stats[str] = db;
-            return trovata;
+            trovata=true;
         }
-        else
-            return !trovata;
+        return trovata;
     }
 
 //------------METODI DI GET
