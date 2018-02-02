@@ -104,6 +104,9 @@ public:
     void trasforma() const {
         modello->trasforma();
     }
+    void estrai() const {
+        modello->estrai();
+    }
 
 
 //------------------------------------------------------------------------

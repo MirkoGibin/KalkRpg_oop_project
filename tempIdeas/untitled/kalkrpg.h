@@ -29,6 +29,7 @@ private:
     bool potenziaOp;
     bool creaOp;
     bool trasformaOp;
+
     bool cristalloObj;
     bool unguentoObj;
     bool amuletoObj;
@@ -334,7 +335,21 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         }
     }
     void estraiClicked() {
-        return;
+        if(running) {
+            try {
+                controller->estrai();
+                showResult();
+            } catch(ViewException ve) {
+                showResult(ve.getErrore());
+            }
+            running=false;
+            trasformaOp=false; //USIAMO LA STESSA VARIABILE PERCHE IL COMPORTAMENTO E' LO STESSO
+            opButton=nullptr;
+        } else {
+            waitingOperand=true; //VEDI QUI
+            running=true;
+            trasformaOp=true;
+        }
     }
     void potenziaClicked() {
         if(running) {
@@ -461,7 +476,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             if(potenziaOp) { //per potenziaOp
                 running=false;
                 potenziaOp=false;
-            } else { //valido anche per creaOp, trasformaOp
+            } else { //valido anche per creaOp, trasformaOp, estraiOp
                 waitingOperand=true;
                 controller->deleteLastObj();
                 setChildVariables();
