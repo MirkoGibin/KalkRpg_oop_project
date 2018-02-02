@@ -27,7 +27,7 @@ public:
         QTextCursor cursor = textCursor();
 
         QTextTableFormat tabFormat;
-        tabFormat.setBorder(1);
+        tabFormat.setBorder(0);
         tabFormat.setAlignment(Qt::AlignCenter);
 
         QVector<QTextLength> cellWidth;
