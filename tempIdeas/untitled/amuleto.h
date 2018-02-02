@@ -85,7 +85,7 @@ public:
 
         Oggetto* newObj = obj->clone();
 
-        if(getFortuna() < val ) {
+        if(getFortuna() < val + 1) {
             modifyStat(fortuna_, 1);
             for(auto it = parametri.begin(); it != parametri.end(); it++) {
                 newObj->modifyStat(*it, 1);

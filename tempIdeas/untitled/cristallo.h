@@ -87,10 +87,9 @@ public:
 
     void distribuisci(Oggetto* obj) {
         double val = getMagia() / 2;
-        if(val<1) val = 1;
 
-        if(getDurezza() <= val) {
-            return;//throw Errore("distribuisci");
+        if(getDurezza() < val + 1) {
+            return;
         }
 
         editDurezza(-val);

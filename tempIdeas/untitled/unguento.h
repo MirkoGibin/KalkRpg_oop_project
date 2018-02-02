@@ -74,8 +74,8 @@ public:
         double maxValue = obj->getValoreStat(minmax.second);
         double diff = maxValue - obj->getValoreStat(minmax.first);
 
-        if(getValoreStat(energia_) < diff) {
-            return;//throw Errore("ripara");
+        if(getValoreStat(energia_) < diff + 1) {
+            return;
         }
 
         incrementStat(energia_, -diff);
