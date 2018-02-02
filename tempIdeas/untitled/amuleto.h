@@ -54,6 +54,7 @@ public:
         incrementStat(fortuna_, mana * getLivello() * getRarita() / divisore); //Fortuna riceve un bonus sicuro oltre alla normale distribuzione
 
         Osso::potenzia(mana, parametro);
+
     }
 
     virtual void estraiDa(Oggetto* oggetto) {
