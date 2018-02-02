@@ -197,7 +197,7 @@ public:
 
     virtual void potenzia(int mana, string parametro ="") = 0;
 
-    void trasformaDa(Oggetto *obj) {
+    void trasformaDa(const Oggetto *obj) {
 
         if(getListaStats().size() > obj->getListaStats().size()) {
             throw OperationException(OperationException::trasformazione);
@@ -214,18 +214,22 @@ public:
 
         parametri.clear();
 
+//FARE ATTENZIONE QUI: la prossima parametri risulta vuota.
         if(val > 0) {
             for(auto it = stats.begin(); it != stats.end(); ++it){
-                if(it->second == 0)
+                if(it->second == 1)
                     parametri.push_back(it->first);
             }
 
-            val /= parametri.size();
+            int par=parametri.size();
+            if(!par) par=1;
+            val = val/par;
 
             for(auto i = parametri.begin(); i != parametri.end(); i++)
                 modifyStat(*i, val * getRarita());
 
         }
+//------------------------------------
     }
 
     void crea(float mana, int livello, int rarita, string statistica) { //PRE = statistica è vuoto o è un valore valido

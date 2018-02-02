@@ -7,6 +7,8 @@
 #include<QSlider>
 #include<QList>
 #include<list>
+#include"operationexception.h"
+#include"viewexception.h"
 #include"oggetto.h"
 #include"erba.h"
 #include"unguento.h"
@@ -207,6 +209,25 @@ public:
         emit opDone();
     }
 
+    void trasforma() {
+        if(getNumObjInMemory()>1) {
+            try {
+                auto it=--(memoria.end());
+                it--;
+                Oggetto*inv=(memoria.back())->clone();
+                Oggetto* parametro=(*it);
+                inv->trasformaDa(parametro);
+                memoria.push_back(inv);
+                QImage* toInsert=new QImage((*immagini.value(counter)));
+                immagini.insert(++counter, toInsert);
+            } catch(OperationException oe) {
+                //emit error(QString::fromStdString(oe));
+                throw ViewException(QString::fromStdString(oe.getErrore()));
+            }
+        }
+        emit opDone();
+    }
+
 //CREATE OBJECT IN MEMORY------------------------------------------------
     void createErba() {
         memoria.push_back(new Erba());
@@ -239,6 +260,7 @@ signals:
     void isUnguento(bool =false);
     void isAmuleto(bool =false);
 
+    void error(QString);
 };
 
 #endif // MODEL_H

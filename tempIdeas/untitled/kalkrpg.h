@@ -28,6 +28,7 @@ private:
     bool riciclaOp;
     bool potenziaOp;
     bool creaOp;
+    bool trasformaOp;
     bool cristalloObj;
     bool unguentoObj;
     bool amuletoObj;
@@ -65,6 +66,7 @@ public:
         riciclaOp(false),
         potenziaOp(false),
         creaOp(false),
+        trasformaOp(false),
         cristalloObj(false),
         unguentoObj(false),
         amuletoObj(false) {
@@ -197,6 +199,9 @@ public:
             else display->show(controller->getResultImage(contatore), controller->getResultParametri(contatore));
         }
     }
+    void showResult(QString s) {
+        display->show(s);
+    }
 
 public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     //SELECTING OBJECTS
@@ -266,6 +271,10 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             display->show(controller->getImage(), controller->getParametri());
             controller->sceltiParametriCrea();
             removeSettingPanel();
+        } else if(trasformaOp){//PER TRASFORMAOP
+            display->show(controller->getResultImage(), controller->getResultParametri());
+            confirmOpToClickState();
+            waitingOperand=false;
         } else {
             if(!waitingOperand) {
                 objIsCreatedState();
@@ -337,8 +346,22 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             running=true;
         }
     }
-    void trasformaClicked(){
-        return;
+    void trasformaClicked() {
+        if(running) {
+            try {
+                controller->trasforma();
+                showResult();
+            } catch(ViewException ve) {
+                showResult(ve.getErrore());
+            }
+            running=false;
+            trasformaOp=false;
+            opButton=nullptr;
+        } else {
+            waitingOperand=true; //VEDI QUI
+            running=true;
+            trasformaOp=true;
+        }
     }
     void distribuisciClicked(){
         if(running) {
@@ -395,7 +418,11 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     void objectClicked() {
         Button*pressedButton=qobject_cast<Button*>(sender());
         controller->setImage(new QImage(pressedButton->getPath()));
-        showToSet(pressedButton);
+        if(!trasformaOp)
+            showToSet(pressedButton);
+        else {
+            confirmObjClicked();
+        }
     }
 
     void confirmOpClicked() {
@@ -426,7 +453,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             if(potenziaOp) { //per potenziaOp
                 running=false;
                 potenziaOp=false;
-            } else { //valido anche per creaOp
+            } else { //valido anche per creaOp, trasformaOp
                 waitingOperand=true;
                 //if(controller->getNumObjInMemory())
                 controller->deleteLastObj();
@@ -440,6 +467,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             running=false;
             riciclaOp=false;
             creaOp=false;
+            trasformaOp=false;
         } else {
             if(cristalloObj) cristalloObj=false;
             if(unguentoObj) unguentoObj=false;
@@ -452,9 +480,16 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     void eraseClicked() {
         waitingOperand=false;
         running=false;
+
+        riciclaOp=false;
+        potenziaOp=false;
+        creaOp=false;
+        trasformaOp=false;
+
         cristalloObj=false;
         unguentoObj=false;
         amuletoObj=false;
+
         if(settingObj) { //se clicco erase mentre sto settando oggetti
             removeSettingPanel();
             settingObj=false;

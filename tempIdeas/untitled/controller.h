@@ -2,7 +2,8 @@
 #define CONTROLLER_H
 #include<QObject>
 #include"model.h"
-#include"QGridLayout"
+#include"viewexception.h"
+#include<QGridLayout>
 #include"displayandslider.h"
 #include"button.h"
 #include<QSlider>
@@ -31,6 +32,7 @@ public:
         connect(modello, SIGNAL(isCristallo(bool)), this, SIGNAL(isCristallo(bool)));
         connect(modello, SIGNAL(isUnguento(bool)), this, SIGNAL(isUnguento(bool)));
         connect(modello, SIGNAL(isAmuleto(bool)), this, SIGNAL(isAmuleto(bool)));
+        //connect(modello, SIGNAL(error(QString)), this, SLOT(error(QString)));
     }
 
     ~Controller() {
@@ -98,6 +100,9 @@ public:
     }
     void duplica() const {
         modello->duplica();
+    }
+    void trasforma() const {
+        modello->trasforma();
     }
 
 
@@ -250,6 +255,11 @@ public slots:
         emit somethingChanged(true);
     }
 
+    /*void error(QString s) {
+        throw ViewException(s);
+    } */
+
+
 signals:
     void somethingChanged(bool =false);
     void opIsDone();
@@ -258,6 +268,7 @@ signals:
     void isCristallo(bool =false);
     void isUnguento(bool =false);
     void isAmuleto(bool =false);
+
 };
 
 #endif // CONTROLLER_H

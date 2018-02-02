@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     displayandslider.cpp \
     display.cpp \
     button.cpp \
-    operationexception.cpp
+    operationexception.cpp \
+    viewexception.cpp
 
 HEADERS += \
     oggetto.h \
@@ -55,7 +56,8 @@ HEADERS += \
     displayandslider.h \
     display.h \
     button.h \
-    operationexception.h 
+    operationexception.h \ 
+    viewexception.h
 
 
 RESOURCES += \
