@@ -75,7 +75,6 @@ public:
 
     void combina() const {
         modello->combina();
-        connect(modello, SIGNAL(opDone()), this, SIGNAL(opIsDone()));
     }
 
     int ricicla() const {
