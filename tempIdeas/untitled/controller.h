@@ -142,6 +142,7 @@ public slots:
         tempDataToSet.insert("Mana", mana->getSlider());
 
         combox=new QComboBox;
+        combox->addItem("");
 
         for(; it!=listaStats.end(); ++it)
             if(*it!="Livello" && *it!="Rarità")
@@ -165,6 +166,7 @@ public slots:
         tempDataToSet.insert("Rarità", rarita->getSlider());
 
         combox=new QComboBox;
+        combox->addItem("");
         for(; it!=listaStats.end(); ++it)
             if(*it!="Livello" && *it!="Rarità")
                 combox->addItem(*it);
