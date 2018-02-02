@@ -253,12 +253,14 @@ public:
         double sumStats=mana/(livello*rarita);
 
         if(statistica != "" && std::find(parametri.begin(), parametri.end(), statistica) != parametri.end()) { //RICHIEDE <ALGORITHM>
-            modifyStat(statistica, sumStats/2);
+            if(sumStats < 2) sumStats=2;
+             modifyStat(statistica, sumStats/2);
             sumStats=sumStats/2;
             parametri.remove(statistica);
         }
 
         sumStats=sumStats/parametri.size();
+        if(sumStats < 1) sumStats = 1;
 
         for(list<string>::const_iterator it=parametri.begin(); it!=parametri.end(); ++it)
             modifyStat(*it, sumStats);
