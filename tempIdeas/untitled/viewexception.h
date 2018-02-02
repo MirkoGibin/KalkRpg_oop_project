@@ -7,10 +7,8 @@ class ViewException {
 private:
     QString err;
 public:
-  ViewException(QString errore) : err(errore) {}
+  ViewException(QString);
 
-  QString getErrore() const {
-      return err;
-  }
+  QString getErrore() const;
 };
 #endif // VIEWEXCEPTION_H
