@@ -14,38 +14,16 @@ private:
     const QString testo_;
 
 public:
-    explicit Button(const QString &testo, const char *path =0, QWidget *parent = 0) : QToolButton(parent), path_(path), testo_(testo) {
+    explicit Button(const QString&, const char* =0, QWidget* =0);
+    QSize sizeHint() const override;
+    const char* getPath() const;
 
-        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
-        if(path != 0) {
-            setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-            setIcon(QIcon(path));
-        }
-        setText(testo);
-        setObjectName(testo);
-    } 
-    QSize sizeHint() const override {
-        QSize size = QToolButton::sizeHint();
-        size.rwidth() = 83;
-        size.rheight() = 60;
-        return size;
-    }
-    const char* getPath() const {
-        return path_;
-    }
-
-    QString getTesto() const {
-        return testo_;
-    }
+    QString getTesto() const;
 
 public slots:
-    void setEnabled() {
-        QToolButton::setEnabled(true);
-    }
+    void setEnabled();
 
-    void setDisabled() {
-        QToolButton::setDisabled(true);
-    }
+    void setDisabled();
 };
 
 #endif // BUTTON_H
