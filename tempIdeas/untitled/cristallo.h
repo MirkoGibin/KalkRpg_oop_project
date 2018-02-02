@@ -57,7 +57,7 @@ public:
     }
 
     virtual void estraiDa(Oggetto* oggetto) {
-        if(typeid(Pietra*) == typeid(*oggetto)) {
+        if(typeid(Pietra) == typeid(*oggetto)) {
 
             list<string> s = getListaStats();
 

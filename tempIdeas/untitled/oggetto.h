@@ -7,7 +7,7 @@
 #include<typeinfo>
 #include<climits>
 #include<tuple>
-#include"operationException.h"
+#include"operationexception.h"
 
 using std::list;
 using std::map;

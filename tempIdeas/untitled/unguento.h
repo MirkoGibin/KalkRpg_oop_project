@@ -37,7 +37,7 @@ public:
 
     //estraiDa permette di creare un Unguento da una sua superclasse.
     virtual void estraiDa(Oggetto* oggetto) {
-        if(typeid(Erba*) == typeid(*oggetto)) {
+        if(typeid(Erba) == typeid(*oggetto)) {
             setLivello(oggetto->getLivello());
             setRarita(oggetto->getRarita());
             list<string> s = getListaStats();

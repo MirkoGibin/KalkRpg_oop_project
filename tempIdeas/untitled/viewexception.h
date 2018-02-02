@@ -1,7 +1,7 @@
 #ifndef VIEWEXCEPTION_H
 #define VIEWEXCEPTION_H
 
-#include<Qstring>
+#include<QString>
 
 class ViewException {
 private:

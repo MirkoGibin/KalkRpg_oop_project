@@ -57,7 +57,7 @@ public:
     }
 
     virtual void estraiDa(Oggetto* oggetto) {
-        if(typeid(Osso*) == typeid(*oggetto)) {
+        if(typeid(Osso) == typeid(*oggetto)) {
             setLivello(oggetto->getLivello());
             setRarita(oggetto->getRarita());
             list<string> s = getListaStats();
@@ -72,7 +72,7 @@ public:
 
         }
         else {
-           return;// throw Errore("estrai");
+           throw OperationException(OperationException::estrazione);
         }
 
     }
