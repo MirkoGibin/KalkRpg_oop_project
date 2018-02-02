@@ -97,7 +97,7 @@ public:
         Button* distribuisciButton = createOpButton(":/icons/distribuisci.png", tr("Distribuisci"), SLOT(distribuisciClicked()));;
         connect(this, SIGNAL(distribuisciToClick(bool)), distribuisciButton, SLOT(setEnabled(bool)));
         Button* duplicaButton = createOpButton(":/icons/duplica.png", tr("Duplica"), SLOT(duplicaClicked()));;
-        connect(this, SIGNAL(dublicaToClick(bool)), duplicaButton, SLOT(setEnabled(bool)));
+        connect(this, SIGNAL(duplicaToClick(bool)), duplicaButton, SLOT(setEnabled(bool)));
         Button* riparaButton = createOpButton(":/icons/ripara.png", tr("Ripara"), SLOT(riparaClicked()));;
         connect(this, SIGNAL(riparaToClick(bool)), riparaButton, SLOT(setEnabled(bool)));
 
@@ -168,9 +168,12 @@ public:
 
         setLayout(mainLayout); //this->setLayout(mainLayout), dove this è kalk del main, tipo KalkRpg, derivato da QWidget
 
-        //connects per la gestione dei pulsanti della view
+        //connects per la gestione dei pulsanti della gestione della memoria nella view
         connect(controller, SIGNAL(nothingToDelete()), eraseButton, SLOT(setDisabled()));
-        connect(controller, SIGNAL(nothingToDelete()), backspaceButton, SLOT(setDisabled()));
+        //connect(controller, SIGNAL(nothingToDelete()), backspaceButton, SLOT(setDisabled())); non serve perche' in objectIsCreatedState() viene messo utilizzabile.
+        //perche' potrebbe dover cancellare alcune operazioni unarie che non si basano sulla presenza in memoria o meno di dati.
+
+        //connects per la gestione dei pulsanti delle operazioni child-only nei back
         connect(controller, SIGNAL(isCristallo(bool)), this, SLOT(cristalloInMemory(bool)));
         connect(controller, SIGNAL(isUnguento(bool)), this, SLOT(unguentoInMemory(bool)));
         connect(controller, SIGNAL(isAmuleto(bool)), this, SLOT(amuletoInMemory(bool)));
@@ -262,31 +265,32 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         settingObj=false;
         if(potenziaOp) {
             confirmOpToClickState();
-            waitingOperand=false;
+            //waitingOperand=false;
             controller->sceltiParametriPotenzia();
             removeSettingPanel();
         } else if(creaOp) {
             confirmOpToClickState();
-            waitingOperand=false;
+            //waitingOperand=false;
             display->show(controller->getImage(), controller->getParametri());
             controller->sceltiParametriCrea();
             removeSettingPanel();
         } else if(trasformaOp){//PER TRASFORMAOP
             display->show(controller->getResultImage(), controller->getResultParametri());
             confirmOpToClickState();
-            waitingOperand=false;
+            //waitingOperand=false;
         } else {
             if(!waitingOperand) {
                 objIsCreatedState();
             }
             else {
                 confirmOpToClickState();
-                waitingOperand=false;
+                //waitingOperand=false;
             }
             display->show(controller->getImage(), controller->getParametri());
             controller->setStatsOnObj();
             removeSettingPanel();
         }
+        waitingOperand=false;
     }
 
 
@@ -431,12 +435,16 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         display->show(qobject_cast<Button*>(sender())->getPath());
         doneState();
     }
+    void setChildVariables() {
+        if(cristalloObj) cristalloObj=false;
+        if(unguentoObj) unguentoObj=false;
+        if(amuletoObj) unguentoObj=false;
+    }
+
     void backspaceClicked() {
         if(settingObj) { //pressing back in first settingObject
             settingObj=false;
-            if(cristalloObj) cristalloObj=false;
-            if(unguentoObj) unguentoObj=false;
-            if(amuletoObj) unguentoObj=false;
+            setChildVariables();
             removeSettingPanel();
             if(potenziaOp) {
                 display->back();
@@ -455,11 +463,8 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
                 potenziaOp=false;
             } else { //valido anche per creaOp, trasformaOp
                 waitingOperand=true;
-                //if(controller->getNumObjInMemory())
                 controller->deleteLastObj();
-                if(cristalloObj) cristalloObj=false;
-                if(unguentoObj) unguentoObj=false;
-                if(amuletoObj) amuletoObj=false;
+                setChildVariables();
             }
         } else if(waitingOperand && running) { //just choosen op, want to change it
             display->back();
@@ -469,9 +474,7 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
             creaOp=false;
             trasformaOp=false;
         } else {
-            if(cristalloObj) cristalloObj=false;
-            if(unguentoObj) unguentoObj=false;
-            if(amuletoObj) amuletoObj=false;
+            setChildVariables();
             display->back();
             controller->deleteLastObj();
         }
@@ -507,18 +510,23 @@ public slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
         emit backspaceToClick(true);
         emit eraseToClick(true);
     }
+
+    void setChildMethods() {
+        if(cristalloObj) emit distribuisciToClick(true);
+        else emit distribuisciToClick(false);
+        if(unguentoObj) emit riparaToClick(true);
+        else emit riparaToClick(false);
+        if(amuletoObj) emit duplicaToClick(true);
+        else emit duplicaToClick(false);
+    }
+
     void objIsCreatedState() {
         emit objToClick(true);
         if(waitingOperand)
             emit opToClick(false);
         else  {
             emit opToClick(true);
-            if(cristalloObj) emit distribuisciToClick(true);
-            else emit distribuisciToClick(false);
-            if(unguentoObj) emit riparaToClick(true);
-            else emit riparaToClick(false);
-            if(amuletoObj) emit dublicaToClick(true);
-            else emit dublicaToClick(false);
+            setChildMethods();
         }
         emit confirmOpToClick(false);
         emit backspaceToClick(true);
@@ -567,7 +575,7 @@ signals:
 
     void distribuisciToClick(bool);
     void riparaToClick(bool);
-    void dublicaToClick(bool);
+    void duplicaToClick(bool);
     void unaryOp(bool);
 
     //eventi di display

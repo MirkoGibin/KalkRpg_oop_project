@@ -135,7 +135,7 @@ public slots:
         auto it=listaStats.begin();
 
         //int counter=0;
-        DisplayAndSlider* mana=new DisplayAndSlider(griglia->parentWidget(), "Mana");
+        DisplayAndSlider* mana=new DisplayAndSlider(griglia->parentWidget(), "Mana", true);
         tempDataToSet.insert("Mana", mana->getSlider());
 
         combox=new QComboBox;
@@ -154,7 +154,7 @@ public slots:
         auto it=listaStats.begin();
 
         //int counter=0;
-        DisplayAndSlider* mana=new DisplayAndSlider(griglia->parentWidget(), "Mana");
+        DisplayAndSlider* mana=new DisplayAndSlider(griglia->parentWidget(), "Mana", true);
         tempDataToSet.insert("Mana", mana->getSlider());
         DisplayAndSlider* livello=new DisplayAndSlider(griglia->parentWidget(), "Livello");
         tempDataToSet.insert("Livello", livello->getSlider());

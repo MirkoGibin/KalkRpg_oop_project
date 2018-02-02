@@ -18,7 +18,7 @@ private:
     QLineEdit* valore;
 
 public:
-        DisplayAndSlider(QWidget*parent =0, const QString& descrizione_ =0) :
+        DisplayAndSlider(QWidget*parent =0, const QString& descrizione_ =0, bool forMana =false) :
         QWidget(parent), slider(new QSlider(Qt::Horizontal)), descrizione(new QLabel(descrizione_)), valore(new QLineEdit()) {
 
         descrizione->setAlignment(Qt::AlignCenter);
@@ -30,6 +30,11 @@ public:
             valore->setText(QString::number(1));
             slider->setRange(1,10);
             valore->setValidator(new QIntValidator(1,10));
+        }
+        else if(forMana) {
+            valore->setText(QString::number(1));
+            slider->setRange(1,1000);
+            valore->setValidator(new QIntValidator(1,1000));
         }
         else {
             slider->setRange(1,199);

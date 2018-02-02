@@ -94,13 +94,32 @@ public:
             delete i;
             counter--;
             if(!counter) emit nothingToDelete();
-            if(counter) {
-                if(dynamic_cast<Cristallo*>(memoria.back())) isCristallo(true);
-                if(dynamic_cast<Unguento*>(memoria.back())) isUnguento(true);
-                if(dynamic_cast<Amuleto*>(memoria.back())) isAmuleto(true);
-            }
+            if(counter)
+                whatsInMemory();
         }
         else emit nothingToDelete();
+    }
+    void whatsInMemory() const {
+        if(dynamic_cast<Cristallo*>(memoria.back())) {
+            emit isCristallo(true);
+            emit isUnguento(false);
+            emit isAmuleto(false);
+        } else
+        if(dynamic_cast<Unguento*>(memoria.back())) {
+            emit isUnguento(true);
+            emit isCristallo(false);
+            emit isAmuleto(false);
+        } else
+        if(dynamic_cast<Amuleto*>(memoria.back())) {
+            emit isAmuleto(true);
+            emit isCristallo(false);
+            emit isUnguento(false);
+        }
+        else {
+            emit isAmuleto(false);
+            emit isCristallo(false);
+            emit isUnguento(false);
+        }
     }
 
 
