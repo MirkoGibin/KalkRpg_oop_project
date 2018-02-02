@@ -131,10 +131,11 @@ public:
         if(getNumObjInMemory()) {
             auto it=--(memoria.end());
             it--;
-            Oggetto* nuovo=(memoria.back())->clone();
-            nuovo->combina(*it);
-            memoria.push_back(nuovo);
-            QImage* toInsert=new QImage((*immagini.value(counter)));
+            Oggetto* inv=(*it)->clone();
+            Oggetto*parametro=memoria.back();
+            inv->combina(parametro);
+            memoria.push_back(inv);
+            QImage* toInsert=new QImage((*immagini.value(counter-1)));
             immagini.insert(++counter, toInsert);
         }
     }
