@@ -34,6 +34,7 @@ public class Cristallo extends Pietra {
         Integer divisore=10;
         incrementStat(magia_, incremento*getRarita()/divisore);
         super.potenzia(mana);
+        normalizza();
     }
 
 
@@ -55,25 +56,26 @@ public class Cristallo extends Pietra {
     }
 
     public void estraiDa(Oggetto oggetto) throws OperationException {
-        if(oggetto.getClass().getName()=="Pietra") { //DA CONTROLLARE!!
-            Pietra p=(Pietra)oggetto;
+        try {
+            Pietra p = (Pietra) oggetto;
 
-            if(p.getDurezza()>=10) {
+            if (p.getDurezza() >= 10) {
                 setLivello(p.getLivello());
                 setRarita(p.getRarita());
 
-                //List<String> s=getListaStats();
-                Integer numeroStats = getListaStats().size();
+                List<String> s=getListaStats();
+                Integer numeroStats = s.size();
+                final Double sommaStats = p.getSommaStats();
 
-                getListaStats().stream().forEach(s -> {
-                    if (s == "Magia") incrementStat(s, (p.getSommaStats() - getSpirito()) / numeroStats);
-                    else incrementStat(s, p.getValoreStat(s) * (numeroStats - 1) / numeroStats);
+                s.stream().forEach(f -> {
+                    if (f == magia_) incrementStat(f, (sommaStats - getSpirito()) / numeroStats);
+                    else incrementStat(f, sommaStats * (numeroStats - 1) / numeroStats);
                 });
-            }
-            else
-                getListaStats().forEach(s->modifyStat(s,1.0));
+            } else
+                getListaStats().forEach(s -> modifyStat(s, 1.0));
+        } catch (ClassCastException e) {
+            throw new OperationException(OperationException.ecc.estrazione);
         }
-        else throw new OperationException(OperationException.ecc.estrazione);
     }
 
     @Override
@@ -88,7 +90,11 @@ public class Cristallo extends Pietra {
         editDurezza(-val);
         Integer size=getListaStats().size();
 
-        obj.getListaStats().stream().forEach(s->obj.incrementStat(s, val/size));
+        obj.getListaStats()
+                .stream()
+                .forEach(s->
+                        obj.incrementStat(s, val/size)
+                );
         obj.normalizza();
     }
 }
