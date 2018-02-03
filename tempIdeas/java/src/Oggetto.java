@@ -306,4 +306,11 @@ abstract public class Oggetto implements Cloneable {
     abstract public void potenzia(Double mana, String parametro);
     abstract public void potenzia(Double mana);
 
+    /**
+     *
+     * @return clone
+     */
+    @Override
+    abstract public Oggetto clone();
+
 }

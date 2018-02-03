@@ -18,7 +18,5 @@ public class OperationException extends Exception {
         }
         return errore;
     }
-
     private ecc tipo_;
-
 }

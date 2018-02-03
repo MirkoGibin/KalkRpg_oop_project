@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Pietra extends Oggetto {
     /* parameters inside stats in Oggetto are:
      * spirito
@@ -39,9 +41,12 @@ public class Pietra extends Oggetto {
         Integer divisore =5;
         Double incremento =mana/getLivello();
         incrementStat(durezza_,incremento*getRarita()/divisore);
-        incremento=incremento/getListaStats().size();
+
+        List<String> lista=getListaStats();
+
+        incremento=incremento/lista.size();
         final Double d=incremento;
-        getListaStats().stream().forEach(s->incrementStat(s,d));
+        lista.stream().forEach(s->incrementStat(s,d));
         normalizza();
     }
     

@@ -55,26 +55,26 @@ public class Cristallo extends Pietra {
     }
 
     public void estraiDa(Oggetto oggetto) throws OperationException {
-        if(oggetto.getClass().getName()=="Pietra") { //DA CONTROLLARE!!
-            Pietra p=(Pietra)oggetto;
+        try {
+            Pietra p = (Pietra) oggetto;
 
-            if(p.getDurezza()>=10) {
+            if (p.getDurezza() >= 10) {
                 setLivello(p.getLivello());
                 setRarita(p.getRarita());
 
-                //List<String> s=getListaStats();
-                Integer numeroStats = getListaStats().size();
-                final Double sommaStats =p.getSommaStats();
+                List<String> s=getListaStats();
+                Integer numeroStats = s.size();
+                final Double sommaStats = p.getSommaStats();
 
-                getListaStats().stream().forEach(s -> {
-                    if (s == "Magia") incrementStat(s, (sommaStats - getSpirito()) / numeroStats);
-                    else incrementStat(s, sommaStats * (numeroStats - 1) / numeroStats);
+                s.stream().forEach(f -> {
+                    if (f == magia_) incrementStat(f, (sommaStats - getSpirito()) / numeroStats);
+                    else incrementStat(f, sommaStats * (numeroStats - 1) / numeroStats);
                 });
-            }
-            else
-                getListaStats().forEach(s->modifyStat(s,1.0));
+            } else
+                getListaStats().forEach(s -> modifyStat(s, 1.0));
+        } catch (ClassCastException e) {
+            throw new OperationException(OperationException.ecc.estrazione);
         }
-        else throw new OperationException(OperationException.ecc.estrazione);
     }
 
     @Override
