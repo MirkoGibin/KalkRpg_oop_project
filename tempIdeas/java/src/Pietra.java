@@ -38,6 +38,8 @@ public class Pietra extends Oggetto {
     }
 
     public void potenzia(Double mana) {
+        mana=sanitizeMana(mana);
+
         Integer divisore =5;
         Double incremento =mana/getLivello();
         incrementStat(durezza_,incremento*getRarita()/divisore);
@@ -51,10 +53,13 @@ public class Pietra extends Oggetto {
     }
     
     public void potenzia(Double mana, String parametro) {
-        Integer divisore =5;
-        Double incremento =mana/getLivello();
-        incrementStat(durezza_,incremento*getRarita()/divisore);
-        incrementStat(parametro, incremento);
-        normalizza();
+        if(getListaStats().contains(parametro)) {
+            mana=sanitizeMana(mana);
+            Integer divisore = 5;
+            Double incremento = mana / getLivello();
+            incrementStat(durezza_, incremento * getRarita() / divisore);
+            incrementStat(parametro, incremento);
+            normalizza();
+        } else potenzia(mana);
     }
 }

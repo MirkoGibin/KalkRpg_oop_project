@@ -7,9 +7,7 @@ public class Cristallo extends Pietra {
 
     //CONSTRUCTORS
     public Cristallo() {
-        super();
-        magia_="Magia";
-        insertStat(magia_, 1.0);
+        this(1,1,1.0,1.0,1.0);
     }
 
     public Cristallo(Integer livello, Integer rarita, Double spirito, Double durezza, Double magia) {
@@ -30,6 +28,7 @@ public class Cristallo extends Pietra {
 
     @Override
     public void potenzia(Double mana) {
+        mana=sanitizeMana(mana);
         Double incremento = mana*getLivello()*getRarita();
         Integer divisore=10;
         incrementStat(magia_, incremento*getRarita()/divisore);
@@ -53,10 +52,12 @@ public class Cristallo extends Pietra {
             incrementStat(magia_, incremento*getRarita()/divisore);
             super.potenzia(mana, parametro);
         }
+        normalizza();
     }
 
     public void estraiDa(Oggetto oggetto) throws OperationException {
         try {
+            if(oggetto instanceof Cristallo) throw new OperationException(OperationException.ecc.estrazione);
             Pietra p = (Pietra) oggetto;
 
             if (p.getDurezza() >= 10) {
@@ -68,8 +69,8 @@ public class Cristallo extends Pietra {
                 final Double sommaStats = p.getSommaStats();
 
                 s.stream().forEach(f -> {
-                    if (f == magia_) incrementStat(f, (sommaStats - getSpirito()) / numeroStats);
-                    else incrementStat(f, sommaStats * (numeroStats - 1) / numeroStats);
+                    if (f == magia_) incrementStat(f, (p.getValoreStat(f) - p.getSpirito()) / numeroStats);
+                    else incrementStat(f, p.getValoreStat(f) * (numeroStats - 1) / numeroStats);
                 });
             } else
                 getListaStats().forEach(s -> modifyStat(s, 1.0));
@@ -88,9 +89,11 @@ public class Cristallo extends Pietra {
         if(getDurezza() < val +1) return;
 
         editDurezza(-val);
-        Integer size=getListaStats().size();
 
-        obj.getListaStats()
+        List<String> lista=obj.getListaStats();
+        Integer size=lista.size();
+
+        lista
                 .stream()
                 .forEach(s->
                         obj.incrementStat(s, val/size)

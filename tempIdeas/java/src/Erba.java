@@ -6,9 +6,7 @@ public class Erba extends Oggetto {
 
     //COSTRUTTORI
     public Erba() {
-        super();
-        vitalita_="Vitalità";
-        insertStat(vitalita_, 1.0);
+        this(1,1,1.0,1.0);
     }
 
     public Erba(Integer livello, Integer rarita, Double spirito, Double vitalita) {
@@ -32,11 +30,11 @@ public class Erba extends Oggetto {
     //OPERAZIONI
 
     public Double ricicla() {
-
-        return calcolaMana() / 2 *getValoreStat(vitalita_) * getRarita();
+        return calcolaMana() / 2 + getValoreStat(vitalita_) * getRarita();
     }
 
     public void potenzia(Double mana, String parametro) {
+        mana=sanitizeMana(mana);
 
         int divisore = 10;
         double incremento = mana / getLivello();
@@ -53,6 +51,8 @@ public class Erba extends Oggetto {
     }
 
     public void potenzia(Double mana) {
+        mana=sanitizeMana(mana);
+
         int divisore = 10;
         double incremento = mana / getLivello();
 
