@@ -92,10 +92,10 @@ public:
         return std::make_pair(statMin, statMax);
     }
 
-    double getLivello() const {
+    int getLivello() const {
        return livello_;
     }
-    double getRarita() const {
+    int getRarita() const {
         return rarita_;
     }
     double getValoreStat(string str) const {
@@ -164,35 +164,35 @@ public:
       }
 
     void combina(Oggetto* object) {
-        map<string, double> percentInvMap = stats; //copiata la mappa dell'oggetto di invocazione
-        map<string, double> percentParMap = object->stats; //copiata la mappa dell'oggetto di invocazione
+        map<string, double> invMap = stats; //copiata la mappa dell'oggetto di invocazione
+        map<string, double> parMap = object->stats; //copiata la mappa dell'oggetto di invocazione
 
 
         double toMultiplyInv=getLivello()/calcolaMana();
         double toMultiplyPar=object->getLivello()/object->calcolaMana();
 
-        mathOp::doMultiplyOnMap(percentInvMap, toMultiplyInv);
-        mathOp::doMultiplyOnMap(percentParMap, toMultiplyPar);
+        mathOp::doMultiplyOnMap(invMap, toMultiplyInv);
+        mathOp::doMultiplyOnMap(parMap, toMultiplyPar);
 
-        list<string> InvMenoPar=mathOp::chiaviAmenoB(percentInvMap, percentParMap);
-        list<string> ParMenoInv=mathOp::chiaviAmenoB(percentParMap, percentInvMap);
-        list<string> InvePar=mathOp::chiaviAeB(percentInvMap, percentParMap);
+        list<string> InvMenoPar=mathOp::chiaviAmenoB(invMap, parMap);
+        list<string> ParMenoInv=mathOp::chiaviAmenoB(parMap, invMap);
+        list<string> InvePar=mathOp::chiaviAeB(invMap, parMap);
 
         for(list<string>::const_iterator it = InvePar.begin(); it!=InvePar.end(); ++it) {
-            percentInvMap[*it]=(percentInvMap.at(*it) + percentParMap.at(*it))/2;
+            invMap[*it]=(invMap.at(*it) + parMap.at(*it))/2;
         }
 
         double daDistribuire =0; //somma da distribuire sulle stats di a non presenti in b
         for(list<string>::const_iterator it=ParMenoInv.begin(); it!=ParMenoInv.end(); ++it) {
-            daDistribuire+=percentParMap.at(*it);
+            daDistribuire+=parMap.at(*it);
         }
 
         daDistribuire=daDistribuire/InvMenoPar.size();
         for(list<string>::const_iterator it=InvMenoPar.begin(); it!=InvMenoPar.end(); ++it) {
-            percentInvMap[*it] =(percentInvMap.at(*it) + daDistribuire)/2;
+            invMap[*it] =(invMap.at(*it) + daDistribuire)/2;
         }
 
-        for(map<string,double>::const_iterator it=percentInvMap.begin(); it!=percentInvMap.end(); ++it) {
+        for(map<string,double>::const_iterator it=invMap.begin(); it!=invMap.end(); ++it) {
             stats[it->first] = stats.at(it->first)*getLivello() + it->second*object->calcolaMana();
         }
         //ora bisogna normalizzare stats a seconda del livello.

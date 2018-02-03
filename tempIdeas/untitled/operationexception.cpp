@@ -12,7 +12,7 @@ std::string OperationException::getErrore() const {
         break;
 
     case 1 :
-        errore = "Impossibile estrarre dall'oggetto indicato. Le estrazioni possibili sono: \n erba => unguento;\n pietra => cristallo;\n osso => amuleto";                     ;
+        errore = "Impossibile estrarre dall'oggetto indicato. Le estrazioni possibili sono: \n erba => unguento;\n pietra => cristallo;\n osso => amuleto";
         break;
     }
 
