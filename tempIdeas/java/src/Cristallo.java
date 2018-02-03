@@ -64,10 +64,11 @@ public class Cristallo extends Pietra {
 
                 //List<String> s=getListaStats();
                 Integer numeroStats = getListaStats().size();
+                final Double sommaStats =p.getSommaStats();
 
                 getListaStats().stream().forEach(s -> {
-                    if (s == "Magia") incrementStat(s, (p.getSommaStats() - getSpirito()) / numeroStats);
-                    else incrementStat(s, p.getValoreStat(s) * (numeroStats - 1) / numeroStats);
+                    if (s == "Magia") incrementStat(s, (sommaStats - getSpirito()) / numeroStats);
+                    else incrementStat(s, sommaStats * (numeroStats - 1) / numeroStats);
                 });
             }
             else
@@ -88,7 +89,11 @@ public class Cristallo extends Pietra {
         editDurezza(-val);
         Integer size=getListaStats().size();
 
-        obj.getListaStats().stream().forEach(s->obj.incrementStat(s, val/size));
+        obj.getListaStats()
+                .stream()
+                .forEach(s->
+                        obj.incrementStat(s, val/size)
+                );
         obj.normalizza();
     }
 }

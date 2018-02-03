@@ -7,9 +7,7 @@ public class Pietra extends Oggetto {
 
     private String durezza_;
     public Pietra() {
-        super();
-        durezza_="Durezza";
-        insertStat(durezza_, 1.0);
+        this(1,1,1.0,1.0);
     }
 
     public Pietra(Integer livello, Integer rarita, Double spirito, Double durezza) {

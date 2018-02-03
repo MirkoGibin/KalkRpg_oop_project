@@ -19,7 +19,9 @@ abstract public class Oggetto implements Cloneable {
      * @param toMultiply parameters which is multiplied in every stat
      */
     private static void doMultiplyOnMap(Map<String, Double> m, Double toMultiply) {
-        m.forEach((k,v)->m.put(k,v*toMultiply));
+        m.forEach((k,v)->
+                m.put(k,v*toMultiply)
+        );
         /*
         for(Map.Entry<String, Double> entry : m.entrySet()) {
             Double d=entry.getValue();
@@ -38,7 +40,7 @@ abstract public class Oggetto implements Cloneable {
         Set<String> a=A.keySet();
         Set<String> b=B.keySet();
         a.removeAll(b);
-        return new LinkedList<String>(a);
+        return new LinkedList<>(a);
 
         /*List<String> AmenoB=new LinkedList<>();
         for(Map.Entry<String, Double> entry : A.entrySet()) {
@@ -57,7 +59,7 @@ abstract public class Oggetto implements Cloneable {
         Set<String> a=A.keySet();
         Set<String> b=B.keySet();
         a.retainAll(b);
-        return new LinkedList<String>(a);
+        return new LinkedList<>(a);
 
         /*List<String> AeB = new LinkedList<>();
         for(Map.Entry<String, Double> entry : A.entrySet()) {
@@ -69,10 +71,7 @@ abstract public class Oggetto implements Cloneable {
 
     //COSTRUTTORI------------------------------------------------------
     public Oggetto() {
-        livello_=1;
-        rarita_=1;
-        spirito_="Spirito";
-        stats.put(spirito_,1.0);
+        this(1, 1, 1.0);
     }
 
     /**
@@ -158,7 +157,11 @@ abstract public class Oggetto implements Cloneable {
         return new LinkedList<String>(stats.keySet());
     }
     public Double getSommaStats() {
-        return stats.values().stream().mapToDouble(f->f).sum();
+        return stats
+                .values()
+                .stream()
+                .mapToDouble(f->f)
+                .sum();
 
         /*Double sum =0.0;
         for(Map.Entry<String, Double> entry : stats.entrySet())
@@ -215,17 +218,22 @@ abstract public class Oggetto implements Cloneable {
         List<String> paraMENOinvo=chiaviAmenoB(paraMap, invoMap);
         List<String> paraEinvo=chiaviAeB(invoMap, paraMap);
 
-        for(String s : paraEinvo)
-            invoMap.put(s,(invoMap.get(s) + paraMap.get(s))/2);
+        paraEinvo.stream().forEach(s->invoMap.put(s,(invoMap.get(s) + paraMap.get(s))/2));
 
+        /*for(String s : paraEinvo)
+            invoMap.put(s,(invoMap.get(s) + paraMap.get(s))/2);
+        */
         Double daDistribuire=paraMENOinvo.stream().mapToDouble(paraMap::get).sum()/invoMENOpara.size();
 
-        for(String s : invoMENOpara)
-            invoMap.put(s,(invoMap.get(s) + daDistribuire)/2);
+        invoMENOpara.stream().forEach(s->invoMap.put(s,(invoMap.get(s) + daDistribuire)/2));
 
-        stats.forEach((k,v)-> {
-            stats.put(k, invoMap.get(k));
-        });
+        /*for(String s : invoMENOpara)
+            invoMap.put(s,(invoMap.get(s) + daDistribuire)/2);
+        */
+
+        stats.forEach((k,v)->
+            stats.put(k, invoMap.get(k))
+        );
 
         normalizza();
     }
@@ -238,7 +246,11 @@ abstract public class Oggetto implements Cloneable {
         List<String> parametri=o.getListaStats();
 
         //DA VEDERE SE FUNZIONA
-        Double val = parametri.stream().filter(s->!modifyStat(s, o.getValoreStat(s)/2)).mapToDouble(f->o.getValoreStat(f)).sum();
+        Double val = parametri
+                .stream()
+                .filter(s->!modifyStat(s, o.getValoreStat(s)/2))
+                .mapToDouble(f->o.getValoreStat(f))
+                .sum();
 
         /*Double val =0;
         for(String s : parametri) {
@@ -250,13 +262,15 @@ abstract public class Oggetto implements Cloneable {
 
         if(val >0) {
             stats.forEach((k,v) -> {
-                if(v==1.0) parametri.add(k);
+                if (v == 1.0) parametri.add(k);
             });
         }
         Integer par=parametri.size();
         if(par>0){
             val=val/par;
-            stats.forEach((k,v) -> modifyStat(k, v*getRarita()));
+            stats.forEach((k,v) ->
+                    modifyStat(k, v*getRarita())
+            );
         }
         normalizza();
     }
@@ -279,9 +293,9 @@ abstract public class Oggetto implements Cloneable {
         if(sumStats < 1) sumStats = 1.0;
 
         final Double s=sumStats;
-        stats.forEach((k,v) -> {
-            modifyStat(k,s);
-        });
+        stats.forEach((k,v) ->
+            modifyStat(k,s)
+        );
 
         normalizza();
     }
