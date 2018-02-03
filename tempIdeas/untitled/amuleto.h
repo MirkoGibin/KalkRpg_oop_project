@@ -44,6 +44,8 @@ public:
 
     void potenzia(double mana, string parametro ="") {
 
+        mana = sanitizeMana(mana);
+
         int divisore;
 
         if(getRarita() > 6 && getLivello() > 6)

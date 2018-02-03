@@ -41,6 +41,8 @@ public:
 
     virtual void potenzia(double mana, string parametro ="") {
 
+        mana = sanitizeMana(mana);
+
         double incremento = mana * getLivello() * getRarita();
         int divisore;
 

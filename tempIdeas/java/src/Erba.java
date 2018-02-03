@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Erba extends Oggetto {
     String vitalita_ ;
 
@@ -22,6 +24,7 @@ public class Erba extends Oggetto {
     //OPERAZIONI
 
     public Double ricicla() {
+
         return calcolaMana() / 2 *getValoreStat(vitalita_) * getRarita();
     }
 
@@ -30,10 +33,15 @@ public class Erba extends Oggetto {
         int divisore = 10;
         double incremento = mana / getLivello();
 
-        incrementStat(vitalita_, incremento * getRarita() / divisore);
-        incrementStat(parametro, incremento);
+        if(getListaStats().contains(parametro)) {
+            incrementStat(vitalita_, incremento * getRarita() / divisore);
+            incrementStat(parametro, incremento);
 
-        normalizza();
+            normalizza();
+        }
+        else
+            potenzia(mana);
+
     }
 
     public void potenzia(Double mana) {
@@ -41,13 +49,11 @@ public class Erba extends Oggetto {
         double incremento = mana / getLivello();
 
         List<String> parametri = getListaStats();
-        incremento = incremento / parametri.
+        incremento = incremento / parametri.size();
+        parametri.stream().forEach(s->incrementStat(s,incremento));
+
+        normalizza();
 
     }
-
-
-
-
-
 
 }
