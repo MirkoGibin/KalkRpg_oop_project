@@ -291,5 +291,6 @@ abstract public class Oggetto implements Cloneable {
     abstract public Double ricicla();
     abstract public void potenzia(Double mana, String parametro);
     abstract public void potenzia(Double mana);
+    abstract public Oggetto clone();
 
 }

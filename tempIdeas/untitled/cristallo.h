@@ -56,6 +56,7 @@ public:
             incrementStat(magia_, incremento * getRarita() / divisore);
             Pietra::potenzia(mana, parametro);
         }
+        normalizza();
     }
 
     virtual void estraiDa(Oggetto* oggetto) {
