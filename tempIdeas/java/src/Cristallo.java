@@ -34,6 +34,7 @@ public class Cristallo extends Pietra {
         Integer divisore=10;
         incrementStat(magia_, incremento*getRarita()/divisore);
         super.potenzia(mana);
+        normalizza();
     }
 
 
