@@ -1,7 +1,15 @@
 import java.util.List;
 
 public class Erba extends Oggetto {
-    String vitalita_ ;
+
+    private String vitalita_ ;
+
+    //COSTRUTTORI
+    public Erba() {
+        super();
+        vitalita_="Vitalità";
+        insertStat(vitalita_, 1.0);
+    }
 
     public Erba(Integer livello, Integer rarita, Double spirito, Double vitalita) {
         super(livello,rarita, spirito);
