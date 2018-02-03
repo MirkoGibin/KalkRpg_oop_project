@@ -7,9 +7,7 @@ public class Unguento extends Erba {
 
     //CONSTRUCTORS
     public Unguento() {
-        super();
-        energia_="Energia";
-        insertStat(energia_, 1.0);
+        this(1,1,1.0,1.0,1.0);
     }
 
     public Unguento(Integer livello, Integer rarita, Double spirito, Double vitalita, Double energia) {
@@ -34,7 +32,7 @@ public class Unguento extends Erba {
     //OPERAZIONI
     @Override
     public void potenzia(Double mana, String parametro) {
-
+        mana=sanitizeMana(mana);
         int divisore;
 
         if(getRarita() > 6)
@@ -54,7 +52,6 @@ public class Unguento extends Erba {
     public void estraiDa(Oggetto oggetto) throws OperationException {
         try {
             if(oggetto instanceof Unguento) throw new OperationException(OperationException.ecc.estrazione);
-
             Erba e = (Erba) oggetto;
 
             setLivello(oggetto.getLivello());
@@ -94,9 +91,7 @@ public class Unguento extends Erba {
         double maxValue = obj.getValoreStat(minmax.getValue());
         double diff = maxValue - obj.getValoreStat(minmax.getKey());
 
-        if(getValoreStat(energia_) < diff + 1) {
-            return;
-        }
+        if(getValoreStat(energia_) < diff + 1) return;
 
         incrementStat(energia_, -diff);
 

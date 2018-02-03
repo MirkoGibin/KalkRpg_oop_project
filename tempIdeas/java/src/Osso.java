@@ -35,15 +35,17 @@ public class Osso extends Oggetto {
     }
 
     public Double ricicla() {
-        return calcolaMana()/2 + (getAttacco()+getDifesa())/ 2 * getRarita();
+        return calcolaMana()/2 + getRarita()*(getAttacco()+getDifesa())/ 2;
     }
 
     @Override
     public void potenzia(Double mana) {
+        mana=sanitizeMana(mana);
+
         Double incremento=mana/(getLivello()*getListaStats().size());
         getListaStats().stream().forEach(s->incrementStat(s, incremento));
 
-        Integer divisore =5;
+        Integer divisore =10;
         incrementStat(attacco_, incremento*getRarita()/(2*divisore));
         incrementStat(difesa_, incremento*getRarita()/(2*divisore));
         normalizza();
@@ -51,12 +53,15 @@ public class Osso extends Oggetto {
 
     @Override
     public void potenzia(Double mana, String parametro) {
-        Double incremento=mana/getLivello();
-        Integer divisore =5;
-        incrementStat(parametro,incremento);
-        incrementStat(attacco_, incremento*getRarita()/(2*divisore));
-        incrementStat(difesa_, incremento*getRarita()/(2*divisore));
-        normalizza();
+        if(getListaStats().contains(parametro)) {
+            mana=sanitizeMana(mana);
+            Double incremento=mana/getLivello();
+            Integer divisore = 5;
+            incrementStat(parametro, incremento);
+            incrementStat(attacco_, incremento*getRarita()/(2*divisore));
+            incrementStat(difesa_, incremento*getRarita()/(2*divisore));
+            normalizza();
+        } else potenzia(mana);
     }
 
 

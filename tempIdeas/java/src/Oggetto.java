@@ -22,12 +22,6 @@ abstract public class Oggetto implements Cloneable {
         m.forEach((k,v)->
                 m.put(k,v*toMultiply)
         );
-        /*
-        for(Map.Entry<String, Double> entry : m.entrySet()) {
-            Double d=entry.getValue();
-            d=d*toMultiply;
-            m.put(entry.getKey(), d);
-        }*/
     }
 
     /**
@@ -41,13 +35,6 @@ abstract public class Oggetto implements Cloneable {
         Set<String> b=B.keySet();
         a.removeAll(b);
         return new LinkedList<>(a);
-
-        /*List<String> AmenoB=new LinkedList<>();
-        for(Map.Entry<String, Double> entry : A.entrySet()) {
-            if(!B.containsKey(entry.getKey()))
-                AmenoB.add(entry.getKey());
-        }
-        return AmenoB;*/
     }
 
     /**
@@ -60,13 +47,6 @@ abstract public class Oggetto implements Cloneable {
         Set<String> b=B.keySet();
         a.retainAll(b);
         return new LinkedList<>(a);
-
-        /*List<String> AeB = new LinkedList<>();
-        for(Map.Entry<String, Double> entry : A.entrySet()) {
-            if(B.containsKey(entry.getKey()))
-                AeB.add(entry.getKey());
-        }
-        return AeB;*/
     }
 
     //COSTRUTTORI------------------------------------------------------
@@ -106,7 +86,7 @@ abstract public class Oggetto implements Cloneable {
     }
     public boolean modifyStat(String str, Double db) {
         boolean trovata=false;
-        if(stats.containsValue(str)) {
+        if(stats.containsKey(str)) {
             stats.put(str, db);
             trovata=true;
         }
@@ -117,7 +97,7 @@ abstract public class Oggetto implements Cloneable {
 
     /**
      *
-      * @return ??? MIRKO A TE!
+      * @return restituisce due parametri: il primo è quello a valore minimo, il secondo quello a valore massimo
      */
     public Pair<String, String> findMinMaxStat() {
         Double max =-1.0;
@@ -184,10 +164,8 @@ abstract public class Oggetto implements Cloneable {
     }
 
     public void sanitizeInput() {
-        if(livello_<1) livello_=1;
-        else if(livello_>10) livello_=10;
-        if(rarita_<1) rarita_=1;
-        else if(rarita_>10) rarita_=10;
+        livello_=sanitizeLivRar(livello_);
+        rarita_=sanitizeLivRar(rarita_);
 
         for(Map.Entry<String, Double> entry : stats.entrySet()) {
             if (entry.getValue() < 1) stats.put(entry.getKey(), 1.0);
@@ -195,6 +173,19 @@ abstract public class Oggetto implements Cloneable {
         }
         if(getSommaStats() > 150.0*livello_*stats.size()) normalizza();
     }
+
+    static Double sanitizeMana(Double mana) {
+        if(mana>60000.0) mana=6000.0;
+        else if(mana<1) mana=1.0;
+        return mana;
+    }
+
+    static Integer sanitizeLivRar(Integer l) {
+        if(l<1) l=1;
+        else if(l>10) l=10;
+        return l;
+    }
+
 
     /**
      * Detta A mappa dell'oggetto di invocazione, B mappa del parametro:
@@ -219,22 +210,13 @@ abstract public class Oggetto implements Cloneable {
         List<String> paraEinvo=chiaviAeB(invoMap, paraMap);
 
         paraEinvo.stream().forEach(s->invoMap.put(s,(invoMap.get(s) + paraMap.get(s))/2));
-
-        /*for(String s : paraEinvo)
-            invoMap.put(s,(invoMap.get(s) + paraMap.get(s))/2);
-        */
         Double daDistribuire=paraMENOinvo.stream().mapToDouble(paraMap::get).sum()/invoMENOpara.size();
 
         invoMENOpara.stream().forEach(s->invoMap.put(s,(invoMap.get(s) + daDistribuire)/2));
 
-        /*for(String s : invoMENOpara)
-            invoMap.put(s,(invoMap.get(s) + daDistribuire)/2);
-        */
-
         stats.forEach((k,v)->
             stats.put(k, invoMap.get(k))
         );
-
         normalizza();
     }
 
@@ -276,13 +258,17 @@ abstract public class Oggetto implements Cloneable {
     }
 
     public void crea(Double mana, Integer livello, Integer rarita, String statistica) {
+        livello=sanitizeLivRar(livello);
+        rarita=sanitizeLivRar(rarita);
+        mana=sanitizeMana(mana);
+
         setLivello(livello);
         setRarita(rarita);
 
         List<String> parametri = getListaStats();
         Double sumStats=mana/(livello*rarita);
 
-        if(statistica != "" && !parametri.contains(statistica)) {
+        if(parametri.contains(statistica)) {
             if(sumStats < 2) sumStats=2.0;
             modifyStat(statistica, sumStats/2);
             sumStats=sumStats/2;

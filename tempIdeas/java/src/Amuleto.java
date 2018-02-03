@@ -38,6 +38,7 @@ public class Amuleto extends Osso {
 
     @Override
     public void potenzia(Double mana) {
+        mana=sanitizeMana(mana);
         Integer divisore=1;
 
         if(getRarita() > 6 && getLivello() > 6)
@@ -50,18 +51,22 @@ public class Amuleto extends Osso {
 
     @Override
     public void potenzia(Double mana, String parametro) {
-        Integer divisore=1;
+        if(getListaStats().contains(parametro)) {
+            mana = sanitizeMana(mana);
+            Integer divisore = 1;
 
-        if(getRarita() > 6 && getLivello() > 6)
-            divisore=10;
-        else divisore=15;
+            if (getRarita() > 6 && getLivello() > 6)
+                divisore = 10;
+            else divisore = 15;
 
-        incrementStat(fortuna_, mana*getLivello()*getRarita()/divisore);
-        super.potenzia(mana,parametro);
+            incrementStat(fortuna_, mana * getLivello() * getRarita() / divisore);
+            super.potenzia(mana, parametro);
+        } else potenzia(mana);
     }
 
     public void estraiDa(Oggetto oggetto) throws  OperationException {
         try {
+            if(oggetto instanceof Amuleto) throw new OperationException(OperationException.ecc.estrazione);
             Osso o=(Osso) oggetto;
 
             setLivello(o.getLivello());
@@ -86,11 +91,18 @@ public class Amuleto extends Osso {
         Oggetto newObj=obj.clone();
 
         if(getFortuna()<val +1) {
-            modifyStat(fortuna_,1.0);
+            modifyStat(fortuna_, 1.0);
+            parametri
+                    .stream()
+                    .forEach(f -> newObj.modifyStat(f, 1.0)
+                    );
+        } else {
+            incrementStat(fortuna_, -val);
+            if(getRarita()<5)
             parametri
                     .stream()
                     .filter(s->getValoreStat(s) > val/2)
-                    .forEach(f->newObj.modifyStat(f, val/2)
+                    .forEach(s->newObj.modifyStat(s, val/2)
                     );
         }
         return newObj;
