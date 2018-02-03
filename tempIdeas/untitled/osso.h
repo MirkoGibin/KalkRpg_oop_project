@@ -47,7 +47,7 @@ public:
 
 //ricicla fa la moltiplicazione della sommaStats in cui attacco e difesa sono raddoppiati, moltiplicato per livello e rarita
     double ricicla() const {
-        return calcolaMana() / 2 + (getValoreStat(attacco_) + getValoreStat(difesa_)) / 2 * getRarita();
+        return calcolaMana() / 2 + getRarita() * ((getValoreStat(attacco_) + getValoreStat(difesa_))) / 2 ;
 
     }
 
@@ -60,7 +60,7 @@ public:
 
         list<string> statsList = getListaStats();
 
-        if(parametro == "" || !(std::find(statsList.begin(), statsList.end(), parametro) != statsList.end())) {
+        if((std::find(statsList.begin(), statsList.end(), parametro) == statsList.end())) {
             divisore = 10;
             incremento = incremento / statsList.size();
             for(auto i = statsList.begin(); i != statsList.end(); i++)

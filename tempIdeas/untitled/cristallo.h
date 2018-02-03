@@ -71,7 +71,7 @@ public:
                 int numeroStat = s.size();
 
                 for(auto i = s.begin(); i != s.end(); ++i)
-                    if(*i == magia_) incrementStat(*i, (oggetto->getSommaStats() - getSpirito()) / numeroStat);
+                    if(*i == magia_) incrementStat(*i, (oggetto->getSommaStats() - oggetto->getSpirito()) / numeroStat);
                     else incrementStat(*i, oggetto->getValoreStat(*i) * (numeroStat - 1) / numeroStat );
             }
             else {

@@ -263,7 +263,7 @@ public:
         list<string> parametri = getListaStats();
         double sumStats=mana/(livello*rarita);
 
-        if(statistica != "" && std::find(parametri.begin(), parametri.end(), statistica) != parametri.end()) { //RICHIEDE <ALGORITHM>
+        if(std::find(parametri.begin(), parametri.end(), statistica) != parametri.end()) { //RICHIEDE <ALGORITHM>
             if(sumStats < 2) sumStats=2;
              modifyStat(statistica, sumStats/2);
             sumStats=sumStats/2;

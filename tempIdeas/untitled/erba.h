@@ -42,7 +42,7 @@ public:
          incrementStat(vitalita_, incremento * getRarita() / divisore); //Vitalità riceve un bonus sicuro oltre alla normale distribuzione
 
          list<string> statsList = getListaStats();
-         if(parametro == "" || !(std::find(statsList.begin(), statsList.end(), parametro) != statsList.end())) {
+         if((std::find(statsList.begin(), statsList.end(), parametro) == statsList.end())) {
 
              incremento = incremento / statsList.size();
              for(auto i = statsList.begin(); i != statsList.end(); i++)
