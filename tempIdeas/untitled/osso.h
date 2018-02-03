@@ -53,12 +53,15 @@ public:
 
     void potenzia(double mana, string parametro ="") {
 
+        mana = sanitizeMana(mana);
+
         double incremento = mana / getLivello();
         int divisore;
 
-        if(parametro == "") {
+        list<string> statsList = getListaStats();
+
+        if(parametro == "" || !(std::find(statsList.begin(), statsList.end(), parametro) != statsList.end())) {
             divisore = 10;
-            list<string> statsList = getListaStats();
             incremento = incremento / statsList.size();
             for(auto i = statsList.begin(); i != statsList.end(); i++)
                 incrementStat(*i, incremento);

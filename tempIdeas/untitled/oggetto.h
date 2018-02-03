@@ -136,18 +136,8 @@ public:
     }
 
     void sanitizeInput() {
-        if(livello_ < 1)
-            livello_ = 1;
-        else
-            if(livello_ >10)
-                livello_ = 10;
-
-        if(rarita_ < 1)
-            rarita_ = 1;
-        else
-            if(rarita_>10)
-                rarita_ = 10;
-
+        livello_ = sanitizeLivRar(livello_);
+        rarita_ = sanitizeLivRar(rarita_);
 
         double sum = 0;
 
@@ -159,9 +149,26 @@ public:
             sum += it->second;
         }
 
+
       if(sum > 150 * livello_ * stats.size())
          normalizza();
       }
+
+    static double sanitizeMana(double mana) {
+        if(mana > 6000) mana = 6000;
+        else
+            if(mana < 1) mana = 1;
+
+        return mana;
+    }
+
+    static int sanitizeLivRar(int l) {
+        if(l < 1) l = 1;
+        else
+            if(l > 10) l = 10;
+
+        return l;
+    }
 
     void combina(Oggetto* object) {
         map<string, double> invMap = stats; //copiata la mappa dell'oggetto di invocazione
@@ -245,6 +252,10 @@ public:
     }
 
     void crea(double mana, int livello, int rarita, string statistica = "") { //PRE = statistica è vuoto o è un valore valido
+
+        livello = sanitizeLivRar(livello);
+        rarita = sanitizeLivRar(rarita);
+        mana = sanitizeMana(mana);
 
         setLivello(livello);
         setRarita(rarita);
