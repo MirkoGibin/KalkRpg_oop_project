@@ -67,7 +67,14 @@ abstract public class Oggetto implements Cloneable {
         return AeB;*/
     }
 
-    //COSTRUTTORE------------------------------------------------------
+    //COSTRUTTORI------------------------------------------------------
+    public Oggetto() {
+        livello_=1;
+        rarita_=1;
+        spirito_="Spirito";
+        stats.put(spirito_,1.0);
+    }
+
     /**
      *
      * @param livello
@@ -283,5 +290,6 @@ abstract public class Oggetto implements Cloneable {
     //ABSTRACT METHODS
     abstract public Double ricicla();
     abstract public void potenzia(Double mana, String parametro);
+    abstract public void potenzia(Double mana);
 
 }

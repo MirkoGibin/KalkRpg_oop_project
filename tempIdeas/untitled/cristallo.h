@@ -82,7 +82,7 @@ public:
     }
 
     double ricicla() const {
-        return Pietra::ricicla() + getValoreStat(magia_) * getRarita();
+        return Pietra::ricicla() + getMagia() * getRarita();
     }
 
     void distribuisci(Oggetto* obj) {
