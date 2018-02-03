@@ -58,7 +58,8 @@ public class Erba extends Oggetto {
 
         List<String> parametri = getListaStats();
         incremento = incremento / parametri.size();
-        parametri.stream().forEach(s->incrementStat(s,incremento));
+        final double v = incremento;
+        parametri.stream().forEach(s->incrementStat(s,v));
 
         normalizza();
 

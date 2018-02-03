@@ -119,7 +119,7 @@ abstract public class Oggetto implements Cloneable {
      *
       * @return ??? MIRKO A TE!
      */
-    public Pair<String, String> findMaxStat() {
+    public Pair<String, String> findMinMaxStat() {
         Double max =-1.0;
         Double min=Double.MAX_VALUE;
 
@@ -305,7 +305,6 @@ abstract public class Oggetto implements Cloneable {
     abstract public Double ricicla();
     abstract public void potenzia(Double mana, String parametro);
     abstract public void potenzia(Double mana);
-    abstract public Oggetto clone();
 
     /**
      *
