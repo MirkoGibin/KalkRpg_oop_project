@@ -111,6 +111,7 @@ private slots: //BISOGNA VALUTARE CHI MANDARE IN PRIVATE SLOTS
     void confirmOpToClickState();
     void doneState();
 
+//
     void cristalloInMemory(bool);
     void unguentoInMemory(bool);
     void amuletoInMemory(bool);

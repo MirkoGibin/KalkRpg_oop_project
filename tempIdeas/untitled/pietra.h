@@ -24,7 +24,6 @@ public:
            double spirito =1,
            double durezza =1) : Oggetto(livello, rarita, spirito), durezza_("Durezza") {
         insertStat(durezza_, durezza);
-        sanitizeInput();
     }
 
     Pietra* clone() const {
