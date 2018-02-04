@@ -29,16 +29,19 @@ public:
         Oggetto::insertStat(magia_, magia);
     }
 
-    //methods
+    //METODI DI GET
     virtual double getMagia() const {
         return getValoreStat(magia_);
     }
 
+    //METODI DI SUPPORTO
     Cristallo* clone() const {
         return new Cristallo(*this);
     }
 
-    virtual void potenzia(double mana, string parametro ="") {
+    //OPERAZIONI CALCOLATRICE
+
+    void potenzia(double mana, string parametro ="") {
 
         mana = sanitizeMana(mana);
 
@@ -58,7 +61,11 @@ public:
         normalizza();
     }
 
-    virtual void estraiDa(Oggetto* oggetto) {
+    double ricicla() const {
+        return Pietra::ricicla() + getMagia() * getRarita();
+    }
+
+    void estraiDa(Oggetto* oggetto) {
         if(typeid(Pietra) == typeid(*oggetto)) {
 
             list<string> s = getListaStats();
@@ -81,10 +88,6 @@ public:
         else {
             throw OperationException(OperationException::estrazione);
         }
-    }
-
-    double ricicla() const {
-        return Pietra::ricicla() + getMagia() * getRarita();
     }
 
     void distribuisci(Oggetto* obj) {

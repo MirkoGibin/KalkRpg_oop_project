@@ -75,10 +75,6 @@ public:
 
         normalizza();
     }
-
-
-
-
 };
 
 #endif // OSSO_H

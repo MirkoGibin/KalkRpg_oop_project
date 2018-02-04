@@ -28,13 +28,17 @@ public:
        insertStat(fortuna_, fortuna);
     }
 
+    //METODI DI GET
     double getFortuna() const {
         return getValoreStat(fortuna_);
     }
 
+    //METODI DI SUPPORTO
     Amuleto* clone() const {
         return new Amuleto(*this);
     }
+
+    //OPERAZIONI CALCOLATRICE
 
     double ricicla() const {
         return Osso::ricicla() + getValoreStat(fortuna_) * getRarita();
@@ -57,7 +61,7 @@ public:
 
     }
 
-    virtual void estraiDa(Oggetto* oggetto) {
+    void estraiDa(Oggetto* oggetto) {
         if(typeid(Osso) == typeid(*oggetto)) {
             setLivello(oggetto->getLivello());
             setRarita(oggetto->getRarita());

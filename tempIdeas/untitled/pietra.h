@@ -26,19 +26,22 @@ public:
         insertStat(durezza_, durezza);
     }
 
+    //METODI DI GET
+
+    double getDurezza() const {
+       return getValoreStat(durezza_);
+   }
+
+    //METODI DI SUPPORTO
     Pietra* clone() const {
         return new Pietra(*this);
-    }
-
-     double getDurezza() const {
-        return getValoreStat(durezza_);
     }
 
      void editDurezza(double val) {
          incrementStat(durezza_, val);
      }
 
-// ritorna il livello*rarita*(somma delle statistiche, senza lo spirito, durezza*2
+    //OPERAZIONI CALCOLATRICE
 
     double ricicla() const {
         return calcolaMana() / 2 + getValoreStat(durezza_) * getRarita();

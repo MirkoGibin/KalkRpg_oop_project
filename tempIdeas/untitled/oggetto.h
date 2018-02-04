@@ -41,7 +41,7 @@ public:
     //distruttore virtuale
     virtual ~Oggetto() {}
 
-    virtual Oggetto* clone() const =0;
+
 
 //---------METODI DI SET
     void setLivello(int livello) {
@@ -58,7 +58,7 @@ public:
         stats[stat] += value;
     }
 
-    bool modifyStat(string str, double db) { //GESTIONE DEGLI ERRORI
+    bool modifyStat(string str, double db) {
         bool trovata=false;
         if(stats.count(str)) {
             stats[str] = db;
@@ -100,22 +100,17 @@ public:
     int getLivello() const {
        return livello_;
     }
+
     int getRarita() const {
         return rarita_;
     }
+
     double getValoreStat(string str) const {
         return stats.at(str);
     }
 
     double getSpirito() const {
         return getValoreStat(spirito_);
-    }
-
-    list<string> getListaStats()  const {
-        list<string> keyList;
-        for(map<string, double>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
-            keyList.push_back(it->first);
-        return keyList;
     }
 
     double getSommaStats() const {
@@ -125,13 +120,20 @@ public:
         return sum;
     }
 
+    list<string> getListaStats()  const {
+        list<string> keyList;
+        for(map<string, double>::const_iterator it= stats.begin(); it!=stats.end(); ++it)
+            keyList.push_back(it->first);
+        return keyList;
+    }
+
     double calcolaMana() const {
         return getSommaStats()*getLivello();
     }
 
 
 
-//------------OPERAZIONI
+//------------OPERAZIONI DI CONTROLLO INPUT
     void normalizza() {
         int maxStat = 150;
         if(getLivello()*maxStat*stats.size() <= calcolaMana()) {
@@ -175,6 +177,8 @@ public:
         return l;
     }
 
+    //OPERAZIONI CALCOLATRICE
+
     void combina(Oggetto* object) {
         map<string, double> invMap = stats; //copiata la mappa dell'oggetto di invocazione
         map<string, double> parMap = object->stats; //copiata la mappa dell'oggetto di invocazione
@@ -210,14 +214,6 @@ public:
         //ora bisogna normalizzare stats a seconda del livello.
         normalizza();
     }
-
-
-
-    //operazioni
-
-    virtual double ricicla() const = 0;
-
-    virtual void potenzia(double mana, string parametro ="") = 0;
 
     void trasformaDa(const Oggetto *obj) {
 
@@ -283,6 +279,10 @@ public:
         normalizza();
     }
 
+    //OPERAZIONI VIRTUALI PURE
+    virtual Oggetto* clone() const =0;
+    virtual double ricicla() const = 0;
+    virtual void potenzia(double mana, string parametro ="") = 0;
 };
 
 #endif // OGGETTO_H

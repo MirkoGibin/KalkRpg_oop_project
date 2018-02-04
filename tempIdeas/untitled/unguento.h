@@ -18,10 +18,17 @@ public:
              double energia =1) : Erba(livello, rarita, spirito, vitalita), energia_("Energia") {
         insertStat(energia_, energia);
     }
+    //METODI DI GET
+    double getEnergia() const {
+        return getValoreStat(energia_);
+    }
+
+    //METODI DI SUPPORTO
     Unguento*clone() const {
         return new Unguento(*this);
     }
 
+    //OPERAZIONI CALCOLATRICE
     void potenzia(double mana, string parametro ="") {
 
         mana = sanitizeMana(mana);
@@ -36,8 +43,11 @@ public:
         Erba::potenzia(mana, parametro);
     }
 
-    //estraiDa permette di creare un Unguento da una sua superclasse.
-    virtual void estraiDa(Oggetto* oggetto) {
+    double ricicla() const {
+        return Erba::ricicla() + getValoreStat(energia_) * getRarita();
+    }
+
+    void estraiDa(Oggetto* oggetto) {
         if(typeid(Erba) == typeid(*oggetto)) {
             setLivello(oggetto->getLivello());
             setRarita(oggetto->getRarita());
@@ -62,10 +72,6 @@ public:
         else {
             throw OperationException(OperationException::estrazione);
         }
-    }
-
-    double ricicla() const {
-        return Erba::ricicla() + getValoreStat(energia_) * getRarita();
     }
 
     void ripara(Oggetto* obj) {

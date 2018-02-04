@@ -18,20 +18,26 @@ public:
             insertStat(vitalita_, vitalita);
     }
 
+    //METODI DI GET
+
     double getVitalita() const {
         return getValoreStat(vitalita_);
     }
+
+    //METODI DI SUPPORTO
 
     Erba* clone() const {
         return new Erba(*this);
     }
 
-     double ricicla() const {
+    //OPERAZIONI CALCOLATRICE
+
+    double ricicla() const {
         return calcolaMana() / 2 + getValoreStat(vitalita_) * getRarita();
 
     }
 
-     void potenzia(double mana, string parametro ="") {
+    void potenzia(double mana, string parametro ="") {
 
          mana = sanitizeMana(mana);
 
