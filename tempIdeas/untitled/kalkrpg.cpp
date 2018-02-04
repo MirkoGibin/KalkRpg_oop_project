@@ -259,8 +259,8 @@ void KalkRpg::confirmObjClicked() {
         else {
             confirmOpToClickState();
         }
-        display->show(controller->getImage(), controller->getParametri());
         controller->setStatsOnObj();
+        display->show(controller->getResultImage(), controller->getResultParametri());
         removeSettingPanel();
     }
     waitingOperand=false;
@@ -435,7 +435,10 @@ void KalkRpg::backspaceClicked() {
             controller->deleteLastObj();
             waitingOperand=true;
         }
-        else controller->deleteLastObj();
+        else {
+            controller->flushControllerMemory();
+            controller->deleteLastObj();
+        }
     } else if(!waitingOperand && running) { //in CONFIRM STATE
         display->back();
         if(potenziaOp) { //per potenziaOp
@@ -443,8 +446,8 @@ void KalkRpg::backspaceClicked() {
             potenziaOp=false;
         } else { //valido anche per creaOp, trasformaOp, estraiOp
             waitingOperand=true;
-            controller->deleteLastObj();
             setChildVariables();
+            controller->deleteLastObj();
         }
     } else if(waitingOperand && running) {
         display->back();

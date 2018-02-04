@@ -17,7 +17,6 @@ public:
              double vitalita =1,
              double energia =1) : Erba(livello, rarita, spirito, vitalita), energia_("Energia") {
         insertStat(energia_, energia);
-        sanitizeInput();
     }
     Unguento*clone() const {
         return new Unguento(*this);

@@ -26,8 +26,6 @@ public:
             double difesa =1,
             double fortuna =1) : Osso(livello,rarita,spirito,attacco,difesa), fortuna_("Fortuna") {
        insertStat(fortuna_, fortuna);
-
-       sanitizeInput();
     }
 
     double getFortuna() const {

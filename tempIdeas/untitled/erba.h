@@ -16,7 +16,6 @@ public:
          double spirito =1,
          double vitalita =1) : Oggetto(livello, rarita, spirito), vitalita_("Vitalità") {
             insertStat(vitalita_, vitalita);
-            sanitizeInput();
     }
 
     double getVitalita() const {

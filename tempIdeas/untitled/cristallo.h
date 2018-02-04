@@ -27,7 +27,6 @@ public:
               const double durezza =1,
               const double magia =1) : Pietra(livello, rarita, spirito, durezza), magia_("Magia") {
         Oggetto::insertStat(magia_, magia);
-        sanitizeInput();
     }
 
     //methods
@@ -44,7 +43,7 @@ public:
         mana = sanitizeMana(mana);
 
         double incremento = mana * getLivello() * getRarita();
-        int divisore;
+        int divisore =1;
 
         if(parametro == "Spirito") {
             divisore = 15;

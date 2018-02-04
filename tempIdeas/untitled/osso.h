@@ -30,7 +30,6 @@ public:
          double difesa =1) : Oggetto(livello, rarita, spirito), attacco_("Attacco"), difesa_("Difesa") {
         insertStat(attacco_,attacco);
         insertStat(difesa_, difesa);
-        sanitizeInput();
     }
 
     double getAttacco() const {

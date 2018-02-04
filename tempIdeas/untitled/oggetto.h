@@ -35,7 +35,7 @@ public:
             int rarita =1,
             double spirito =1) : livello_(livello), rarita_(rarita), spirito_("Spirito") {
         stats.emplace(spirito_, spirito);
-        normalizza();
+        sanitizeInput();
     }
 
     //distruttore virtuale
@@ -76,7 +76,12 @@ public:
         string statMax;
         string statMin;
 
-        for(auto it = stats.begin(); it != stats.end(); it++) {
+        auto it=stats.begin();
+        statMax=statMin=it->first;
+        max=min=it->second;
+        it++;
+
+        for(; it != stats.end(); it++) {
             if(it->second > max) {
                 max = it->second;
                 statMax= it->first;
@@ -231,7 +236,6 @@ public:
 
         parametri.clear();
 
-//FARE ATTENZIONE QUI: la prossima parametri risulta vuota.
         if(val > 0) {
             for(auto it = stats.begin(); it != stats.end(); ++it){
                 if(it->second == 1)

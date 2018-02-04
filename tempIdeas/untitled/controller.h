@@ -71,7 +71,6 @@ public:
     void newAmuleto();
 
 signals:
-    void opIsDone();
     void nothingToDelete();
 
     void isCristallo(bool =false);
