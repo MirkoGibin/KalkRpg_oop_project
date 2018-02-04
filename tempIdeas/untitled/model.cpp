@@ -21,9 +21,10 @@ QMap<QString, int> Model::getLastObj(int contatore) const {
 }
 
 QList<QString> Model::getListaStatsFromLastObj(int contatore) const {
-    if(!memoria.isEmpty())
+    try {
         return QList<QString>(getLastObj(contatore).keys());
-    else throw MemoryException("mv");
+    }
+    catch(MemoryException me) {throw MemoryException("mv");}
 }
 
 QImage *Model::getImageFromLastObj(int contatore) const {
