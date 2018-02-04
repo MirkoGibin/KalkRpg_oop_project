@@ -89,6 +89,7 @@ public:
             throw OperationException(OperationException::estrazione);
         }
     }
+    /*Specifica di cristallo. Se la durezza è almeno la metà della magia, dimezza la propria magia per potenziare obj.*/
 
     void distribuisci(Oggetto* obj) {
         double val = getMagia() / 2;

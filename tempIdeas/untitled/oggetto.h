@@ -179,6 +179,10 @@ public:
 
     //OPERAZIONI CALCOLATRICE
 
+    /*Il metodo fa side effect sull’oggetto di invocazione.
+     * Per entrambi gli oggetti, calcola una percentuale di distribuzione basata sul livello e sul mana.
+     *  All’oggetto di invocazione vengono aumentate le statistiche in base a queste percentuali, distinguendo
+     * il caso di statistiche presenti in entrambi e statistiche peculiari di ogni oggetto.*/
     void combina(Oggetto* object) {
         map<string, double> invMap = stats; //copiata la mappa dell'oggetto di invocazione
         map<string, double> parMap = object->stats; //copiata la mappa dell'oggetto di invocazione
@@ -215,6 +219,12 @@ public:
         normalizza();
     }
 
+    /*Il metodo fa side effect sull’oggetto di invocazione.
+    Viene controllato se il suo numero di parametri è maggiore di obj. In tal caso, viene lanciata un’eccezione.
+    Altrimenti vi sono sufficienti statistiche per inizializzare tutto. A parametri uguali viene destinato metà dell’originale valore.
+    Il rimanente, derivante da eventuali parametri caratteristici, viene usato per incrementare le statistiche rimanenti dell’oggetto di invocazione;
+    in questo caso la rarità funge da moltiplicatore.*/
+
     void trasformaDa(const Oggetto *obj) {
 
         if(getListaStats().size() > obj->getListaStats().size()) {
@@ -250,6 +260,9 @@ public:
         }
 //------------------------------------
     }
+    /*Controlla l’input e imposta i parametri di livello e rarita.
+    Se è stato indicato un parametro, metà del mana verrà riservato ad esso.
+    Altrimenti viene equamente diviso tra le statistiche.*/
 
     void crea(double mana, int livello, int rarita, string statistica = "") { //PRE = statistica è vuoto o è un valore valido
 

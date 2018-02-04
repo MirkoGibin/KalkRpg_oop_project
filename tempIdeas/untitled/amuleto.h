@@ -81,7 +81,9 @@ public:
         }
 
     }
-
+    /* Specifico di amuleto. Crea una copia perfetta o con statistiche dimezzate di obj, in base alla rarità ( >= 4 oppure < 5).
+     * La fortuna deve però essere almeno pari alla media del valore delle statistiche,
+     * altrimenti la fortuna scenderà a 1 e la copia avrà tutti i parametri a 1*/
     Oggetto* duplica(Oggetto * obj) {
 
         list<string> parametri = obj->getListaStats();

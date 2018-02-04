@@ -73,7 +73,12 @@ public:
             throw OperationException(OperationException::estrazione);
         }
     }
-
+    /*Specifico di unguento.
+     * Viene calcolata la differenza tra i parametri di obj con il valore più alto e più basso tramite la funzione findMinMaxStat.
+     *  Se l’energia dell’unguento è sufficiente a coprire questo gap, in caso di rarità di unguento <= 7,
+     * la statistica più passa di obj viene portata al valore della statistica più alta;
+     * se la rarità è >7 tutte le statistiche vengono portate al valore più alto.
+     * */
     void ripara(Oggetto* obj) {
 
         std::pair<string, string> minmax = obj->findMinMaxStat();
