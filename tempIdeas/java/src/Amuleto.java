@@ -18,7 +18,7 @@ public class Amuleto extends Osso {
         super(livello, rarita,spirito,attacco,difesa);
         fortuna_="Fortuna";
         insertStat(fortuna_, fortuna);
-        sanitizeInput();
+
     }
 
     //METODI
@@ -61,7 +61,7 @@ public class Amuleto extends Osso {
 
             incrementStat(fortuna_, mana * getLivello() * getRarita() / divisore);
             super.potenzia(mana, parametro);
-        } else potenzia(mana);
+        } else this.potenzia(mana);
     }
 
     public void estraiDa(Oggetto oggetto) throws  OperationException {
@@ -101,7 +101,7 @@ public class Amuleto extends Osso {
             if(getRarita()<5)
             parametri
                     .stream()
-                    .filter(s->getValoreStat(s) > val/2)
+                    .filter(s->newObj.getValoreStat(s) > val/2)
                     .forEach(s->newObj.modifyStat(s, val/2)
                     );
         }

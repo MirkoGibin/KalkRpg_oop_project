@@ -16,7 +16,7 @@ public class Pietra extends Oggetto {
         super(livello,rarita, spirito);
         durezza_="Durezza";
         insertStat(durezza_, durezza);
-        sanitizeInput();
+
     }
 
     //METODI DI GET------------------------------
@@ -60,6 +60,6 @@ public class Pietra extends Oggetto {
             incrementStat(durezza_, incremento * getRarita() / divisore);
             incrementStat(parametro, incremento);
             normalizza();
-        } else potenzia(mana);
+        } else this.potenzia(mana);
     }
 }

@@ -19,7 +19,7 @@ public class Osso extends Oggetto {
         difesa_="Difesa";
         insertStat(attacco_, attacco);
         insertStat(difesa_, difesa);
-        sanitizeInput();
+
     }
 
     public Double getAttacco() {
@@ -61,7 +61,7 @@ public class Osso extends Oggetto {
             incrementStat(attacco_, incremento*getRarita()/(2*divisore));
             incrementStat(difesa_, incremento*getRarita()/(2*divisore));
             normalizza();
-        } else potenzia(mana);
+        } else this.potenzia(mana);
     }
 
 

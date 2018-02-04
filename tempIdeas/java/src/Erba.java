@@ -13,7 +13,7 @@ public class Erba extends Oggetto {
         super(livello,rarita, spirito);
         vitalita_="Vitalità";
         insertStat(vitalita_, vitalita);
-        sanitizeInput();
+
     }
 
     //METODI DI GET
@@ -46,7 +46,7 @@ public class Erba extends Oggetto {
             normalizza();
         }
         else
-            potenzia(mana);
+            this.potenzia(mana);
 
     }
 
@@ -55,7 +55,7 @@ public class Erba extends Oggetto {
 
         int divisore = 10;
         double incremento = mana / getLivello();
-
+        incrementStat(vitalita_, incremento * getRarita() / divisore);
         List<String> parametri = getListaStats();
         incremento = incremento / parametri.size();
         final double v = incremento;

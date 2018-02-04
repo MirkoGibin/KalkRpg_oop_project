@@ -31,10 +31,10 @@ abstract public class Oggetto implements Cloneable {
      * @return List<String> with every key which is present in A but not in B
      */
     private static List<String> chiaviAmenoB(Map<String, Double> A, Map<String, Double> B) {
-        Set<String> a=A.keySet();
-        Set<String> b=B.keySet();
+        List<String> a= new LinkedList<>(A.keySet());
+        List<String> b=new LinkedList<>(B.keySet());
         a.removeAll(b);
-        return new LinkedList<>(a);
+        return a;
     }
 
     /**
@@ -43,10 +43,10 @@ abstract public class Oggetto implements Cloneable {
      * @return Returns List<String> with every key which is present in A&B
      */
     private static List<String> chiaviAeB(Map<String, Double> A, Map<String, Double> B) {
-        Set<String> a=A.keySet();
-        Set<String> b=B.keySet();
+        List<String> a= new LinkedList<>(A.keySet());
+        List<String> b=new LinkedList<>(B.keySet());
         a.retainAll(b);
-        return new LinkedList<>(a);
+        return a;
     }
 
     //COSTRUTTORI------------------------------------------------------
@@ -68,7 +68,7 @@ abstract public class Oggetto implements Cloneable {
         stats=new HashMap<>();
 
         stats.put(spirito_, spirito);
-        normalizza();
+        sanitizeInput();
     }
 
     //METODI DI SET-------------------------------------------------
@@ -106,15 +106,22 @@ abstract public class Oggetto implements Cloneable {
         String statMax =new String();
         String statMin = new String();
 
+        int counter=0;
+
         for(Map.Entry<String, Double> entry : stats.entrySet()) {
-            if(entry.getValue() > max) {
-                max=entry.getValue();
-                statMax=entry.getKey();
-            }
-            else {
-                if(entry.getValue()<=min) {
-                    min=entry.getValue();
-                    statMin=entry.getKey();
+            if (counter == 0) {
+                statMax = statMin = entry.getKey();
+                max = min = entry.getValue();
+                counter++;
+            } else {
+                if (entry.getValue() > max) {
+                    max = entry.getValue();
+                    statMax = entry.getKey();
+                } else {
+                    if (entry.getValue() <= min) {
+                        min = entry.getValue();
+                        statMin = entry.getKey();
+                    }
                 }
             }
         }
@@ -215,7 +222,7 @@ abstract public class Oggetto implements Cloneable {
         invoMENOpara.stream().forEach(s->invoMap.put(s,(invoMap.get(s) + daDistribuire)/2));
 
         stats.forEach((k,v)->
-            stats.put(k, invoMap.get(k))
+            stats.put(k, stats.get(k) * getLivello() + invoMap.get(k) * o.calcolaMana())
         );
         normalizza();
     }
@@ -231,10 +238,10 @@ abstract public class Oggetto implements Cloneable {
         Double val = parametri
                 .stream()
                 .filter(s->!modifyStat(s, o.getValoreStat(s)/2))
-                .mapToDouble(f->o.getValoreStat(f))
+                .mapToDouble(s->o.getValoreStat(s))
                 .sum();
 
-        /*Double val =0;
+       /* Double val =0.0;
         for(String s : parametri) {
             if(!modifyStat(s, o.getValoreStat(s)/2))
                 val=val+o.getValoreStat(s);
@@ -242,7 +249,7 @@ abstract public class Oggetto implements Cloneable {
         }*/
         parametri.clear();
 
-        if(val >0) {
+        if(val > 0) {
             stats.forEach((k,v) -> {
                 if (v == 1.0) parametri.add(k);
             });
@@ -250,8 +257,9 @@ abstract public class Oggetto implements Cloneable {
         Integer par=parametri.size();
         if(par>0){
             val=val/par;
-            stats.forEach((k,v) ->
-                    modifyStat(k, v*getRarita())
+            final Double d = val;
+            parametri.forEach(k ->
+                    modifyStat(k, d*getRarita())
             );
         }
         normalizza();
@@ -279,13 +287,30 @@ abstract public class Oggetto implements Cloneable {
         if(sumStats < 1) sumStats = 1.0;
 
         final Double s=sumStats;
-        stats.forEach((k,v) ->
+        parametri.forEach(k ->
             modifyStat(k,s)
         );
 
         normalizza();
     }
 
+    public void crea(Double mana, Integer livello, Integer rarita) {
+        crea(mana, livello, rarita, "");
+    }
+
+    @Override
+    public String toString() {
+        String s = getClass().getName() + ":" +
+                "\nLivello: \t" + livello_.toString() +
+                "\nRarità: \t" + rarita_.toString() + "\n";
+
+        for (Map.Entry<String, Double> entry : stats.entrySet()) {
+            s = s + entry.getKey() + ": \t" + entry.getValue().toString() + " \n";
+        }
+        s = s + "\n";
+
+        return s;
+    }
 
     //ABSTRACT METHODS
     abstract public Double ricicla();

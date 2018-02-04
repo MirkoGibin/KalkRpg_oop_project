@@ -14,7 +14,7 @@ public class Unguento extends Erba {
         super(livello, rarita, spirito, vitalita);
         energia_="Energia";
         insertStat(energia_,energia);
-        sanitizeInput();
+
     }
 
     //METODI DI GET
@@ -32,21 +32,31 @@ public class Unguento extends Erba {
     //OPERAZIONI
     @Override
     public void potenzia(Double mana, String parametro) {
-        mana=sanitizeMana(mana);
-        int divisore;
+        if(getListaStats().contains(parametro)) {
 
-        if(getRarita() > 6)
-            divisore = 9;
-        else
-            divisore = 12;
+            mana = sanitizeMana(mana);
+            int divisore;
 
-        incrementStat(energia_, mana * getLivello() * getRarita() / divisore);
-        super.potenzia(mana, parametro);
+            if (getRarita() > 6)
+                divisore = 9;
+            else
+                divisore = 12;
+
+            incrementStat(energia_, mana * getLivello() * getRarita() / divisore);
+            super.potenzia(mana, parametro);
+        } else this.potenzia(mana);
     }
 
     @Override
     public void potenzia(Double mana) {
-        potenzia(mana, "");
+        mana = sanitizeMana(mana);
+        int divisore = 1;
+
+        if(getRarita() > 6) divisore = 9;
+        else divisore = 12;
+
+        incrementStat(energia_, mana * getLivello()* getRarita() / divisore);
+        super.potenzia(mana);
     }
 
     public void estraiDa(Oggetto oggetto) throws OperationException {

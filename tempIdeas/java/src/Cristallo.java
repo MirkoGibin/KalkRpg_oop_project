@@ -14,7 +14,7 @@ public class Cristallo extends Pietra {
         super(livello, rarita, spirito, durezza);
         magia_="Magia";
         insertStat(magia_,magia);
-        sanitizeInput();
+
     }
 
     //METODI DI GET
@@ -39,20 +39,24 @@ public class Cristallo extends Pietra {
 
     @Override
     public void potenzia(Double mana, String parametro) {
-        Double incremento = mana*getLivello()*getRarita();
-        Integer divisore =1;
+        if(getListaStats().contains(parametro)) {
+            mana = sanitizeMana(mana);
+            Double incremento = mana * getLivello() * getRarita();
+            Integer divisore = 1;
 
-        if(parametro=="Spirito") {
-            divisore=15;
-            incrementStat(parametro, incremento/getMagia());
-            incrementStat(magia_, incremento*getRarita()/divisore);
+            if (parametro == "Spirito") {
+                divisore = 15;
+                incrementStat(parametro, incremento / getMagia());
+                incrementStat(magia_, incremento * getRarita() / divisore);
+            } else {
+                divisore = 10;
+                incrementStat(magia_, incremento * getRarita() / divisore);
+                super.potenzia(mana, parametro);
+            }
+            normalizza();
+        } else {
+            this.potenzia(mana);
         }
-        else {
-            divisore=10;
-            incrementStat(magia_, incremento*getRarita()/divisore);
-            super.potenzia(mana, parametro);
-        }
-        normalizza();
     }
 
     public void estraiDa(Oggetto oggetto) throws OperationException {
@@ -69,7 +73,7 @@ public class Cristallo extends Pietra {
                 final Double sommaStats = p.getSommaStats();
 
                 s.stream().forEach(f -> {
-                    if (f == magia_) incrementStat(f, (p.getValoreStat(f) - p.getSpirito()) / numeroStats);
+                    if (f == magia_) incrementStat(f, (sommaStats - p.getSpirito()) / numeroStats);
                     else incrementStat(f, p.getValoreStat(f) * (numeroStats - 1) / numeroStats);
                 });
             } else
