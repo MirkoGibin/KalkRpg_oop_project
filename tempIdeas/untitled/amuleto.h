@@ -24,93 +24,26 @@ public:
             double spirito =1,
             double attacco =1,
             double difesa =1,
-            double fortuna =1) : Osso(livello,rarita,spirito,attacco,difesa), fortuna_("Fortuna") {
-       insertStat(fortuna_, fortuna);
-    }
+            double fortuna =1);
 
     //METODI DI GET
-    double getFortuna() const {
-        return getValoreStat(fortuna_);
-    }
+    double getFortuna() const;
 
     //METODI DI SUPPORTO
-    Amuleto* clone() const {
-        return new Amuleto(*this);
-    }
+    Amuleto* clone() const;
 
     //OPERAZIONI CALCOLATRICE
 
-    double ricicla() const {
-        return Osso::ricicla() + getValoreStat(fortuna_) * getRarita();
-    }
+    double ricicla() const;
 
-    void potenzia(double mana, string parametro ="") {
+    void potenzia(double mana, string parametro ="");
 
-        mana = sanitizeMana(mana);
+    void estraiDa(Oggetto* oggetto);
 
-        int divisore;
-
-        if(getRarita() > 6 && getLivello() > 6)
-            divisore = 10;
-        else
-            divisore = 15;
-
-        incrementStat(fortuna_, mana * getLivello() * getRarita() / divisore); //Fortuna riceve un bonus sicuro oltre alla normale distribuzione
-
-        Osso::potenzia(mana, parametro);
-
-    }
-
-    void estraiDa(Oggetto* oggetto) {
-        if(typeid(Osso) == typeid(*oggetto)) {
-            setLivello(oggetto->getLivello());
-            setRarita(oggetto->getRarita());
-            list<string> s = getListaStats();
-            int numeroStat = s.size();
-
-            for(auto i = s.begin(); i != s.end(); ++i) {
-                if(*i == fortuna_)
-                    incrementStat(*i, oggetto->getSommaStats() / numeroStat);
-                else
-                    incrementStat(*i,  oggetto->getValoreStat(*i) * (numeroStat - 1) / numeroStat );
-            }
-
-        }
-        else {
-           throw OperationException(OperationException::estrazione);
-        }
-
-    }
     /* Specifico di amuleto. Crea una copia perfetta o con statistiche dimezzate di obj, in base alla rarità ( >= 4 oppure < 5).
      * La fortuna deve però essere almeno pari alla media del valore delle statistiche,
      * altrimenti la fortuna scenderà a 1 e la copia avrà tutti i parametri a 1*/
-    Oggetto* duplica(Oggetto * obj) {
-
-        list<string> parametri = obj->getListaStats();
-        double val = obj->getSommaStats() / parametri.size();
-
-        Oggetto* newObj = obj->clone();
-
-        if(getFortuna() < val + 1) {
-            modifyStat(fortuna_, 1);
-            for(auto it = parametri.begin(); it != parametri.end(); it++) {
-                newObj->modifyStat(*it, 1);
-            }
-        }
-        else {
-            incrementStat(fortuna_, -val);
-
-            if(getRarita() < 5) {
-                for(auto it = parametri.begin(); it != parametri.end(); it++) {
-                    if(newObj->getValoreStat(*it) > val/2)
-                        newObj->modifyStat(*it, val/2);
-                }
-            }
-        }
-
-        return newObj;
-
-    }
+    Oggetto* duplica(const Oggetto * obj);
 
 };
 

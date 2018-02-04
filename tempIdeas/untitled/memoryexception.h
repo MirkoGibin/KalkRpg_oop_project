@@ -8,12 +8,9 @@ class MemoryException {
 private:
     string err;
 public:
-    MemoryException(string str) : err(str) {}
+    MemoryException(string str);
 
-    string getError() const {
-        if(err=="mv")
-            return "La memoria e' vuota, non si possono leggere elementi";
-    }
+    string getError() const;
 };
 
 #endif // MEMORYEXCEPTION_H

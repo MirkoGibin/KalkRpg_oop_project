@@ -22,53 +22,22 @@ public:
     Pietra(int livello =1,
            int rarita =1,
            double spirito =1,
-           double durezza =1) : Oggetto(livello, rarita, spirito), durezza_("Durezza") {
-        insertStat(durezza_, durezza);
-    }
+           double durezza =1);
 
     //METODI DI GET
 
-    double getDurezza() const {
-       return getValoreStat(durezza_);
-   }
+    double getDurezza() const;
 
     //METODI DI SUPPORTO
-    Pietra* clone() const {
-        return new Pietra(*this);
-    }
+    Pietra* clone() const;
 
-     void editDurezza(double val) {
-         incrementStat(durezza_, val);
-     }
+     void editDurezza(double val);
 
     //OPERAZIONI CALCOLATRICE
 
-    double ricicla() const {
-        return calcolaMana() / 2 + getValoreStat(durezza_) * getRarita();
-    }
+    double ricicla() const;
 
-    void potenzia(double mana, string parametro ="") {
-
-        mana = sanitizeMana(mana);
-
-        int divisore = 5;
-        double incremento = mana / getLivello();
-
-        incrementStat(durezza_, incremento * getRarita() / divisore); //Magia riceve un bonus sicuro oltre alla normale distribuzione
-
-        list<string> statsList = getListaStats();
-        if((std::find(statsList.begin(), statsList.end(), parametro) == statsList.end())) {
-
-            incremento = incremento / statsList.size();
-            for(auto i = statsList.begin(); i != statsList.end(); i++)
-                incrementStat(*i, incremento);
-        }
-        else {
-                incrementStat(parametro, incremento);
-        }
-
-        normalizza();
-    }
+    void potenzia(double mana, string parametro ="");
 };
 
 #endif // PIETRA_H
