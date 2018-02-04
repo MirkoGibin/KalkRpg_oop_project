@@ -39,7 +39,8 @@ SOURCES += main.cpp \
     display.cpp \
     button.cpp \
     operationexception.cpp \
-    viewexception.cpp
+    viewexception.cpp \
+    memoryexception.cpp
 
 HEADERS += \
     oggetto.h \
@@ -57,7 +58,8 @@ HEADERS += \
     display.h \
     button.h \
     operationexception.h \ 
-    viewexception.h
+    viewexception.h \
+    memoryexception.h
 
 
 RESOURCES += \

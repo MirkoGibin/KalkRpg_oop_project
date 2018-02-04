@@ -1,11 +1,12 @@
 #include "model.h"
+#include"memoryexception.h"
 
 
 Model::Model() : counter(0) {}
 
 QMap<QString, int> Model::getLastObj(int contatore) const {
-    QMap<QString, int> values;
     if(!memoria.isEmpty()) {
+        QMap<QString, int> values;
         auto obj=--(memoria.end());
         if(contatore<memoria.size())
             for(int i=0;i<contatore;i++) obj--;
@@ -15,21 +16,20 @@ QMap<QString, int> Model::getLastObj(int contatore) const {
         list<string> objListaStats=(*obj)->getListaStats();
         for(auto it=objListaStats.begin();it!=objListaStats.end();++it)
             values.insert(QString::fromStdString(*it), (*obj)->getValoreStat(*it));
-    } else {} //eccezione
-    return values;
+        return values;
+    } else throw MemoryException("mv");
 }
 
 QList<QString> Model::getListaStatsFromLastObj(int contatore) const {
     if(!memoria.isEmpty())
         return QList<QString>(getLastObj(contatore).keys());
-    else {}//throw exception
-    return QList<QString>();
+    else throw MemoryException("mv");
 }
 
 QImage *Model::getImageFromLastObj(int contatore) const {
     if(!immagini.isEmpty())
         return immagini.value(counter-contatore);
-    else return 0;
+    else throw MemoryException("mv");
 }
 
 unsigned int Model::getNumObjInMemory() const {
@@ -37,17 +37,21 @@ unsigned int Model::getNumObjInMemory() const {
 }
 
 bool Model::setStatByName(QString name, unsigned int value) const {
-    if(name=="Livello")
-        memoria.back()->setLivello(value);
-    else if(name=="Rarità")
-        memoria.back()->setRarita(value);
-    else
-        memoria.back()->modifyStat(name.toStdString(), value);
-    return true;
+    if(!memoria.isEmpty()) {
+        if(name=="Livello")
+            memoria.back()->setLivello(value);
+        else if(name=="Rarità")
+            memoria.back()->setRarita(value);
+        else
+            memoria.back()->modifyStat(name.toStdString(), value);
+        return true;
+    } else throw MemoryException("mv");
 }
 
 void Model::setImage(QImage *immagine) {
-    immagini.insert(counter, new QImage(*immagine));
+    if(!memoria.isEmpty())
+        immagini.insert(counter, new QImage(*immagine));
+    else throw MemoryException("mv");
 }
 
 void Model::clearMemory() {
@@ -76,7 +80,8 @@ void Model::deleteLast() {
 }
 
 int Model::ricycleLast() {
-    return memoria.back()->ricicla();
+    if(!memoria.isEmpty()) return memoria.back()->ricicla();
+    else throw MemoryException("mv");
 }
 
 void Model::combina() {
@@ -89,7 +94,7 @@ void Model::combina() {
         memoria.push_back(inv);
         QImage* toInsert=new QImage((*immagini.value(counter-1)));
         immagini.insert(++counter, toInsert);
-    }
+    } else throw MemoryException("mv");
 }
 
 void Model::potenzia(int mana, QString parametro) {
@@ -99,7 +104,7 @@ void Model::potenzia(int mana, QString parametro) {
         QImage* toInsert=new QImage((*immagini.value(counter)));
         immagini.insert(++counter, toInsert);
         memoria.push_back(nuovo);
-    }
+    } else throw MemoryException("mv");
 }
 
 void Model::crea(int mana, int livello, int rarita, QString parametro) {
@@ -109,7 +114,7 @@ void Model::crea(int mana, int livello, int rarita, QString parametro) {
         QImage* toInsert=new QImage((*immagini.value(counter)));
         immagini.insert(++counter, toInsert);
         memoria.push_back(nuovo);
-    }
+    } else throw MemoryException("mv");
 }
 
 void Model::distribuisci() {
@@ -130,7 +135,7 @@ void Model::distribuisci() {
             memoria.push_back(parametro);
             immagini.insert(++counter, parametroImage);
         }
-    }
+    } else throw MemoryException("mv");
 }
 
 void Model::ripara() {
@@ -151,7 +156,7 @@ void Model::ripara() {
             memoria.push_back(parametro);
             immagini.insert(++counter, parametroImage);
         }
-    }
+    } else throw MemoryException("mv");
 }
 
 void Model::duplica() {
@@ -172,7 +177,7 @@ void Model::duplica() {
             memoria.push_back(nuovo);
             immagini.insert(++counter, parametroImage);
         }
-    }
+    } else throw MemoryException("mv");
 }
 
 void Model::trasforma() {
@@ -192,7 +197,7 @@ void Model::trasforma() {
             delete o;
             throw ViewException(QString::fromStdString(oe.getErrore()));
         }
-    }
+    } else throw MemoryException("mv");
 }
 
 void Model::estrai() {
@@ -224,7 +229,7 @@ void Model::estrai() {
             throw ViewException(QString::fromStdString(oe.getErrore()));
 
         }
-    }
+    } else throw MemoryException("mv");
 }
 
 void Model::createErba() {
